@@ -2,12 +2,7 @@
   "name": "@compass/source",
   "version": "0.0.1",
   "license": "MIT",
-  "scripts": {
-    "pre-commit": "lint-staged --relative",
-    "run:buy-sell": "concurrently --names \"LOGIN,BUY-SELL\" --prefix name \"nx run login:serve\" \"nx run buy-sell:serve\"",
-    "run:fast-trade": "concurrently --names \"LOGIN,FAST-TRADE\" --prefix name \"nx run login:serve\" \"nx run fast-trade:serve\"",
-    "run:movers": "concurrently --names \"LOGIN,MOVERS\" --prefix name \"nx run login:serve\" \"nx run movers:serve\""
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "@emotion/react": "11.11.1",
@@ -126,6 +121,5 @@
   },
   "nx": {
     "includedScripts": []
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }
