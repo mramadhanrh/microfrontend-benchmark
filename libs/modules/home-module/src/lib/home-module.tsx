@@ -7,10 +7,10 @@ const StyledHomeModule = styled.div`
   color: pink;
 `;
 
-export function HomeModule(props: HomeModuleProps) {
+export const HomeModule = (props: HomeModuleProps)  => {
   return (
     <StyledHomeModule>
-      <h1>Welcome to HomeModule!</h1>
+      <h1 className='text-3xl font-bold text-blue-600'>Welcome to HomeModule!</h1>
     </StyledHomeModule>
   );
 }

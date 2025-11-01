@@ -1,3 +1,5 @@
+import '../styles.css';
+
 import styled from '@emotion/styled';
 
 import NxWelcome from './nx-welcome';
@@ -12,7 +14,7 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      <HomeModule
+      <HomeModule />
       <NxWelcome title="monolith-app" />
 
       {/* START: routes */}

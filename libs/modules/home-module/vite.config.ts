@@ -14,7 +14,7 @@ export default defineConfig({
     nxViteTsPaths(),
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+      tsConfigFilePath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
   ],
 
