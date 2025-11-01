@@ -26,6 +26,7 @@
       }
     ],
     "paths": {
+      "@mfe-benchmark/home-module": ["libs/modules/home-module/src/index.ts"],
       "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"]
     }
   },

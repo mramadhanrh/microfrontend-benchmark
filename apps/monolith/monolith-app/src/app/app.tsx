@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
+import { HomeModule } from '@mfe-benchmark/home-module';
 
 const StyledApp = styled.div`
   // Your style here
@@ -11,6 +12,7 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
+      <HomeModule
       <NxWelcome title="monolith-app" />
 
       {/* START: routes */}
