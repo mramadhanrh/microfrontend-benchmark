@@ -99,7 +99,7 @@ export const HomeModule = (props: HomeModuleProps) => {
 
           {/* Right Side - Hero Image Slider */}
           <div
-            className="col-span-1 lg:col-span-3 relative overflow-hidden h-[300px] sm:h-[400px] md:h-[500px] lg:h-[700px] order-1 lg:order-2"
+            className="col-span-1 lg:col-span-3 relative overflow-hidden h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] order-1 lg:order-2"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
