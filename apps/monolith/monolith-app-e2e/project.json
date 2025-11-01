@@ -1,0 +1,9 @@
+{
+  "name": "monolith-app-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/monolith/monolith-app-e2e/src",
+  "implicitDependencies": ["monolith-app"],
+  "// targets": "to see all targets run: nx show project monolith-app-e2e --web",
+  "targets": {}
+}
