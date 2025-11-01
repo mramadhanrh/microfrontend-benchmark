@@ -27,7 +27,10 @@
     ],
     "paths": {
       "@mfe-benchmark/home-module": ["libs/modules/home-module/src/index.ts"],
-      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"]
+      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"],
+
+      // Aliases
+      "@modules/home-module/*": ["libs/modules/home-module/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
