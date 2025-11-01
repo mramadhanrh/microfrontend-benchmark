@@ -520,109 +520,303 @@ export const HomeModule = (props: HomeModuleProps) => {
 
         {/* Pricing/Membership Plans Section */}
         <div className="mt-8 sm:mt-12 px-2 sm:px-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center">
-            MEMBERSHIP PLANS
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          <style>{`
+            @keyframes slideUp {
+              from {
+                opacity: 0;
+                transform: translateY(30px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            @keyframes pulseGlow {
+              0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+              }
+              50% {
+                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0);
+              }
+            }
+            @keyframes slideInFromLeft {
+              from {
+                opacity: 0;
+                transform: translateX(-20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            .plan-card {
+              animation: slideUp 0.6s ease-out forwards;
+            }
+            .plan-card:nth-child(1) {
+              animation-delay: 0.1s;
+              opacity: 0;
+            }
+            .plan-card:nth-child(2) {
+              animation-delay: 0.2s;
+              opacity: 0;
+            }
+            .plan-card:nth-child(3) {
+              animation-delay: 0.3s;
+              opacity: 0;
+            }
+            .feature-item {
+              animation: slideInFromLeft 0.4s ease-out forwards;
+            }
+            .glow-border {
+              position: relative;
+              overflow: hidden;
+            }
+            .glow-border::before {
+              content: '';
+              position: absolute;
+              top: -2px;
+              left: -2px;
+              right: -2px;
+              bottom: -2px;
+              background: linear-gradient(45deg, #fff, #000, #fff);
+              background-size: 200% 200%;
+              border-radius: inherit;
+              z-index: -1;
+              animation: gradientShift 3s ease infinite;
+              opacity: 0;
+              transition: opacity 0.3s;
+            }
+            .glow-border:hover::before {
+              opacity: 1;
+            }
+            @keyframes gradientShift {
+              0% {
+                background-position: 0% 50%;
+              }
+              50% {
+                background-position: 100% 50%;
+              }
+              100% {
+                background-position: 0% 50%;
+              }
+            }
+            .price-reveal {
+              display: inline-block;
+              animation: priceReveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            }
+            @keyframes priceReveal {
+              from {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+              }
+              to {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+              }
+            }
+          `}</style>
+
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-block bg-black text-white px-6 py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4">
+              Choose Your Path
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight">
+              UNLEASH YOUR
+              <br />
+              <span className="relative inline-block">
+                POTENTIAL
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-black"></div>
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+              Select the perfect plan that matches your fitness goals and
+              lifestyle
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
             {[
               {
-                name: 'Basic',
+                name: 'STARTER',
+                subtitle: 'Begin Your Journey',
                 price: '$29',
-                period: '/month',
+                period: '/mo',
                 features: [
-                  'Access to gym equipment',
-                  'Locker room access',
-                  'Mobile app access',
+                  'Full gym equipment access',
+                  'Locker room facilities',
+                  'Mobile app tracking',
+                  'Basic workout plans',
                 ],
                 popular: false,
+                color: 'from-gray-700 to-gray-900',
               },
               {
-                name: 'Premium',
+                name: 'CHAMPION',
+                subtitle: 'Most Popular Choice',
                 price: '$59',
-                period: '/month',
+                period: '/mo',
                 features: [
-                  'Everything in Basic',
+                  'Everything in Starter',
                   'Unlimited group classes',
-                  'Personal training session',
+                  '2 Personal training sessions',
                   'Nutrition consultation',
+                  'Recovery zone access',
                 ],
                 popular: true,
+                color: 'from-black to-gray-800',
               },
               {
-                name: 'Elite',
+                name: 'LEGEND',
+                subtitle: 'Ultimate Experience',
                 price: '$99',
-                period: '/month',
+                period: '/mo',
                 features: [
-                  'Everything in Premium',
+                  'Everything in Champion',
                   'Unlimited personal training',
-                  'Spa & sauna access',
-                  'Priority booking',
+                  'Spa & wellness access',
+                  'Priority class booking',
+                  'Exclusive events',
                 ],
                 popular: false,
+                color: 'from-gray-800 to-black',
               },
             ].map((plan, index) => (
               <div
                 key={index}
-                className={`relative rounded-xl sm:rounded-2xl p-6 sm:p-8 transition-all duration-300 transform hover:scale-105 cursor-pointer ${
-                  plan.popular
-                    ? 'bg-black text-white shadow-2xl scale-105 md:scale-110'
-                    : 'bg-gray-50 hover:bg-gray-100'
+                className={`plan-card glow-border relative group ${
+                  plan.popular ? 'md:-mt-4 md:mb-0 z-10' : ''
                 }`}
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-1 rounded-full text-xs sm:text-sm font-bold uppercase">
-                    Most Popular
-                  </div>
-                )}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2 uppercase">
-                    {plan.name}
-                  </h3>
-                  <div className="flex items-baseline justify-center">
-                    <span className="text-4xl sm:text-5xl md:text-6xl font-bold">
-                      {plan.price}
-                    </span>
-                    <span
-                      className={`text-base sm:text-lg ml-2 ${
-                        plan.popular ? 'text-gray-300' : 'text-gray-600'
+                <div
+                  className={`relative h-full bg-gradient-to-br ${plan.color} text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer overflow-hidden`}
+                >
+                  {/* Animated background elements */}
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -translate-y-20 translate-x-20 group-hover:scale-150 transition-transform duration-700"></div>
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full translate-y-16 -translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+
+                  {/* Popular badge */}
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                      <div className="bg-white text-black px-6 py-2 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg animate-pulse">
+                        ⚡ Best Value ⚡
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="relative z-10">
+                    {/* Plan header */}
+                    <div className="text-center mb-6 sm:mb-8 pt-2">
+                      <div className="text-xs sm:text-sm uppercase tracking-widest text-gray-400 mb-2">
+                        {plan.subtitle}
+                      </div>
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-6 uppercase tracking-wider">
+                        {plan.name}
+                      </h3>
+
+                      {/* Price with animation */}
+                      <div className="flex items-end justify-center mb-2">
+                        <span className="price-reveal text-5xl sm:text-6xl md:text-7xl font-black leading-none">
+                          {plan.price}
+                        </span>
+                        <span className="text-lg sm:text-xl ml-2 mb-2 text-gray-400">
+                          {plan.period}
+                        </span>
+                      </div>
+
+                      <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-30 my-6"></div>
+                    </div>
+
+                    {/* Features list */}
+                    <ul className="space-y-4 mb-8">
+                      {plan.features.map((feature, idx) => (
+                        <li
+                          key={idx}
+                          className="feature-item flex items-start text-sm sm:text-base"
+                          style={{
+                            animationDelay: `${idx * 0.1}s`,
+                            opacity: 0,
+                          }}
+                        >
+                          <div className="flex-shrink-0 w-6 h-6 mr-3 mt-0.5 bg-white rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                            <svg
+                              className="w-4 h-4 text-black"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              strokeWidth="3"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </div>
+                          <span className="leading-relaxed">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA Button */}
+                    <button
+                      className={`w-full py-4 sm:py-5 rounded-full font-black text-sm sm:text-base uppercase tracking-wider transition-all duration-300 transform hover:scale-105 relative overflow-hidden group/btn ${
+                        plan.popular
+                          ? 'bg-white text-black'
+                          : 'bg-transparent border-2 border-white text-white hover:bg-white hover:text-black'
                       }`}
                     >
-                      {plan.period}
-                    </span>
+                      <span className="relative z-10 flex items-center justify-center">
+                        Start Now
+                        <svg
+                          className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth="3"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      </span>
+                      {!plan.popular && (
+                        <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300"></div>
+                      )}
+                    </button>
+
+                    {/* Extra info */}
+                    <div className="text-center mt-4 text-xs sm:text-sm text-gray-400">
+                      No commitment • Cancel anytime
+                    </div>
                   </div>
                 </div>
-                <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                  {plan.features.map((feature, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-center text-sm sm:text-base"
-                    >
-                      <svg
-                        className="w-5 h-5 mr-3 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className={`w-full py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base transition-all ${
-                    plan.popular
-                      ? 'bg-white text-black hover:bg-gray-100'
-                      : 'bg-black text-white hover:bg-gray-800'
-                  }`}
-                >
-                  Choose Plan
-                </button>
               </div>
             ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-12 sm:mt-16">
+            <p className="text-base sm:text-lg text-gray-600 mb-4">
+              Not sure which plan fits you best?
+            </p>
+            <button className="inline-flex items-center gap-2 text-black font-bold text-base sm:text-lg hover:gap-4 transition-all duration-300 group">
+              Compare all plans in detail
+              <svg
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                strokeWidth="2.5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </button>
           </div>
         </div>
 
