@@ -37,16 +37,22 @@ export const HomeModule = (props: HomeModuleProps) => {
   };
 
   return (
-    <div className="p-4">
-      <div className="grid grid-row gap-4">
-        <div className="grid grid-cols-4 gap-4">
-          <div>SQUARE LOGO</div>
+    <div className="p-2 sm:p-4 md:p-6">
+      <div className="grid grid-row gap-2 sm:gap-4">
+        {/* Header with Logo and Carousel */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+          <div className="flex items-center justify-center sm:justify-start text-lg sm:text-xl font-bold p-2">
+            SQUARE LOGO
+          </div>
           <Carousel images={images} />
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
-          <div className="grid grid-rows-2 gap-4">
-            <div className="flex flex-col uppercase justify-center">
+        {/* Main Content - Hero Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          {/* Left Side - Menu and Title */}
+          <div className="grid grid-rows-1 lg:grid-rows-2 gap-4 order-2 lg:order-1">
+            {/* Menu Items */}
+            <div className="flex flex-row lg:flex-col uppercase justify-center lg:justify-center gap-2 lg:gap-0">
               <style>{`
                 @keyframes slideBackground {
                   from {
@@ -68,27 +74,32 @@ export const HomeModule = (props: HomeModuleProps) => {
                   background-size: 100% 100%;
                 }
                 `}</style>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white">
+              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
                 Our Services
               </p>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white">
+              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
                 Membership Plans
               </p>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white">
+              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
                 Pricing
               </p>
             </div>
 
-            <div className="flex items-end h-full">
-              <h1 className="text-6xl font-bold">STRONGER THAN EVER</h1>
+            {/* Title */}
+            <div className="hidden lg:flex items-end h-full">
+              <h1 className="text-3xl xl:text-6xl font-bold leading-tight">
+                STRONGER THAN EVER
+              </h1>
             </div>
 
             {/* <button className="bg-black text-white py-6 rounded-full h-fit w-full text-2xl font-light">
                 JOIN US
               </button> */}
           </div>
+
+          {/* Right Side - Hero Image Slider */}
           <div
-            className="col-span-3 relative overflow-hidden h-[700px]"
+            className="col-span-1 lg:col-span-3 relative overflow-hidden h-[300px] sm:h-[400px] md:h-[500px] lg:h-[700px] order-1 lg:order-2"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -115,12 +126,12 @@ export const HomeModule = (props: HomeModuleProps) => {
             </div>
 
             {/* Indicators */}
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-3">
+            <div className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3">
               {heroImages.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleSlideChange(index)}
-                  className="relative w-1 h-8 rounded-full overflow-hidden bg-white/50 hover:bg-white/70 transition-colors"
+                  className="relative w-1 sm:w-1.5 h-6 sm:h-8 rounded-full overflow-hidden bg-white/50 hover:bg-white/70 transition-colors"
                   aria-label={`Go to slide ${index + 1}`}
                 >
                   {/* Fill animation for active slide */}
@@ -150,6 +161,13 @@ export const HomeModule = (props: HomeModuleProps) => {
               }
             `}</style>
           </div>
+        </div>
+
+        {/* Mobile Title - visible only on smaller screens */}
+        <div className="lg:hidden px-2 sm:px-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight text-center sm:text-left">
+            STRONGER THAN EVER
+          </h1>
         </div>
       </div>
     </div>
