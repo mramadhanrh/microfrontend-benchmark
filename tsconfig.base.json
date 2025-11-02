@@ -26,6 +26,9 @@
       }
     ],
     "paths": {
+      "@mfe-benchmark/dashboard-module": [
+        "libs/modules/dashboard-module/src/index.ts"
+      ],
       "@mfe-benchmark/home-module": ["libs/modules/home-module/src/index.ts"],
       "@mfe-benchmark/login-module": ["libs/modules/login-module/src/index.ts"],
       "@modules/home-module/*": ["libs/modules/home-module/src/*"],

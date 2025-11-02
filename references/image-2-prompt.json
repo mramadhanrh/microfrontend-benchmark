@@ -1,0 +1,265 @@
+{
+  "layout": {
+    "type": "split-screen",
+    "columns": 2,
+    "backgroundColor": "#f5f5f7"
+  },
+  "leftPanel": {
+    "backgroundColor": "#000000",
+    "content": {
+      "type": "mobile-preview",
+      "deviceFrame": "iphone",
+      "cards": [
+        {
+          "id": "card-1",
+          "type": "info-card",
+          "position": { "top": "10%", "left": "5%" },
+          "width": "45%",
+          "backgroundColor": "linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%)",
+          "label": {
+            "text": "Beginner",
+            "fontSize": "12px",
+            "color": "#000000"
+          },
+          "title": {
+            "text": "Total Revenue",
+            "fontSize": "10px",
+            "color": "#666666"
+          },
+          "value": {
+            "text": "$120.29",
+            "fontSize": "20px",
+            "fontWeight": "bold",
+            "color": "#000000"
+          },
+          "icon": {
+            "type": "chart-bar",
+            "color": "#FF6B9D"
+          }
+        },
+        {
+          "id": "card-2",
+          "type": "learning-card",
+          "position": { "top": "15%", "left": "10%" },
+          "width": "70%",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "16px",
+          "shadow": "0 4px 12px rgba(0,0,0,0.1)",
+          "content": {
+            "badge": {
+              "text": "Intermediate",
+              "backgroundColor": "#E3F2FD",
+              "color": "#2196F3"
+            },
+            "illustration": {
+              "type": "desk-workspace",
+              "colors": ["#87CEEB", "#FFD700", "#90EE90"]
+            },
+            "title": {
+              "text": "LEARN FIGMA",
+              "fontSize": "18px",
+              "fontWeight": "bold",
+              "color": "#000000"
+            },
+            "subtitle": {
+              "text": "My Instagram posts",
+              "fontSize": "12px",
+              "color": "#666666"
+            },
+            "stats": {
+              "students": {
+                "icon": "users",
+                "value": "17 students",
+                "fontSize": "11px"
+              },
+              "comments": {
+                "icon": "message",
+                "value": "2",
+                "fontSize": "11px"
+              }
+            }
+          }
+        },
+        {
+          "id": "card-3",
+          "type": "group-card",
+          "position": { "bottom": "15%", "left": "5%" },
+          "width": "50%",
+          "backgroundColor": "linear-gradient(135deg, #4169E1 0%, #6A5ACD 100%)",
+          "borderRadius": "16px",
+          "content": {
+            "title": {
+              "text": "Happy Students",
+              "fontSize": "14px",
+              "fontWeight": "600",
+              "color": "#FFFFFF"
+            },
+            "subtitle": {
+              "text": "54,000 +",
+              "fontSize": "12px",
+              "color": "#FFFFFF",
+              "opacity": 0.8
+            },
+            "avatars": {
+              "type": "avatar-group",
+              "count": 6,
+              "overlap": true,
+              "size": "32px",
+              "borderColor": "#FFFFFF"
+            }
+          }
+        },
+        {
+          "id": "card-4",
+          "type": "course-card",
+          "position": { "bottom": "10%", "right": "5%" },
+          "width": "45%",
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "16px",
+          "shadow": "0 4px 12px rgba(0,0,0,0.1)",
+          "content": {
+            "title": {
+              "text": "FIGMA FROM BASIC",
+              "fontSize": "12px",
+              "fontWeight": "bold",
+              "color": "#000000"
+            },
+            "duration": {
+              "icon": "clock",
+              "text": "12 hours 8 mins",
+              "fontSize": "10px",
+              "color": "#666666"
+            },
+            "comments": {
+              "icon": "message",
+              "text": "32 Comments",
+              "fontSize": "10px",
+              "color": "#666666"
+            }
+          }
+        },
+        {
+          "id": "price-badge",
+          "type": "floating-badge",
+          "position": { "bottom": "12%", "right": "8%" },
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "20px",
+          "padding": "8px 16px",
+          "text": "$25",
+          "fontSize": "16px",
+          "fontWeight": "bold",
+          "color": "#000000"
+        },
+        {
+          "id": "enroll-button",
+          "type": "floating-button",
+          "position": { "bottom": "8%", "right": "5%" },
+          "backgroundColor": "#000000",
+          "borderRadius": "24px",
+          "padding": "12px 24px",
+          "text": "Enroll Now",
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "color": "#FFFFFF"
+        }
+      ]
+    }
+  },
+  "rightPanel": {
+    "backgroundColor": "#FFFFFF",
+    "paddingX": "10%",
+    "paddingY": "8%",
+    "content": {
+      "type": "form",
+      "branding": {
+        "logo": "EDUMENTOR",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "color": "#000000",
+        "marginBottom": "40px"
+      },
+      "header": {
+        "link": {
+          "text": "Create an Account",
+          "fontSize": "13px",
+          "color": "#4169E1",
+          "marginBottom": "8px"
+        },
+        "title": {
+          "text": "WELCOME TO BYTESPACE",
+          "fontSize": "36px",
+          "fontWeight": "bold",
+          "color": "#000000",
+          "lineHeight": "1.2",
+          "marginBottom": "40px"
+        }
+      },
+      "fields": [
+        {
+          "id": "fullname",
+          "type": "text",
+          "label": "Full Name",
+          "placeholder": "Jamie Davis",
+          "fontSize": "14px",
+          "borderRadius": "8px",
+          "padding": "14px 16px",
+          "backgroundColor": "#F5F5F7",
+          "border": "none",
+          "marginBottom": "20px"
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "label": "Email",
+          "placeholder": "designer@example.com",
+          "fontSize": "14px",
+          "borderRadius": "8px",
+          "padding": "14px 16px",
+          "backgroundColor": "#F5F5F7",
+          "border": "none",
+          "marginBottom": "20px"
+        },
+        {
+          "id": "password",
+          "type": "password",
+          "label": "Password",
+          "placeholder": "••••••••",
+          "fontSize": "14px",
+          "borderRadius": "8px",
+          "padding": "14px 16px",
+          "backgroundColor": "#F5F5F7",
+          "border": "none",
+          "marginBottom": "32px"
+        }
+      ],
+      "button": {
+        "text": "Continue",
+        "type": "submit",
+        "backgroundColor": "#4169E1",
+        "color": "#FFFFFF",
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "borderRadius": "28px",
+        "padding": "16px 32px",
+        "width": "100%",
+        "border": "none",
+        "cursor": "pointer",
+        "hoverBackgroundColor": "#3355CC"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "baseSize": "16px"
+  },
+  "colorPalette": {
+    "primary": "#4169E1",
+    "secondary": "#6A5ACD",
+    "accent": "#FFB6C1",
+    "dark": "#000000",
+    "light": "#FFFFFF",
+    "gray": "#F5F5F7",
+    "text": "#000000",
+    "textSecondary": "#666666"
+  }
+}

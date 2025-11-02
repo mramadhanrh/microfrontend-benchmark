@@ -1,0 +1,142 @@
+{
+  "layout": {
+    "type": "three-column",
+    "sidebar": {
+      "width": "narrow",
+      "position": "left",
+      "items": [
+        {
+          "type": "avatar",
+          "position": "top"
+        },
+        {
+          "type": "navigation",
+          "icons": [
+            { "id": "home", "icon": "house" },
+            { "id": "pin", "icon": "pushpin" },
+            { "id": "tasks", "icon": "clipboard" },
+            { "id": "inbox", "icon": "envelope" },
+            { "id": "calendar", "icon": "calendar" },
+            { "id": "analytics", "icon": "chart" }
+          ]
+        },
+        {
+          "type": "projects",
+          "position": "middle",
+          "items": [
+            { "id": "PL", "color": "purple" },
+            { "id": "TB", "color": "blue" },
+            { "id": "BL", "color": "cyan" }
+          ],
+          "action": { "type": "button", "label": "+ Project" }
+        },
+        {
+          "type": "settings",
+          "position": "bottom",
+          "icon": "gear"
+        }
+      ]
+    },
+    "mainSidebar": {
+      "width": "medium",
+      "header": {
+        "type": "user-profile",
+        "name": "Courtney Henry",
+        "status": "Online",
+        "avatar": true
+      },
+      "navigation": [
+        { "icon": "house", "label": "Home" },
+        { "icon": "star", "label": "Prodify AI" },
+        { "icon": "clipboard", "label": "My tasks" },
+        { "icon": "inbox", "label": "Inbox", "badge": 3 },
+        { "icon": "calendar", "label": "Calendar" },
+        { "icon": "chart", "label": "Reports & Analytics" }
+      ],
+      "projects": {
+        "title": "My Projects",
+        "action": "+ Add",
+        "items": [
+          { "name": "Product launch", "color": "purple" },
+          { "name": "Team brainstorm", "color": "blue" },
+          { "name": "Branding launch", "color": "cyan" }
+        ]
+      },
+      "footer": {
+        "icon": "gear",
+        "label": "Settings"
+      }
+    },
+    "mainContent": {
+      "header": {
+        "date": "Mon, July 7",
+        "greeting": "Hello, Courtney",
+        "prompt": "How can I help you today?",
+        "action": {
+          "type": "button",
+          "icon": "hourglass",
+          "style": "floating"
+        }
+      },
+      "sections": [
+        {
+          "title": "My Tasks",
+          "icon": "clipboard",
+          "groups": [
+            {
+              "status": "IN PROGRESS",
+              "count": "3 tasks",
+              "expanded": true,
+              "tasks": [
+                {
+                  "name": "One-on-One Meeting",
+                  "priority": "High",
+                  "dueDate": "Today",
+                  "checkbox": true
+                },
+                {
+                  "name": "Send a summary email to stakeholders",
+                  "priority": "Low",
+                  "dueDate": "3 days left",
+                  "checkbox": true
+                },
+                {
+                  "name": "Identify any blockers and plan solutions",
+                  "priority": "Low",
+                  "dueDate": "5 days left",
+                  "checkbox": true
+                }
+              ],
+              "action": "+ Add task"
+            },
+            {
+              "status": "TO DO",
+              "count": "1 task",
+              "expanded": true,
+              "tasks": [
+                {
+                  "name": "Communication with a team",
+                  "priority": "Normal",
+                  "dueDate": "4 days left",
+                  "checkbox": true
+                }
+              ],
+              "action": "+ Add task"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "colorScheme": {
+    "primary": "purple",
+    "accent": "cyan",
+    "background": "light-cream",
+    "sidebar": "white",
+    "priorities": {
+      "high": "red",
+      "normal": "blue",
+      "low": "gray"
+    }
+  }
+}
