@@ -569,19 +569,19 @@ export const HomeModule = (props: HomeModuleProps) => {
             }
             .glow-border {
               position: relative;
-              overflow: hidden;
+              overflow: visible;
             }
             .glow-border::before {
               content: '';
               position: absolute;
-              top: -2px;
-              left: -2px;
-              right: -2px;
-              bottom: -2px;
+              top: -3px;
+              left: -3px;
+              right: -3px;
+              bottom: -3px;
               background: linear-gradient(45deg, #E8232C, #FF4D56, #E8232C);
               background-size: 200% 200%;
-              border-radius: inherit;
-              z-index: -1;
+              border-radius: 1rem;
+              z-index: 0;
               animation: gradientShift 3s ease infinite;
               opacity: 0;
               transition: opacity 0.3s;
@@ -634,7 +634,7 @@ export const HomeModule = (props: HomeModuleProps) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto pt-8">
             {[
               {
                 name: 'STARTER',
@@ -684,38 +684,41 @@ export const HomeModule = (props: HomeModuleProps) => {
               <div
                 key={index}
                 className={`plan-card glow-border relative group ${
-                  plan.popular ? 'md:-mt-4 md:mb-0 z-10' : ''
+                  plan.popular ? 'md:scale-105 z-10' : ''
                 }`}
               >
+                {/* Popular badge - moved outside to prevent cutoff */}
+                {plan.popular && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-30">
+                    <div className="bg-[#E8232C] text-white px-8 py-3 rounded-lg text-xs sm:text-sm font-black uppercase tracking-widest shadow-2xl whitespace-nowrap">
+                      <span role="img" aria-label="lightning">
+                        ⚡
+                      </span>{' '}
+                      Best Value{' '}
+                      <span role="img" aria-label="lightning">
+                        ⚡
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div
                   className={`relative h-full bg-gradient-to-br ${
                     plan.color
-                  } text-white rounded-xl sm:rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer overflow-hidden border ${
+                  } text-white rounded-xl sm:rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer border ${
                     plan.popular ? 'border-[#E8232C]' : 'border-[#404040]'
-                  }`}
+                  } z-10`}
+                  style={{ overflow: 'visible' }}
                 >
-                  {/* Animated background elements */}
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-[#E8232C] opacity-5 rounded-full -translate-y-20 translate-x-20 group-hover:scale-150 transition-transform duration-700"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#E8232C] opacity-5 rounded-full translate-y-16 -translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+                  {/* Animated background elements with diagonal offset */}
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl overflow-hidden pointer-events-none z-0">
+                    <div className="absolute -top-10 -right-10 w-64 h-64 bg-[#E8232C] opacity-0 group-hover:opacity-30 rounded-3xl rotate-12 transition-all duration-500 ease-out transform group-hover:scale-110"></div>
+                    <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-[#E8232C] opacity-0 group-hover:opacity-20 rounded-3xl -rotate-12 transition-all duration-500 ease-out transform group-hover:scale-110"></div>
+                  </div>
 
-                  {/* Popular badge */}
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                      <div className="bg-[#E8232C] text-white px-8 py-3 rounded-lg text-xs sm:text-sm font-black uppercase tracking-widest shadow-2xl">
-                        <span role="img" aria-label="lightning">
-                          ⚡
-                        </span>{' '}
-                        Best Value{' '}
-                        <span role="img" aria-label="lightning">
-                          ⚡
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="relative z-10">
+                  <div className="relative z-20 flex flex-col h-full">
                     {/* Plan header */}
-                    <div className="text-center mb-8 sm:mb-10 pt-2">
+                    <div className="text-center mb-8 sm:mb-10 pt-4">
                       <div className="text-sm sm:text-base uppercase tracking-widest text-[#858585] mb-3 font-medium">
                         {plan.subtitle}
                       </div>
@@ -737,7 +740,7 @@ export const HomeModule = (props: HomeModuleProps) => {
                     </div>
 
                     {/* Features list */}
-                    <ul className="space-y-5 mb-10">
+                    <ul className="space-y-5 mb-10 flex-grow">
                       {plan.features.map((feature, idx) => (
                         <li
                           key={idx}
