@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { Carousel } from '@modules/home-module/components';
 import { useState, useEffect, useRef } from 'react';
 
@@ -17,7 +16,6 @@ const heroImages = [
 export const HomeModule = (props: HomeModuleProps) => {
   const images = new Array(3).fill(mockImage);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [statsAnimated, setStatsAnimated] = useState(false);
   const [statsCounts, setStatsCounts] = useState({
@@ -97,26 +95,24 @@ export const HomeModule = (props: HomeModuleProps) => {
   }, [statsAnimated]);
 
   const handleSlideChange = (index: number) => {
-    setIsTransitioning(true);
     setCurrentSlide(index);
-    setTimeout(() => setIsTransitioning(false), 700);
   };
 
   return (
-    <div className="p-2 sm:p-4 md:p-6">
-      <div className="grid grid-row gap-2 sm:gap-4">
+    <div className="p-4 sm:p-6 md:p-8 bg-black">
+      <div className="grid grid-row gap-4 sm:gap-6">
         {/* Header with Logo and Carousel */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-          <div className="flex items-center justify-center sm:justify-start text-lg sm:text-xl font-bold p-2">
-            SQUARE LOGO
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="flex items-center justify-center sm:justify-start text-xl sm:text-2xl font-bold p-3 text-white tracking-wide">
+            MASTERCLASS
           </div>
           <Carousel images={images} />
         </div>
 
         {/* Main Content - Hero Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Side - Menu and Title */}
-          <div className="grid grid-rows-1 lg:grid-rows-2 gap-4 order-2 lg:order-1">
+          <div className="grid grid-rows-1 lg:grid-rows-2 gap-6 order-2 lg:order-1">
             {/* Menu Items */}
             <div className="flex flex-row lg:flex-col uppercase justify-center lg:justify-center gap-2 lg:gap-0">
               <style>{`
@@ -129,31 +125,33 @@ export const HomeModule = (props: HomeModuleProps) => {
                   }
                 }
                 .hover-line {
-                  background: linear-gradient(90deg, #000 0%, #000 100%);
+                  background: linear-gradient(90deg, #E8232C 0%, #E8232C 100%);
                   background-size: 0% 100%;
                   background-position: left;
                   background-repeat: no-repeat;
-                  transition: 0.15s ease-out;
+                  transition: 0.2s ease-in-out;
                   transition-property: background-size color;
+                  color: #B3B3B3;
                 }
                 .hover-line:hover {
                   background-size: 100% 100%;
+                  color: #FFFFFF;
                 }
                 `}</style>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
+              <p className="hover-line px-4 py-3 cursor-pointer text-sm sm:text-base md:text-lg font-medium whitespace-nowrap tracking-wide">
                 Our Services
               </p>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
+              <p className="hover-line px-4 py-3 cursor-pointer text-sm sm:text-base md:text-lg font-medium whitespace-nowrap tracking-wide">
                 Membership Plans
               </p>
-              <p className="hover-line px-2 py-2 cursor-pointer hover:text-white text-xs sm:text-sm md:text-base whitespace-nowrap">
+              <p className="hover-line px-4 py-3 cursor-pointer text-sm sm:text-base md:text-lg font-medium whitespace-nowrap tracking-wide">
                 Pricing
               </p>
             </div>
 
             {/* Title */}
             <div className="hidden lg:flex items-end h-full">
-              <h1 className="text-3xl xl:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl xl:text-7xl font-bold leading-tight text-white tracking-tight">
                 STRONGER THAN EVER
               </h1>
             </div>
@@ -165,7 +163,7 @@ export const HomeModule = (props: HomeModuleProps) => {
 
           {/* Right Side - Hero Image Slider */}
           <div
-            className="col-span-1 lg:col-span-3 relative overflow-hidden h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] order-1 lg:order-2"
+            className="col-span-1 lg:col-span-3 relative overflow-hidden rounded-xl h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] order-1 lg:order-2"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -174,7 +172,7 @@ export const HomeModule = (props: HomeModuleProps) => {
               {heroImages.map((img, index) => (
                 <div
                   key={index}
-                  className={`absolute inset-0 transition-all duration-700 ease-out ${
+                  className={`absolute inset-0 transition-all duration-500 ease-in-out ${
                     index === currentSlide
                       ? 'opacity-100 translate-y-0'
                       : index < currentSlide
@@ -192,17 +190,17 @@ export const HomeModule = (props: HomeModuleProps) => {
             </div>
 
             {/* Indicators */}
-            <div className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3">
+            <div className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 sm:gap-4">
               {heroImages.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleSlideChange(index)}
-                  className="relative w-1 sm:w-1.5 h-6 sm:h-8 rounded-full overflow-hidden bg-white/50 hover:bg-white/70 transition-colors"
+                  className="relative w-1.5 sm:w-2 h-8 sm:h-10 rounded-full overflow-hidden bg-white/30 hover:bg-white/50 transition-all duration-200"
                   aria-label={`Go to slide ${index + 1}`}
                 >
                   {/* Fill animation for active slide */}
                   <div
-                    className={`absolute top-0 left-0 right-0 rounded-full bg-white transition-all ${
+                    className={`absolute top-0 left-0 right-0 rounded-full bg-[#E8232C] transition-all ${
                       index === currentSlide ? 'animate-fill-indicator' : 'h-0'
                     }`}
                     style={{
@@ -230,41 +228,41 @@ export const HomeModule = (props: HomeModuleProps) => {
         </div>
 
         {/* Mobile Title - visible only on smaller screens */}
-        <div className="lg:hidden px-2 sm:px-4">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight text-center sm:text-left">
+        <div className="lg:hidden px-4 sm:px-6">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight text-center sm:text-left text-white tracking-tight">
             STRONGER THAN EVER
           </h1>
         </div>
 
         {/* CTA Banner Section */}
-        <div className="mt-8 sm:mt-12 ">
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl">
+        <div className="mt-12 sm:mt-16">
+          <div className="relative overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl">
             {/* Split Background Design */}
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[400px] sm:min-h-[450px]">
               {/* Left Side - Black with Content */}
-              <div className="bg-black text-white p-6 sm:p-10 md:p-12 flex flex-col justify-center relative overflow-hidden">
+              <div className="bg-[#0F0F0F] text-white p-8 sm:p-12 md:p-16 flex flex-col justify-center relative overflow-hidden">
                 {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-32 translate-x-32" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-24 -translate-x-24" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8232C] opacity-5 rounded-full -translate-y-32 translate-x-32" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#E8232C] opacity-5 rounded-full translate-y-24 -translate-x-24" />
 
                 <div className="relative z-10">
-                  <div className="inline-block bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4 sm:mb-6">
+                  <div className="inline-block bg-[#E8232C]/20 backdrop-blur-sm px-6 py-3 rounded-lg text-xs sm:text-sm font-bold uppercase tracking-widest mb-6 sm:mb-8 text-[#E8232C]">
                     Limited Time Offer
                   </div>
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight tracking-tight">
                     Transform Your Life
                     <br />
-                    <span className="text-gray-400">Start Today</span>
+                    <span className="text-[#B3B3B3]">Start Today</span>
                   </h2>
-                  <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8 leading-relaxed">
+                  <p className="text-lg sm:text-xl text-[#B3B3B3] mb-8 sm:mb-10 leading-relaxed max-w-xl">
                     Join our community of fitness enthusiasts and experience
                     world-class facilities, expert trainers, and personalized
                     programs designed for your success.
                   </p>
 
                   {/* Multiple CTAs */}
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <button className="group bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 flex items-center justify-center">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <button className="group bg-[#E8232C] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-lg text-base sm:text-lg font-bold hover:bg-[#C41E26] active:bg-[#A01A20] transition-all duration-200 transform hover:scale-105 flex items-center justify-center shadow-lg">
                       Get 7 Days Free
                       <svg
                         className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
@@ -280,16 +278,16 @@ export const HomeModule = (props: HomeModuleProps) => {
                         />
                       </svg>
                     </button>
-                    <button className="bg-transparent border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold hover:bg-white hover:text-black transition-all transform hover:scale-105">
+                    <button className="bg-transparent border-2 border-white text-white px-8 sm:px-10 py-4 sm:py-5 rounded-lg text-base sm:text-lg font-bold hover:bg-white/10 transition-all duration-200 transform hover:scale-105">
                       Schedule Tour
                     </button>
                   </div>
 
                   {/* Trust Indicators */}
-                  <div className="flex flex-wrap gap-4 sm:gap-6 mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/20">
-                    <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap gap-6 sm:gap-8 mt-8 sm:mt-10 pt-8 sm:pt-10 border-t border-white/10">
+                    <div className="flex items-center gap-3">
                       <svg
-                        className="w-5 h-5 text-green-400"
+                        className="w-6 h-6 text-[#43A047]"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -299,13 +297,13 @@ export const HomeModule = (props: HomeModuleProps) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-xs sm:text-sm text-gray-300">
+                      <span className="text-sm sm:text-base text-[#B3B3B3] font-medium">
                         No commitment required
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <svg
-                        className="w-5 h-5 text-green-400"
+                        className="w-6 h-6 text-[#43A047]"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -315,13 +313,13 @@ export const HomeModule = (props: HomeModuleProps) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-xs sm:text-sm text-gray-300">
+                      <span className="text-sm sm:text-base text-[#B3B3B3] font-medium">
                         Cancel anytime
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <svg
-                        className="w-5 h-5 text-green-400"
+                        className="w-6 h-6 text-[#43A047]"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -331,7 +329,7 @@ export const HomeModule = (props: HomeModuleProps) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-xs sm:text-sm text-gray-300">
+                      <span className="text-sm sm:text-base text-[#B3B3B3] font-medium">
                         All classes included
                       </span>
                     </div>
@@ -340,21 +338,21 @@ export const HomeModule = (props: HomeModuleProps) => {
               </div>
 
               {/* Right Side - Image/Gradient with Benefits */}
-              <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 p-6 sm:p-10 md:p-12 flex flex-col justify-center">
+              <div className="relative bg-gradient-to-br from-[#2D2D2D] to-[#1A1A1A] p-8 sm:p-12 md:p-16 flex flex-col justify-center">
                 {/* Background Image Overlay */}
                 <div
-                  className="absolute inset-0 bg-cover bg-center opacity-20"
+                  className="absolute inset-0 bg-cover bg-center opacity-10"
                   style={{
                     backgroundImage: `url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=987')`,
                   }}
                 />
 
                 <div className="relative z-10">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-black mb-6 sm:mb-8">
+                  <h3 className="text-3xl sm:text-4xl font-bold text-white mb-8 sm:mb-10 tracking-tight">
                     What's Included:
                   </h3>
 
-                  <div className="space-y-4 sm:space-y-5">
+                  <div className="space-y-5 sm:space-y-6">
                     {[
                       {
                         icon: '💪',
@@ -379,16 +377,20 @@ export const HomeModule = (props: HomeModuleProps) => {
                     ].map((benefit, index) => (
                       <div
                         key={index}
-                        className="flex items-start gap-4 bg-white/60 backdrop-blur-sm p-4 rounded-xl hover:bg-white/80 transition-all cursor-pointer group"
+                        className="flex items-start gap-5 bg-[#404040]/30 backdrop-blur-sm p-5 rounded-lg hover:bg-[#404040]/50 transition-all duration-200 cursor-pointer group border border-[#5C5C5C]/30"
                       >
-                        <div className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">
+                        <div
+                          className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform"
+                          role="img"
+                          aria-label={benefit.title}
+                        >
                           {benefit.icon}
                         </div>
                         <div>
-                          <h4 className="font-bold text-base sm:text-lg text-black mb-1">
+                          <h4 className="font-bold text-lg sm:text-xl text-white mb-2">
                             {benefit.title}
                           </h4>
-                          <p className="text-xs sm:text-sm text-gray-600">
+                          <p className="text-sm sm:text-base text-[#B3B3B3]">
                             {benefit.desc}
                           </p>
                         </div>
@@ -397,12 +399,12 @@ export const HomeModule = (props: HomeModuleProps) => {
                   </div>
 
                   {/* Additional CTA */}
-                  <div className="mt-6 sm:mt-8 p-4 bg-black/5 rounded-xl text-center">
-                    <p className="text-sm sm:text-base text-gray-700 mb-2">
-                      <span className="font-bold">500+</span> members joined
-                      this month
+                  <div className="mt-8 sm:mt-10 p-6 bg-[#E8232C]/10 backdrop-blur-sm rounded-lg text-center border border-[#E8232C]/20">
+                    <p className="text-base sm:text-lg text-white mb-3">
+                      <span className="font-bold text-[#E8232C]">500+</span>{' '}
+                      members joined this month
                     </p>
-                    <button className="text-sm sm:text-base text-black font-semibold underline hover:no-underline">
+                    <button className="text-base sm:text-lg text-[#E8232C] font-bold hover:text-[#FF4D56] transition-colors duration-200">
                       See membership options →
                     </button>
                   </div>
@@ -413,8 +415,8 @@ export const HomeModule = (props: HomeModuleProps) => {
         </div>
 
         {/* Stats/Achievements Section */}
-        <div ref={statsRef} className="mt-8 sm:mt-12 px-2 sm:px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div ref={statsRef} className="mt-12 sm:mt-16 px-4 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[
               {
                 key: 'members',
@@ -443,14 +445,14 @@ export const HomeModule = (props: HomeModuleProps) => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="group relative bg-gray-50 hover:bg-black rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center transition-all duration-300 cursor-pointer transform hover:scale-105"
+                className="group relative bg-[#2D2D2D] hover:bg-[#E8232C] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 text-center transition-all duration-300 cursor-pointer transform hover:scale-105 border border-[#404040] hover:border-[#E8232C] shadow-lg hover:shadow-2xl"
               >
                 <div className="relative z-10">
-                  <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 group-hover:text-white transition-colors">
+                  <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 text-white transition-colors tracking-tight">
                     {stat.number}
                     {stat.suffix}
                   </div>
-                  <div className="text-xs sm:text-sm md:text-base text-gray-600 group-hover:text-gray-300 transition-colors uppercase tracking-wider">
+                  <div className="text-sm sm:text-base md:text-lg text-[#B3B3B3] group-hover:text-white transition-colors uppercase tracking-widest font-medium">
                     {stat.label}
                   </div>
                 </div>
@@ -460,11 +462,11 @@ export const HomeModule = (props: HomeModuleProps) => {
         </div>
 
         {/* Featured Classes/Programs Section */}
-        <div className="mt-8 sm:mt-12 px-2 sm:px-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
+        <div className="mt-12 sm:mt-16 px-4 sm:px-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 sm:mb-12 text-white tracking-tight">
             FEATURED CLASSES
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
                 title: 'HIIT Training',
@@ -490,27 +492,25 @@ export const HomeModule = (props: HomeModuleProps) => {
             ].map((classItem, index) => (
               <div
                 key={index}
-                className="group relative h-64 sm:h-72 md:h-80 overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer"
+                className="group relative h-72 sm:h-80 md:h-96 overflow-hidden rounded-xl border border-[#404040] cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
               >
                 <img
                   src={classItem.image}
                   alt={classItem.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 brightness-75 group-hover:brightness-50"
                 />
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-6"
-                  style={{
-                    background:
-                      'radial-gradient(ellipse, transparent 0%, rgba(0, 0, 0, 0.8) 100%)',
-                  }}
-                >
-                  <div className="text-white">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
+                  <div className="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-white tracking-tight">
                       {classItem.title}
                     </h3>
-                    <p className="text-sm sm:text-base text-gray-200">
+                    <p className="text-base sm:text-lg text-[#B3B3B3] mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                       {classItem.description}
                     </p>
+                    <button className="bg-[#E8232C] text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-[#C41E26] transition-all duration-200 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 delay-150">
+                      Learn More
+                    </button>
                   </div>
                 </div>
               </div>
@@ -519,7 +519,7 @@ export const HomeModule = (props: HomeModuleProps) => {
         </div>
 
         {/* Pricing/Membership Plans Section */}
-        <div className="mt-8 sm:mt-12 px-2 sm:px-4">
+        <div className="mt-12 sm:mt-16 px-4 sm:px-6">
           <style>{`
             @keyframes slideUp {
               from {
@@ -533,10 +533,10 @@ export const HomeModule = (props: HomeModuleProps) => {
             }
             @keyframes pulseGlow {
               0%, 100% {
-                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+                box-shadow: 0 0 0 0 rgba(232, 35, 44, 0.7);
               }
               50% {
-                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0);
+                box-shadow: 0 0 20px 10px rgba(232, 35, 44, 0);
               }
             }
             @keyframes slideInFromLeft {
@@ -578,7 +578,7 @@ export const HomeModule = (props: HomeModuleProps) => {
               left: -2px;
               right: -2px;
               bottom: -2px;
-              background: linear-gradient(45deg, #fff, #000, #fff);
+              background: linear-gradient(45deg, #E8232C, #FF4D56, #E8232C);
               background-size: 200% 200%;
               border-radius: inherit;
               z-index: -1;
@@ -616,19 +616,19 @@ export const HomeModule = (props: HomeModuleProps) => {
             }
           `}</style>
 
-          <div className="text-center mb-8 sm:mb-12">
-            <div className="inline-block bg-black text-white px-6 py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4">
+          <div className="text-center mb-10 sm:mb-16">
+            <div className="inline-block bg-[#E8232C] text-white px-8 py-3 rounded-lg text-sm sm:text-base font-bold uppercase tracking-widest mb-6">
               Choose Your Path
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight text-white">
               UNLEASH YOUR
               <br />
               <span className="relative inline-block">
                 POTENTIAL
-                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-black"></div>
+                <div className="absolute -bottom-3 left-0 right-0 h-2 bg-[#E8232C]"></div>
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-[#B3B3B3] max-w-2xl mx-auto">
               Select the perfect plan that matches your fitness goals and
               lifestyle
             </p>
@@ -648,7 +648,7 @@ export const HomeModule = (props: HomeModuleProps) => {
                   'Basic workout plans',
                 ],
                 popular: false,
-                color: 'from-gray-700 to-gray-900',
+                color: 'from-[#2D2D2D] to-[#1A1A1A]',
               },
               {
                 name: 'CHAMPION',
@@ -663,7 +663,7 @@ export const HomeModule = (props: HomeModuleProps) => {
                   'Recovery zone access',
                 ],
                 popular: true,
-                color: 'from-black to-gray-800',
+                color: 'from-[#0F0F0F] to-[#1A1A1A]',
               },
               {
                 name: 'LEGEND',
@@ -678,7 +678,7 @@ export const HomeModule = (props: HomeModuleProps) => {
                   'Exclusive events',
                 ],
                 popular: false,
-                color: 'from-gray-800 to-black',
+                color: 'from-[#1A1A1A] to-[#0F0F0F]',
               },
             ].map((plan, index) => (
               <div
@@ -688,58 +688,68 @@ export const HomeModule = (props: HomeModuleProps) => {
                 }`}
               >
                 <div
-                  className={`relative h-full bg-gradient-to-br ${plan.color} text-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer overflow-hidden`}
+                  className={`relative h-full bg-gradient-to-br ${
+                    plan.color
+                  } text-white rounded-xl sm:rounded-2xl p-8 sm:p-10 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl cursor-pointer overflow-hidden border ${
+                    plan.popular ? 'border-[#E8232C]' : 'border-[#404040]'
+                  }`}
                 >
                   {/* Animated background elements */}
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full -translate-y-20 translate-x-20 group-hover:scale-150 transition-transform duration-700"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full translate-y-16 -translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-[#E8232C] opacity-5 rounded-full -translate-y-20 translate-x-20 group-hover:scale-150 transition-transform duration-700"></div>
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#E8232C] opacity-5 rounded-full translate-y-16 -translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
 
                   {/* Popular badge */}
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                      <div className="bg-white text-black px-6 py-2 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg animate-pulse">
-                        ⚡ Best Value ⚡
+                      <div className="bg-[#E8232C] text-white px-8 py-3 rounded-lg text-xs sm:text-sm font-black uppercase tracking-widest shadow-2xl">
+                        <span role="img" aria-label="lightning">
+                          ⚡
+                        </span>{' '}
+                        Best Value{' '}
+                        <span role="img" aria-label="lightning">
+                          ⚡
+                        </span>
                       </div>
                     </div>
                   )}
 
                   <div className="relative z-10">
                     {/* Plan header */}
-                    <div className="text-center mb-6 sm:mb-8 pt-2">
-                      <div className="text-xs sm:text-sm uppercase tracking-widest text-gray-400 mb-2">
+                    <div className="text-center mb-8 sm:mb-10 pt-2">
+                      <div className="text-sm sm:text-base uppercase tracking-widest text-[#858585] mb-3 font-medium">
                         {plan.subtitle}
                       </div>
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-6 uppercase tracking-wider">
+                      <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mb-8 uppercase tracking-wider text-white">
                         {plan.name}
                       </h3>
 
                       {/* Price with animation */}
-                      <div className="flex items-end justify-center mb-2">
-                        <span className="price-reveal text-5xl sm:text-6xl md:text-7xl font-black leading-none">
+                      <div className="flex items-end justify-center mb-3">
+                        <span className="price-reveal text-6xl sm:text-7xl md:text-8xl font-black leading-none text-white">
                           {plan.price}
                         </span>
-                        <span className="text-lg sm:text-xl ml-2 mb-2 text-gray-400">
+                        <span className="text-xl sm:text-2xl ml-3 mb-3 text-[#858585] font-medium">
                           {plan.period}
                         </span>
                       </div>
 
-                      <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-30 my-6"></div>
+                      <div className="h-px bg-gradient-to-r from-transparent via-[#E8232C] to-transparent opacity-50 my-8"></div>
                     </div>
 
                     {/* Features list */}
-                    <ul className="space-y-4 mb-8">
+                    <ul className="space-y-5 mb-10">
                       {plan.features.map((feature, idx) => (
                         <li
                           key={idx}
-                          className="feature-item flex items-start text-sm sm:text-base"
+                          className="feature-item flex items-start text-base sm:text-lg"
                           style={{
                             animationDelay: `${idx * 0.1}s`,
                             opacity: 0,
                           }}
                         >
-                          <div className="flex-shrink-0 w-6 h-6 mr-3 mt-0.5 bg-white rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
+                          <div className="flex-shrink-0 w-7 h-7 mr-4 mt-0.5 bg-[#E8232C] rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform">
                             <svg
-                              className="w-4 h-4 text-black"
+                              className="w-4 h-4 text-white"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -752,16 +762,18 @@ export const HomeModule = (props: HomeModuleProps) => {
                               />
                             </svg>
                           </div>
-                          <span className="leading-relaxed">{feature}</span>
+                          <span className="leading-relaxed text-[#B3B3B3] font-medium">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                     </ul>
 
                     {/* CTA Button */}
                     <button
-                      className={`w-full py-4 sm:py-5 rounded-full font-black text-sm sm:text-base uppercase tracking-wider transition-all duration-300 transform hover:scale-105 relative overflow-hidden group/btn ${
+                      className={`w-full py-5 sm:py-6 rounded-lg font-black text-base sm:text-lg uppercase tracking-widest transition-all duration-200 transform hover:scale-105 relative overflow-hidden group/btn ${
                         plan.popular
-                          ? 'bg-white text-black'
+                          ? 'bg-[#E8232C] text-white hover:bg-[#C41E26] active:bg-[#A01A20] shadow-lg'
                           : 'bg-transparent border-2 border-white text-white hover:bg-white hover:text-black'
                       }`}
                     >
@@ -782,12 +794,12 @@ export const HomeModule = (props: HomeModuleProps) => {
                         </svg>
                       </span>
                       {!plan.popular && (
-                        <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300"></div>
+                        <div className="absolute inset-0 bg-white transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-200"></div>
                       )}
                     </button>
 
                     {/* Extra info */}
-                    <div className="text-center mt-4 text-xs sm:text-sm text-gray-400">
+                    <div className="text-center mt-5 text-sm sm:text-base text-[#858585] font-medium">
                       No commitment • Cancel anytime
                     </div>
                   </div>
@@ -797,14 +809,14 @@ export const HomeModule = (props: HomeModuleProps) => {
           </div>
 
           {/* Bottom CTA */}
-          <div className="text-center mt-12 sm:mt-16">
-            <p className="text-base sm:text-lg text-gray-600 mb-4">
+          <div className="text-center mt-16 sm:mt-20">
+            <p className="text-lg sm:text-xl text-[#B3B3B3] mb-6">
               Not sure which plan fits you best?
             </p>
-            <button className="inline-flex items-center gap-2 text-black font-bold text-base sm:text-lg hover:gap-4 transition-all duration-300 group">
+            <button className="inline-flex items-center gap-3 text-[#E8232C] font-bold text-lg sm:text-xl hover:gap-5 transition-all duration-200 group hover:text-[#FF4D56]">
               Compare all plans in detail
               <svg
-                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                className="w-6 h-6 group-hover:translate-x-1 transition-transform"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -821,11 +833,11 @@ export const HomeModule = (props: HomeModuleProps) => {
         </div>
 
         {/* Testimonials/Success Stories Section */}
-        <div className="mt-8 sm:mt-12 px-2 sm:px-4 mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-center">
+        <div className="mt-12 sm:mt-16 px-4 sm:px-6 mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 sm:mb-12 text-center text-white tracking-tight">
             SUCCESS STORIES
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
                 name: 'Sarah Johnson',
@@ -851,13 +863,13 @@ export const HomeModule = (props: HomeModuleProps) => {
             ].map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-gray-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+                className="bg-[#2D2D2D] rounded-xl sm:rounded-2xl p-8 sm:p-10 hover:bg-[#404040] transition-all duration-300 transform hover:scale-105 cursor-pointer border border-[#404040] shadow-lg hover:shadow-2xl"
               >
-                <div className="flex mb-4">
+                <div className="flex mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <svg
                       key={i}
-                      className="w-5 h-5 text-yellow-400"
+                      className="w-6 h-6 text-[#FB8C00]"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -865,14 +877,14 @@ export const HomeModule = (props: HomeModuleProps) => {
                     </svg>
                   ))}
                 </div>
-                <p className="text-sm sm:text-base text-gray-700 mb-4 italic">
+                <p className="text-base sm:text-lg text-[#B3B3B3] mb-6 italic leading-relaxed">
                   "{testimonial.quote}"
                 </p>
-                <div className="border-t pt-4">
-                  <div className="font-bold text-base sm:text-lg">
+                <div className="border-t border-[#404040] pt-5">
+                  <div className="font-bold text-lg sm:text-xl text-white mb-2">
                     {testimonial.name}
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-600">
+                  <div className="text-sm sm:text-base text-[#858585] font-medium">
                     {testimonial.achievement}
                   </div>
                 </div>
