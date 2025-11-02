@@ -151,7 +151,7 @@ export const HomeModule = (props: HomeModuleProps) => {
 
             {/* Title */}
             <div className="hidden lg:flex items-end h-full">
-              <h1 className="text-4xl xl:text-7xl font-bold leading-tight text-white tracking-tight">
+              <h1 className="text-4xl xl:text-6xl font-bold leading-tight text-white tracking-tight">
                 STRONGER THAN EVER
               </h1>
             </div>
@@ -234,8 +234,46 @@ export const HomeModule = (props: HomeModuleProps) => {
           </h1>
         </div>
 
+        {/* CTA Hero Section - Based on cta-hero.json */}
+        <div className="mt-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-10 bg-gradient-to-br from-[#1A1A1A] to-[#0F0F0F] rounded-xl p-6 sm:p-8 md:p-10 border border-[#404040] shadow-lg transition-all duration-300 hover:border-[#5C5C5C]">
+            {/* Left Side - CTA Button */}
+            <div className="w-full lg:w-auto flex justify-center lg:justify-start order-1 lg:order-1">
+              <button className="bg-black text-white px-8 sm:px-10 py-3 sm:py-4 rounded-full text-sm sm:text-base font-bold uppercase tracking-widest hover:bg-[#E8232C] hover:text-white active:bg-[#C41E26] transition-all duration-200 shadow-md hover:shadow-xl border border-[#404040] hover:border-[#E8232C] transform hover:scale-105 whitespace-nowrap">
+                JOIN US
+              </button>
+            </div>
+
+            {/* Center - Main Message */}
+            <div className="flex-1 text-left order-2 lg:order-2 w-full max-w-md">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight uppercase leading-tight">
+                PUSHING YOUR LIMITS
+              </h3>
+              <div className="space-y-2.5 text-[#B3B3B3]">
+                <p className="text-xs sm:text-sm md:text-base leading-relaxed">
+                  IF YOU FEEL OVERWHELMED—GOOD. IT MEANS YOU'RE PUSHING YOUR
+                  LIMITS.
+                </p>
+                <p className="text-xs sm:text-sm md:text-base leading-relaxed">
+                  IF YOU FEEL EMOTIONAL—GOOD. IT MEANS YOU'VE FOUND SOMETHING
+                  DEEPLY IMPORTANT.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Side - Inspirational Quote */}
+            <div className="w-full lg:w-80 text-left lg:text-right order-3 lg:order-3">
+              <p className="text-sm sm:text-base font-bold text-white p-4 sm:p-5 rounded-lg shadow-md leading-relaxed backdrop-blur-sm">
+                THOSE WHO ACHIEVE THE EXTRAORDINARY ARE USUALLY THE MOST
+                ORDINARY BECAUSE THEY HAVE NOTHING TO PROVE TO ANYBODY. BE
+                HUMBLE.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* CTA Banner Section */}
-        <div className="mt-12 sm:mt-16">
+        <div className="mt-12 sm:mt-8">
           <div className="relative overflow-hidden rounded-xl sm:rounded-2xl shadow-2xl">
             {/* Split Background Design */}
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[400px] sm:min-h-[450px]">
@@ -625,7 +663,46 @@ export const HomeModule = (props: HomeModuleProps) => {
               <br />
               <span className="relative inline-block">
                 POTENTIAL
-                <div className="absolute -bottom-3 left-0 right-0 h-2 bg-[#E8232C]"></div>
+                <svg
+                  className="absolute -bottom-3 left-0 w-full h-8"
+                  viewBox="0 0 400 32"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3,16 Q25,14 50,16 Q90,18 130,15 Q170,13 210,16 Q260,18 310,15 Q350,13 395,16"
+                    fill="none"
+                    stroke="#E8232C"
+                    strokeWidth="10"
+                    strokeLinecap="round"
+                    opacity="0.95"
+                    style={{ filter: 'url(#brushStroke)' }}
+                  />
+                  <defs>
+                    <filter id="brushStroke">
+                      <feTurbulence
+                        type="fractalNoise"
+                        baseFrequency="2.5"
+                        numOctaves="4"
+                        seed="5"
+                        result="turbulence"
+                      />
+                      <feDisplacementMap
+                        in="SourceGraphic"
+                        in2="turbulence"
+                        scale="3"
+                        xChannelSelector="R"
+                        yChannelSelector="G"
+                        result="displacement"
+                      />
+                      <feGaussianBlur
+                        in="displacement"
+                        stdDeviation="0.3"
+                        result="blur"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
               </span>
             </h2>
             <p className="text-lg sm:text-xl text-[#B3B3B3] max-w-2xl mx-auto">
