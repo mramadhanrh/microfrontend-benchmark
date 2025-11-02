@@ -187,49 +187,52 @@ export function DashboardModule(props: DashboardModuleProps) {
       <aside
         className={`
         fixed lg:static inset-y-0 left-0 z-50
-        bg-white border-r border-gray-200 flex flex-col
+        bg-white border-r border-gray-200 flex flex-col overflow-hidden
         transform transition-all duration-300 ease-in-out
         ${
           isMobileSidebarOpen
             ? 'translate-x-0'
             : '-translate-x-full lg:translate-x-0'
         }
-        ${isSidebarExpanded ? 'w-72' : 'w-20'}
+        ${isSidebarExpanded ? 'w-64' : 'w-20'}
       `}
         onMouseEnter={() => setIsSidebarExpanded(true)}
         onMouseLeave={() => setIsSidebarExpanded(false)}
       >
         {/* User Profile Header */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
+        <div className="py-5 px-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white font-semibold text-lg">CH</span>
             </div>
-            {isSidebarExpanded && (
-              <div className="overflow-hidden">
-                <h3 className="font-semibold text-gray-900 whitespace-nowrap">
-                  Courtney Henry
-                </h3>
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                  <span className="text-sm text-gray-500">Online</span>
-                </div>
+            <div
+              className={`overflow-hidden transition-all duration-300 ${
+                isSidebarExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'
+              }`}
+            >
+              <h3 className="font-semibold text-gray-900 whitespace-nowrap">
+                Courtney Henry
+              </h3>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span className="text-sm text-gray-500 whitespace-nowrap">
+                  Online
+                </span>
               </div>
-            )}
+            </div>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-4">
-          <div className="space-y-1 px-3">
+          <div className="space-y-1 px-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveNav(item.id)}
                 className={`
-                  w-full flex items-center ${
-                    isSidebarExpanded ? 'justify-between' : 'justify-center'
-                  } px-3 py-3 rounded-lg transition-colors
+                  w-full flex items-center justify-between py-3 px-3 rounded-lg 
+                  transition-colors duration-200
                   ${
                     activeNav === item.id
                       ? 'bg-purple-50 text-purple-600'
@@ -237,109 +240,126 @@ export function DashboardModule(props: DashboardModuleProps) {
                   }
                 `}
               >
-                <div className="flex items-center space-x-3">
-                  <div className="relative flex-shrink-0">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="relative flex-shrink-0 w-6 h-6">
                     {getIcon(item.icon, activeNav === item.id)}
                     {item.badge && !isSidebarExpanded && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                      <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
                         {item.badge}
                       </span>
                     )}
                   </div>
-                  {isSidebarExpanded && (
-                    <span className="font-medium whitespace-nowrap">
-                      {item.label || item.id}
-                    </span>
-                  )}
-                </div>
-                {item.badge && isSidebarExpanded && (
-                  <span className="bg-purple-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                    {item.badge}
+                  <span
+                    className={`font-medium whitespace-nowrap transition-all duration-300 ${
+                      isSidebarExpanded
+                        ? 'opacity-100 w-auto'
+                        : 'opacity-0 w-0 overflow-hidden'
+                    }`}
+                  >
+                    {item.label || item.id}
                   </span>
-                )}
+                </div>
+                <span
+                  className={`bg-purple-500 text-white text-xs font-semibold px-2 py-1 rounded-full transition-all duration-300 flex-shrink-0 ${
+                    item.badge && isSidebarExpanded
+                      ? 'opacity-100 w-auto'
+                      : 'opacity-0 w-0 overflow-hidden'
+                  }`}
+                >
+                  {item.badge}
+                </span>
               </button>
             ))}
           </div>
 
           {/* Projects Section */}
-          <div className="mt-6 px-3">
-            {isSidebarExpanded && (
-              <div className="flex items-center justify-between px-4 py-2">
-                <h4 className="text-sm font-semibold text-gray-900">
-                  My Projects
-                </h4>
-                <button className="text-purple-600 hover:text-purple-700 text-sm font-medium">
-                  + Add
-                </button>
-              </div>
-            )}
-            {!isSidebarExpanded && (
-              <div className="px-4 py-2 text-center">
-                <div className="h-px bg-gray-200 my-2"></div>
-              </div>
-            )}
-            <div className="space-y-1 mt-2">
+          <div className="mt-6 px-2">
+            <div
+              className={`flex items-center justify-between px-3 mb-2 transition-all duration-300 ${
+                isSidebarExpanded
+                  ? 'opacity-100 h-auto'
+                  : 'opacity-0 h-0 overflow-hidden'
+              }`}
+            >
+              <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider whitespace-nowrap">
+                My Projects
+              </h4>
+              <button className="text-purple-600 hover:text-purple-700 text-xs font-medium whitespace-nowrap">
+                + Add
+              </button>
+            </div>
+            <div
+              className={`px-3 mb-2 transition-all duration-300 ${
+                isSidebarExpanded
+                  ? 'opacity-0 h-0 overflow-hidden'
+                  : 'opacity-100 h-auto'
+              }`}
+            >
+              <div className="h-px bg-gray-200"></div>
+            </div>
+            <div className="space-y-1">
               {projects.map((project) => (
                 <button
                   key={project.id}
-                  className={`w-full flex items-center space-x-3 ${
-                    isSidebarExpanded ? 'px-4' : 'px-3 justify-center'
-                  } py-3 rounded-lg hover:bg-gray-50 transition-colors`}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  {isSidebarExpanded ? (
-                    <>
-                      <div
-                        className={`w-3 h-3 ${getColorClass(
-                          project.color
-                        )} rounded-full flex-shrink-0`}
-                      ></div>
-                      <span className="text-gray-700 font-medium whitespace-nowrap">
-                        {project.name}
-                      </span>
-                    </>
-                  ) : (
-                    <div
-                      className={`w-10 h-10 ${getColorClass(
-                        project.color
-                      )} text-white rounded-lg flex items-center justify-center font-semibold text-sm hover:opacity-80 transition-opacity`}
-                    >
-                      {project.id}
-                    </div>
-                  )}
+                  <div
+                    className={`flex-shrink-0 rounded-lg flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
+                      isSidebarExpanded
+                        ? 'w-3 h-3 text-[0px]'
+                        : 'w-10 h-10 text-sm'
+                    } ${getColorClass(project.color)} text-white`}
+                  >
+                    {!isSidebarExpanded && project.id}
+                  </div>
+                  <span
+                    className={`text-gray-700 font-medium whitespace-nowrap transition-all duration-300 ${
+                      isSidebarExpanded
+                        ? 'opacity-100 w-auto'
+                        : 'opacity-0 w-0 overflow-hidden'
+                    }`}
+                  >
+                    {project.name}
+                  </span>
                 </button>
               ))}
-              <button
-                className={`w-full flex items-center ${
-                  isSidebarExpanded
-                    ? 'px-4 justify-start'
-                    : 'px-3 justify-center'
-                } py-3`}
-              >
-                {isSidebarExpanded ? (
-                  <span className="text-purple-600 hover:text-purple-700 text-sm font-medium">
-                    + Add Project
-                  </span>
-                ) : (
-                  <div className="w-10 h-10 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 hover:border-gray-400 hover:text-gray-500 transition-colors">
-                    <PlusIcon className="w-5 h-5" />
-                  </div>
-                )}
+              <button className="w-full flex items-center gap-3 px-3 py-2.5">
+                <div
+                  className={`flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    isSidebarExpanded
+                      ? 'w-0 h-0 opacity-0'
+                      : 'w-10 h-10 opacity-100'
+                  } border-2 border-dashed border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-500`}
+                >
+                  {!isSidebarExpanded && <PlusIcon className="w-5 h-5" />}
+                </div>
+                <span
+                  className={`text-purple-600 hover:text-purple-700 text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                    isSidebarExpanded
+                      ? 'opacity-100 w-auto'
+                      : 'opacity-0 w-0 overflow-hidden'
+                  }`}
+                >
+                  + Add Project
+                </span>
               </button>
             </div>
           </div>
         </nav>
 
         {/* Settings */}
-        <div className="p-4 border-t border-gray-200">
-          <button
-            className={`w-full flex items-center space-x-3 ${
-              isSidebarExpanded ? 'px-4' : 'px-3 justify-center'
-            } py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors`}
-          >
+        <div className="py-4 px-2 border-t border-gray-200 flex-shrink-0">
+          <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
             <Cog6ToothIcon className="w-6 h-6 flex-shrink-0" />
-            {isSidebarExpanded && (
-              <span className="font-medium whitespace-nowrap">Settings</span>
-            )}
+            <span
+              className={`font-medium whitespace-nowrap transition-all duration-300 ${
+                isSidebarExpanded
+                  ? 'opacity-100 w-auto'
+                  : 'opacity-0 w-0 overflow-hidden'
+              }`}
+            >
+              Settings
+            </span>
           </button>
         </div>
       </aside>
