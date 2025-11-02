@@ -206,7 +206,7 @@ export function DashboardModule(props: DashboardModuleProps) {
               <span className="text-white font-semibold text-lg">CH</span>
             </div>
             <div
-              className={`overflow-hidden transition-all duration-300 ${
+              className={`transition-all duration-300 ${
                 isSidebarExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'
               }`}
             >
@@ -214,7 +214,10 @@ export function DashboardModule(props: DashboardModuleProps) {
                 Courtney Henry
               </h3>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
                 <span className="text-sm text-gray-500 whitespace-nowrap">
                   Online
                 </span>
