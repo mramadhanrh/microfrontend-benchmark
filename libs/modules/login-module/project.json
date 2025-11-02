@@ -1,7 +1,7 @@
 {
   "name": "login-module",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "library/modules/login-module/src",
+  "sourceRoot": "libs/modules/login-module/src",
   "projectType": "library",
   "tags": [],
   "// targets": "to see all targets run: nx show project login-module --web",

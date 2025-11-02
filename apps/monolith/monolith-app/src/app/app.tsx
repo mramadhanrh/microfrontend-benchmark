@@ -6,6 +6,7 @@ import NxWelcome from './nx-welcome';
 
 import { Route, Routes, Link } from 'react-router-dom';
 import { HomeModule } from '@mfe-benchmark/home-module';
+import { LoginModule } from '@mfe-benchmark/login-module';
 
 const StyledApp = styled.div`
   // Your style here
@@ -14,7 +15,8 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      <HomeModule />
+      {/* <HomeModule /> */}
+      <LoginModule />
     </StyledApp>
   );
 }
