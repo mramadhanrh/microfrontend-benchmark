@@ -14,13 +14,13 @@ export function LoginModule(props: LoginModuleProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#000000] flex flex-col lg:flex-row">
       {/* Left Panel - Mobile Preview Section */}
-      <div className="w-full lg:w-1/2 bg-black p-6 lg:p-12 flex items-center justify-center relative min-h-[400px] lg:min-h-screen">
+      <div className="w-full lg:w-1/2 bg-[#000000] p-6 lg:p-12 flex items-center justify-center relative min-h-[400px] lg:min-h-screen">
         <div className="relative w-full max-w-[320px] md:max-w-[400px] h-[600px] md:h-[700px]">
           {/* Mobile Device Frame */}
-          <div className="absolute inset-0 bg-gray-900 rounded-[40px] shadow-2xl p-4">
-            <div className="w-full h-full bg-white rounded-[32px] overflow-hidden relative">
+          <div className="absolute inset-0 bg-[#0F0F0F] rounded-[40px] shadow-2xl p-4">
+            <div className="w-full h-full bg-[#1A1A1A] rounded-[32px] overflow-hidden relative">
               {/* Card 1 - Revenue Card */}
               <div
                 className="absolute top-[10%] left-[5%] w-[45%] p-3 rounded-2xl shadow-lg"
@@ -52,8 +52,8 @@ export function LoginModule(props: LoginModuleProps) {
               </div>
 
               {/* Card 2 - Learning Card */}
-              <div className="absolute top-[30%] left-[10%] w-[80%] bg-white rounded-2xl shadow-xl p-4">
-                <span className="inline-block text-[9px] px-2 py-1 bg-blue-50 text-blue-600 rounded-full">
+              <div className="absolute top-[30%] left-[10%] w-[80%] bg-[#2D2D2D] rounded-2xl shadow-xl p-4">
+                <span className="inline-block text-[9px] px-2 py-1 bg-[#1E88E5]/20 text-[#42A5F5] rounded-full">
                   Intermediate
                 </span>
                 <div className="mt-3 mb-3 flex justify-center">
@@ -67,11 +67,13 @@ export function LoginModule(props: LoginModuleProps) {
                     </svg>
                   </div>
                 </div>
-                <h3 className="text-sm font-bold text-center">LEARN FIGMA</h3>
-                <p className="text-[10px] text-gray-500 text-center mt-1">
+                <h3 className="text-sm font-bold text-center text-[#FFFFFF]">
+                  LEARN FIGMA
+                </h3>
+                <p className="text-[10px] text-[#858585] text-center mt-1">
                   My Instagram posts
                 </p>
-                <div className="flex items-center justify-center gap-3 mt-3 text-[9px] text-gray-500">
+                <div className="flex items-center justify-center gap-3 mt-3 text-[9px] text-[#858585]">
                   <span className="flex items-center gap-1">
                     <svg
                       className="w-3 h-3"
@@ -98,32 +100,60 @@ export function LoginModule(props: LoginModuleProps) {
 
               {/* Card 3 - Happy Students */}
               <div
-                className="absolute bottom-[25%] left-[5%] w-[48%] rounded-2xl p-3"
+                className="absolute bottom-[25%] left-[5%] w-[48%] rounded-xl p-3 shadow-lg"
                 style={{
                   background:
-                    'linear-gradient(135deg, #4169E1 0%, #6A5ACD 100%)',
+                    'linear-gradient(135deg, #E8232C 0%, #A01A20 100%)',
                 }}
               >
-                <h4 className="text-white text-xs font-semibold">
-                  Happy Students
-                </h4>
-                <p className="text-white text-[10px] opacity-80 mt-1">
-                  54,000 +
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-white text-xs font-bold tracking-wide">
+                    HAPPY STUDENTS
+                  </h4>
+                  <svg
+                    className="w-4 h-4 text-white/80"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                  </svg>
+                </div>
+                <p className="text-white text-2xl font-bold mt-1 mb-2">
+                  54,000+
                 </p>
-                <div className="flex -space-x-2 mt-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-purple-400"
-                    />
-                  ))}
+                <div className="flex items-center gap-1">
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-white text-[8px] font-semibold"
+                        style={{
+                          background:
+                            i === 1
+                              ? '#FF4D56'
+                              : i === 2
+                              ? '#C41E26'
+                              : i === 3
+                              ? '#8A161C'
+                              : '#FFFFFF20',
+                        }}
+                      >
+                        {i === 4 ? '+' : ''}
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-white/90 text-[8px] ml-1 font-medium">
+                    Active learners
+                  </span>
                 </div>
               </div>
 
               {/* Card 4 - Course Card */}
-              <div className="absolute bottom-[8%] right-[5%] w-[45%] bg-white rounded-2xl shadow-lg p-3">
-                <h4 className="text-[10px] font-bold">FIGMA FROM BASIC</h4>
-                <div className="flex items-center gap-1 mt-2 text-[8px] text-gray-500">
+              <div className="absolute bottom-[8%] right-[5%] w-[45%] bg-[#2D2D2D] rounded-2xl shadow-lg p-3">
+                <h4 className="text-[10px] font-bold text-[#FFFFFF]">
+                  FIGMA FROM BASIC
+                </h4>
+                <div className="flex items-center gap-1 mt-2 text-[8px] text-[#858585]">
                   <svg
                     className="w-3 h-3"
                     fill="currentColor"
@@ -138,7 +168,7 @@ export function LoginModule(props: LoginModuleProps) {
                   12h 8m
                 </div>
                 <div className="flex items-center justify-between mt-2">
-                  <span className="text-[8px] text-gray-500 flex items-center gap-1">
+                  <span className="text-[8px] text-[#858585] flex items-center gap-1">
                     <svg
                       className="w-3 h-3"
                       fill="currentColor"
@@ -148,13 +178,13 @@ export function LoginModule(props: LoginModuleProps) {
                     </svg>
                     32
                   </span>
-                  <span className="text-xs font-bold">$25</span>
+                  <span className="text-xs font-bold text-[#FFFFFF]">$25</span>
                 </div>
               </div>
 
               {/* Enroll Button */}
               <div className="absolute bottom-[4%] right-[5%]">
-                <button className="bg-black text-white text-[9px] font-semibold px-4 py-2 rounded-full">
+                <button className="bg-[#E8232C] hover:bg-[#C41E26] text-white text-[9px] font-bold px-4 py-2 rounded-lg transition-colors duration-200">
                   Enroll Now
                 </button>
               </div>
@@ -164,11 +194,11 @@ export function LoginModule(props: LoginModuleProps) {
       </div>
 
       {/* Right Panel - Login Form Section */}
-      <div className="w-full lg:w-1/2 bg-white px-6 py-8 md:px-12 md:py-12 lg:px-20 lg:py-16 flex items-center">
+      <div className="w-full lg:w-1/2 bg-[#0F0F0F] px-6 py-8 md:px-12 md:py-12 lg:px-20 lg:py-16 flex items-center">
         <div className="w-full max-w-md mx-auto">
           {/* Branding */}
           <div className="mb-8 lg:mb-12">
-            <h2 className="text-xs md:text-sm font-semibold tracking-wider">
+            <h2 className="text-xs md:text-sm font-bold tracking-widest text-[#FFFFFF]">
               EDUMENTOR
             </h2>
           </div>
@@ -177,11 +207,11 @@ export function LoginModule(props: LoginModuleProps) {
           <div className="mb-8 lg:mb-10">
             <button
               type="button"
-              className="text-xs md:text-sm text-[#4169E1] hover:underline inline-block mb-2 bg-transparent border-none cursor-pointer p-0"
+              className="text-xs md:text-sm text-[#E8232C] hover:text-[#FF4D56] inline-block mb-2 bg-transparent border-none cursor-pointer p-0 font-medium transition-colors duration-200"
             >
               Create an Account
             </button>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-[#FFFFFF]">
               WELCOME TO
               <br />
               BYTESPACE
@@ -194,7 +224,7 @@ export function LoginModule(props: LoginModuleProps) {
             <div>
               <label
                 htmlFor="fullname"
-                className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
+                className="block text-xs md:text-sm font-medium text-[#FFFFFF] mb-2"
               >
                 Full Name
               </label>
@@ -204,7 +234,7 @@ export function LoginModule(props: LoginModuleProps) {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Jamie Davis"
-                className="w-full px-4 py-3 md:py-4 bg-[#F5F5F7] border-none rounded-lg text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#4169E1] transition-all"
+                className="w-full px-4 py-3 md:py-4 bg-[#2D2D2D] text-[#FFFFFF] placeholder-[#858585] border border-[#404040] rounded-lg text-sm md:text-base focus:outline-none focus:border-[#E8232C] transition-all duration-200"
               />
             </div>
 
@@ -212,7 +242,7 @@ export function LoginModule(props: LoginModuleProps) {
             <div>
               <label
                 htmlFor="email"
-                className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
+                className="block text-xs md:text-sm font-medium text-[#FFFFFF] mb-2"
               >
                 Email
               </label>
@@ -222,7 +252,7 @@ export function LoginModule(props: LoginModuleProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="designer@example.com"
-                className="w-full px-4 py-3 md:py-4 bg-[#F5F5F7] border-none rounded-lg text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#4169E1] transition-all"
+                className="w-full px-4 py-3 md:py-4 bg-[#2D2D2D] text-[#FFFFFF] placeholder-[#858585] border border-[#404040] rounded-lg text-sm md:text-base focus:outline-none focus:border-[#E8232C] transition-all duration-200"
               />
             </div>
 
@@ -230,7 +260,7 @@ export function LoginModule(props: LoginModuleProps) {
             <div>
               <label
                 htmlFor="password"
-                className="block text-xs md:text-sm font-medium text-gray-700 mb-2"
+                className="block text-xs md:text-sm font-medium text-[#FFFFFF] mb-2"
               >
                 Password
               </label>
@@ -240,7 +270,7 @@ export function LoginModule(props: LoginModuleProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 md:py-4 bg-[#F5F5F7] border-none rounded-lg text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#4169E1] transition-all"
+                className="w-full px-4 py-3 md:py-4 bg-[#2D2D2D] text-[#FFFFFF] placeholder-[#858585] border border-[#404040] rounded-lg text-sm md:text-base focus:outline-none focus:border-[#E8232C] transition-all duration-200"
               />
             </div>
 
@@ -248,7 +278,7 @@ export function LoginModule(props: LoginModuleProps) {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-[#4169E1] hover:bg-[#3355CC] text-white font-semibold py-3 md:py-4 px-8 rounded-full text-sm md:text-base transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4169E1] focus:ring-offset-2"
+                className="w-full bg-[#E8232C] hover:bg-[#C41E26] active:bg-[#A01A20] text-white font-bold py-3 md:py-4 px-8 rounded-lg text-sm md:text-base transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#E8232C] focus:ring-offset-2 focus:ring-offset-[#0F0F0F]"
               >
                 Continue
               </button>
