@@ -27,10 +27,11 @@
     ],
     "paths": {
       "@mfe-benchmark/home-module": ["libs/modules/home-module/src/index.ts"],
-      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"],
-
-      // Aliases
-      "@modules/home-module/*": ["libs/modules/home-module/src/*"]
+      "@mfe-benchmark/login-module": [
+        "library/modules/login-module/src/index.ts"
+      ],
+      "@modules/home-module/*": ["libs/modules/home-module/src/*"],
+      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
