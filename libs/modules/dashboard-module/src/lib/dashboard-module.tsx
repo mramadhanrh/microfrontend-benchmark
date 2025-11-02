@@ -232,19 +232,19 @@ export function DashboardModule(props: DashboardModuleProps) {
                 onClick={() => setActiveNav(item.id)}
                 className={`
                   w-full flex items-center justify-between py-3 px-3 rounded-lg 
-                  transition-colors duration-200
+                  transition-all duration-200 group
                   ${
                     activeNav === item.id
-                      ? 'bg-purple-50 text-purple-600'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-purple-50 text-purple-600 shadow-sm'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }
                 `}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="relative flex-shrink-0 w-6 h-6">
+                  <div className="relative flex-shrink-0 w-6 h-6 transition-transform duration-200 group-hover:scale-110">
                     {getIcon(item.icon, activeNav === item.id)}
                     {item.badge && !isSidebarExpanded && (
-                      <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                      <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold shadow-sm animate-pulse">
                         {item.badge}
                       </span>
                     )}
@@ -284,7 +284,7 @@ export function DashboardModule(props: DashboardModuleProps) {
               <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider whitespace-nowrap">
                 My Projects
               </h4>
-              <button className="text-purple-600 hover:text-purple-700 text-xs font-medium whitespace-nowrap">
+              <button className="text-purple-600 hover:text-purple-700 text-xs font-medium whitespace-nowrap transition-transform duration-200 hover:scale-105">
                 + Add
               </button>
             </div>
@@ -301,10 +301,10 @@ export function DashboardModule(props: DashboardModuleProps) {
               {projects.map((project) => (
                 <button
                   key={project.id}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                 >
                   <div
-                    className={`flex-shrink-0 rounded-lg flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
+                    className={`flex-shrink-0 rounded-lg flex items-center justify-center font-semibold text-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md ${
                       isSidebarExpanded
                         ? 'w-3 h-3 text-[0px]'
                         : 'w-10 h-10 text-sm'
@@ -313,7 +313,7 @@ export function DashboardModule(props: DashboardModuleProps) {
                     {!isSidebarExpanded && project.id}
                   </div>
                   <span
-                    className={`text-gray-700 font-medium whitespace-nowrap transition-all duration-300 ${
+                    className={`text-gray-700 font-medium whitespace-nowrap transition-all duration-300 group-hover:text-gray-900 ${
                       isSidebarExpanded
                         ? 'opacity-100 w-auto'
                         : 'opacity-0 w-0 overflow-hidden'
@@ -323,13 +323,13 @@ export function DashboardModule(props: DashboardModuleProps) {
                   </span>
                 </button>
               ))}
-              <button className="w-full flex items-center gap-3 px-3 py-2.5">
+              <button className="w-full flex items-center gap-3 px-3 py-2.5 group">
                 <div
-                  className={`flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                  className={`flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:border-purple-300 ${
                     isSidebarExpanded
                       ? 'w-0 h-0 opacity-0'
                       : 'w-10 h-10 opacity-100'
-                  } border-2 border-dashed border-gray-300 text-gray-400 hover:border-gray-400 hover:text-gray-500`}
+                  } border-2 border-dashed border-gray-300 text-gray-400 group-hover:text-purple-500`}
                 >
                   {!isSidebarExpanded && <PlusIcon className="w-5 h-5" />}
                 </div>
@@ -349,8 +349,8 @@ export function DashboardModule(props: DashboardModuleProps) {
 
         {/* Settings */}
         <div className="py-4 px-2 border-t border-gray-200 flex-shrink-0">
-          <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-            <Cog6ToothIcon className="w-6 h-6 flex-shrink-0" />
+          <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group">
+            <Cog6ToothIcon className="w-6 h-6 flex-shrink-0 transition-transform duration-200 group-hover:rotate-90" />
             <span
               className={`font-medium whitespace-nowrap transition-all duration-300 ${
                 isSidebarExpanded
@@ -370,10 +370,10 @@ export function DashboardModule(props: DashboardModuleProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-            className="lg:hidden mb-4 p-2 text-gray-600 hover:bg-white rounded-lg"
+            className="lg:hidden mb-4 p-2 text-gray-600 hover:bg-white hover:text-gray-900 rounded-lg transition-all duration-200 hover:shadow-sm active:scale-95"
           >
             <svg
-              className="w-6 h-6"
+              className="w-6 h-6 transition-transform duration-200"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -391,40 +391,46 @@ export function DashboardModule(props: DashboardModuleProps) {
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-sm text-gray-500 mb-1">Mon, July 7</p>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <p className="text-sm text-gray-500 mb-1 font-medium">
+                  Mon, July 7
+                </p>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text">
                   Hello, Courtney
                 </h1>
-                <p className="text-gray-600">How can I help you today?</p>
+                <p className="text-gray-600 text-lg">
+                  How can I help you today?
+                </p>
               </div>
-              <button className="self-start sm:self-auto bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow">
-                <ClockIcon className="w-6 h-6 text-purple-600" />
+              <button className="self-start sm:self-auto bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:rotate-12 active:scale-95 group">
+                <ClockIcon className="w-6 h-6 text-purple-600 group-hover:text-purple-700 transition-colors" />
               </button>
             </div>
           </div>
 
           {/* Tasks Section */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+          <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 hover:shadow-md transition-shadow duration-300">
             <div className="flex items-center space-x-3 mb-6">
-              <ClipboardDocumentListIcon className="w-7 h-7 text-purple-600" />
+              <div className="p-2 bg-purple-50 rounded-lg">
+                <ClipboardDocumentListIcon className="w-6 h-6 text-purple-600" />
+              </div>
               <h2 className="text-2xl font-bold text-gray-900">My Tasks</h2>
             </div>
 
             {/* Task Groups */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {taskGroups.map((group, groupIndex) => (
                 <div
                   key={groupIndex}
-                  className="border border-gray-200 rounded-xl overflow-hidden"
+                  className="border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 transition-all duration-200 hover:shadow-sm"
                 >
                   {/* Group Header */}
                   <button
                     onClick={() => toggleTaskGroup(groupIndex)}
-                    className="w-full bg-gray-50 px-6 py-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
+                    className="w-full bg-gray-50 px-6 py-4 flex items-center justify-between hover:bg-gray-100 transition-all duration-200 group"
                   >
                     <div className="flex items-center space-x-3">
                       <svg
-                        className={`w-5 h-5 text-gray-500 transition-transform ${
+                        className={`w-5 h-5 text-gray-500 transition-all duration-300 group-hover:text-gray-700 ${
                           group.expanded ? 'rotate-90' : ''
                         }`}
                         fill="none"
@@ -438,10 +444,10 @@ export function DashboardModule(props: DashboardModuleProps) {
                           d="M9 5l7 7-7 7"
                         />
                       </svg>
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
                         {group.status}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-500 font-medium">
                         {group.count}
                       </span>
                     </div>
@@ -453,7 +459,7 @@ export function DashboardModule(props: DashboardModuleProps) {
                       {group.tasks.map((task, taskIndex) => (
                         <div
                           key={taskIndex}
-                          className="px-6 py-4 hover:bg-gray-50 transition-colors"
+                          className="px-6 py-4 hover:bg-gray-50 transition-all duration-200 group"
                         >
                           <div className="flex items-start space-x-4">
                             <input
@@ -462,21 +468,21 @@ export function DashboardModule(props: DashboardModuleProps) {
                               onChange={() =>
                                 toggleTaskCompletion(groupIndex, taskIndex)
                               }
-                              className="mt-1 w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer"
+                              className="mt-1 w-5 h-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500 focus:ring-offset-2 cursor-pointer transition-all duration-200 hover:scale-110"
                             />
                             <div className="flex-1 min-w-0">
                               <p
-                                className={`font-medium mb-2 ${
+                                className={`font-medium mb-2 transition-all duration-300 ${
                                   task.completed
                                     ? 'line-through text-gray-400'
-                                    : 'text-gray-900'
+                                    : 'text-gray-900 group-hover:text-purple-600'
                                 }`}
                               >
                                 {task.name}
                               </p>
                               <div className="flex flex-wrap items-center gap-3">
                                 <span
-                                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getColorClass(
+                                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 hover:scale-105 ${getColorClass(
                                     getPriorityColor(task.priority),
                                     'text'
                                   )} bg-opacity-10`}
@@ -488,8 +494,8 @@ export function DashboardModule(props: DashboardModuleProps) {
                                 >
                                   {task.priority}
                                 </span>
-                                <span className="text-sm text-gray-500 flex items-center">
-                                  <CalendarIcon className="w-4 h-4 mr-1" />
+                                <span className="text-sm text-gray-500 flex items-center gap-1 transition-colors duration-200 group-hover:text-gray-700">
+                                  <CalendarIcon className="w-4 h-4" />
                                   {task.dueDate}
                                 </span>
                               </div>
@@ -499,8 +505,11 @@ export function DashboardModule(props: DashboardModuleProps) {
                       ))}
 
                       {/* Add Task Button */}
-                      <button className="w-full px-6 py-4 text-left text-purple-600 hover:bg-purple-50 transition-colors font-medium">
-                        {group.action}
+                      <button className="w-full px-6 py-4 text-left text-purple-600 hover:bg-purple-50 transition-all duration-200 font-medium group hover:px-7">
+                        <span className="inline-flex items-center gap-2">
+                          <PlusIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-90" />
+                          {group.action}
+                        </span>
                       </button>
                     </div>
                   )}
@@ -514,7 +523,7 @@ export function DashboardModule(props: DashboardModuleProps) {
       {/* Mobile Overlay */}
       {isMobileSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden backdrop-blur-sm transition-opacity duration-300"
           onClick={() => {
             setIsMobileSidebarOpen(false);
           }}
