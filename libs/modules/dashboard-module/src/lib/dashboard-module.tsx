@@ -105,7 +105,7 @@ export function DashboardModule(props: DashboardModuleProps) {
             onToggleMobileSidebar={handleMobileToggle}
           />
 
-          <DashboardContent activeTab={TabContentType.Inbox} />
+          <DashboardContent activeTab={TabContentType.ReportDashboard} />
         </div>
       </main>
 

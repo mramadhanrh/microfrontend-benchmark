@@ -3,4 +3,6 @@ export enum TabContentType {
   Projects = 'projects',
   Calendar = 'calendar',
   Inbox = 'inbox',
+  Dashboard = 'dashboard',
+  ReportDashboard = 'report-dashboard',
 }

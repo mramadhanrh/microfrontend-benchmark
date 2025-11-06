@@ -1,0 +1,504 @@
+{
+  "pageMetadata": {
+    "title": "Report Dashboard",
+    "subtitle": "Your current financial summary",
+    "description": "A comprehensive financial dashboard showing balance, income/spending trends, transaction history, and savings breakdown",
+    "colorScheme": {
+      "primary": "#1a4d4d",
+      "secondary": "#7dd87d",
+      "background": "#ffffff",
+      "text": "#333333",
+      "textLight": "#666666",
+      "success": "#4caf50",
+      "accent": "#ff6b6b"
+    }
+  },
+  "layout": {
+    "type": "dashboard",
+    "structure": "grid",
+    "columns": "2",
+    "gap": "24px",
+    "sections": [
+      {
+        "id": "sidebar",
+        "position": "left",
+        "width": "80px",
+        "type": "navigation"
+      },
+      {
+        "id": "main-content",
+        "position": "center-left",
+        "width": "60%",
+        "type": "primary"
+      },
+      {
+        "id": "right-sidebar",
+        "position": "right",
+        "width": "30%",
+        "type": "summary"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "header",
+      "type": "header",
+      "position": "top",
+      "elements": [
+        {
+          "type": "logo",
+          "position": "top-left",
+          "icon": "currency-dollar",
+          "color": "#1a4d4d",
+          "size": "32px"
+        },
+        {
+          "type": "search-bar",
+          "placeholder": "Search",
+          "position": "top-center",
+          "width": "300px",
+          "icon": "search",
+          "borderRadius": "8px"
+        },
+        {
+          "type": "user-profile",
+          "position": "top-right",
+          "elements": [
+            {
+              "type": "button",
+              "label": "Export Report",
+              "icon": "download",
+              "variant": "ghost"
+            },
+            {
+              "type": "button",
+              "label": "Custom report",
+              "variant": "ghost"
+            },
+            {
+              "type": "button",
+              "label": "Deposit",
+              "variant": "primary",
+              "color": "#1a4d4d",
+              "textColor": "#ffffff"
+            },
+            {
+              "type": "avatar",
+              "name": "Alvin Islam",
+              "image": "user-avatar.jpg",
+              "size": "40px",
+              "showNotification": true,
+              "notificationColor": "#ff6b6b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sidebar-navigation",
+      "type": "vertical-navigation",
+      "width": "80px",
+      "backgroundColor": "#f8f9fa",
+      "items": [
+        {
+          "icon": "dashboard",
+          "label": "Dashboard",
+          "active": true,
+          "color": "#1a4d4d"
+        },
+        {
+          "icon": "briefcase",
+          "label": "Portfolio"
+        },
+        {
+          "icon": "document",
+          "label": "Documents"
+        },
+        {
+          "icon": "mail",
+          "label": "Messages"
+        },
+        {
+          "icon": "chart",
+          "label": "Analytics"
+        },
+        {
+          "type": "divider",
+          "margin": "auto 0"
+        },
+        {
+          "icon": "settings",
+          "label": "Settings",
+          "position": "bottom"
+        },
+        {
+          "icon": "logout",
+          "label": "Logout",
+          "position": "bottom",
+          "color": "#ff6b6b"
+        }
+      ]
+    },
+    {
+      "id": "balance-card",
+      "type": "card",
+      "title": "Balance",
+      "subtitle": "2.5% Last month",
+      "elevation": "medium",
+      "padding": "24px",
+      "borderRadius": "12px",
+      "content": {
+        "type": "balance-display",
+        "value": "$32,584.00",
+        "fontSize": "32px",
+        "fontWeight": "bold",
+        "trend": {
+          "type": "positive",
+          "percentage": "2.5%",
+          "period": "Last month",
+          "icon": "arrow-up",
+          "color": "#4caf50"
+        }
+      }
+    },
+    {
+      "id": "income-spending-chart",
+      "type": "chart",
+      "chartType": "stacked-bar",
+      "title": "Income vs Spending",
+      "position": "below-balance",
+      "height": "280px",
+      "data": {
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        "datasets": [
+          {
+            "label": "Income",
+            "color": "#7dd87d",
+            "values": [3000, 5000, 4000, 5500, 6000, 5500]
+          },
+          {
+            "label": "Spending",
+            "color": "#1a4d4d",
+            "values": [-2000, -3500, -2800, -3800, -4200, -3900]
+          }
+        ]
+      },
+      "legend": {
+        "position": "top-right",
+        "items": ["Income", "Spending"]
+      },
+      "filters": {
+        "type": "dropdown",
+        "label": "This month",
+        "position": "top-right",
+        "options": ["This week", "This month", "This quarter", "This year"]
+      },
+      "xAxis": {
+        "type": "category",
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+      },
+      "yAxis": {
+        "type": "value",
+        "range": [-8000, 8000],
+        "labels": ["-8k", "-4k", "0", "4k", "8k"]
+      }
+    },
+    {
+      "id": "transaction-history",
+      "type": "data-table",
+      "title": "Transaction History",
+      "elevation": "medium",
+      "borderRadius": "12px",
+      "padding": "24px",
+      "tabs": [
+        {
+          "id": "investments",
+          "label": "Investments",
+          "active": false
+        },
+        {
+          "id": "deposits",
+          "label": "Deposits",
+          "active": false
+        },
+        {
+          "id": "withdrawals",
+          "label": "Withdrawals",
+          "active": false
+        },
+        {
+          "id": "investments-detail",
+          "label": "Investments",
+          "active": true
+        },
+        {
+          "id": "expenses",
+          "label": "Expenses",
+          "active": false
+        }
+      ],
+      "actions": {
+        "type": "button",
+        "label": "Download",
+        "icon": "download",
+        "variant": "ghost"
+      },
+      "columns": [
+        {
+          "key": "name",
+          "label": "Name",
+          "width": "25%",
+          "type": "text",
+          "icon": "user"
+        },
+        {
+          "key": "deposits",
+          "label": "Deposits",
+          "width": "15%",
+          "type": "currency",
+          "align": "right"
+        },
+        {
+          "key": "withdrawals",
+          "label": "Withdrawals",
+          "width": "15%",
+          "type": "currency",
+          "align": "right"
+        },
+        {
+          "key": "investments",
+          "label": "Investments",
+          "width": "15%",
+          "type": "currency",
+          "align": "right"
+        },
+        {
+          "key": "expenses",
+          "label": "Expenses",
+          "width": "15%",
+          "type": "currency",
+          "align": "right"
+        }
+      ],
+      "rows": [
+        {
+          "name": "John Wick",
+          "avatar": true,
+          "deposits": "$95.85",
+          "withdrawals": "$105.50",
+          "investments": "$185.55",
+          "expenses": "$88.55"
+        },
+        {
+          "name": "Nick Deep",
+          "avatar": true,
+          "deposits": "$90.85",
+          "withdrawals": "$115.50",
+          "investments": "$100.55",
+          "expenses": "$60.50"
+        }
+      ],
+      "pagination": {
+        "enabled": false
+      }
+    },
+    {
+      "id": "available-balance",
+      "type": "card",
+      "title": "Available",
+      "position": "right-sidebar-top",
+      "elevation": "medium",
+      "padding": "24px",
+      "borderRadius": "12px",
+      "content": {
+        "type": "donut-chart",
+        "centerText": "$4k",
+        "layers": [
+          {
+            "value": 4000,
+            "color": "#1a4d4d",
+            "label": "$4k"
+          },
+          {
+            "value": 6000,
+            "color": "#5a8a8a",
+            "label": "$6k"
+          },
+          {
+            "value": 10000,
+            "color": "#8ab5b5",
+            "label": "$10k"
+          },
+          {
+            "value": 12000,
+            "color": "#b5d4d4",
+            "label": "$12k"
+          }
+        ],
+        "total": 32000,
+        "size": "200px"
+      }
+    },
+    {
+      "id": "savings-breakdown",
+      "type": "card",
+      "title": "Savings",
+      "subtitle": "Total Balance",
+      "position": "right-sidebar-bottom",
+      "elevation": "medium",
+      "padding": "24px",
+      "borderRadius": "12px",
+      "content": {
+        "type": "savings-list",
+        "total": {
+          "amount": "$25,875.00",
+          "trend": {
+            "type": "positive",
+            "percentage": "1%",
+            "icon": "arrow-up",
+            "color": "#4caf50"
+          }
+        },
+        "items": [
+          {
+            "icon": "airplane",
+            "label": "Travel",
+            "description": "Vestibulum in 2 months",
+            "amount": "$25,875",
+            "progress": 85,
+            "progressColor": "#1a4d4d",
+            "active": true
+          },
+          {
+            "icon": "ring",
+            "label": "Married",
+            "description": "Vestibulum in 6 months",
+            "amount": "$30,570",
+            "progress": 65,
+            "progressColor": "#8ab5b5"
+          },
+          {
+            "icon": "school",
+            "label": "College",
+            "description": "Vestibulum in 8 months",
+            "amount": "$31,375",
+            "progress": 45,
+            "progressColor": "#b5d4d4"
+          }
+        ]
+      },
+      "moreOptions": {
+        "type": "icon-button",
+        "icon": "ellipsis-vertical",
+        "position": "top-right"
+      }
+    }
+  ],
+  "designSystem": {
+    "typography": {
+      "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "headings": {
+        "h1": {
+          "fontSize": "32px",
+          "fontWeight": "700",
+          "lineHeight": "1.2"
+        },
+        "h2": {
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "lineHeight": "1.3"
+        },
+        "h3": {
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "lineHeight": "1.4"
+        }
+      },
+      "body": {
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "lineHeight": "1.5"
+      },
+      "caption": {
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "lineHeight": "1.4",
+        "color": "#666666"
+      }
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "xxl": "48px"
+    },
+    "borderRadius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px rgba(0, 0, 0, 0.07)",
+      "lg": "0 10px 15px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px rgba(0, 0, 0, 0.15)"
+    }
+  },
+  "interactions": {
+    "buttons": {
+      "hover": {
+        "opacity": 0.8,
+        "transition": "all 0.2s ease"
+      },
+      "active": {
+        "scale": 0.95
+      }
+    },
+    "cards": {
+      "hover": {
+        "shadow": "lg",
+        "transition": "box-shadow 0.3s ease"
+      }
+    },
+    "charts": {
+      "hover": {
+        "showTooltip": true,
+        "highlightBar": true
+      }
+    }
+  },
+  "responsive": {
+    "breakpoints": {
+      "mobile": "0-640px",
+      "tablet": "641-1024px",
+      "desktop": "1025px+"
+    },
+    "behavior": {
+      "mobile": {
+        "sidebar": "collapsed",
+        "rightSidebar": "bottom",
+        "columns": "1"
+      },
+      "tablet": {
+        "sidebar": "expanded",
+        "rightSidebar": "bottom",
+        "columns": "1"
+      },
+      "desktop": {
+        "sidebar": "expanded",
+        "rightSidebar": "right",
+        "columns": "2"
+      }
+    }
+  },
+  "accessibility": {
+    "keyboardNavigation": true,
+    "ariaLabels": true,
+    "colorContrast": "WCAG AA",
+    "focusIndicators": true
+  }
+}
