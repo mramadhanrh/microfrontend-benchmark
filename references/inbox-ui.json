@@ -1,0 +1,256 @@
+{
+  "page": {
+    "title": "Leads Inbox",
+    "layout": "dashboard",
+    "components": [
+      {
+        "type": "sidebar",
+        "position": "left",
+        "width": "280px",
+        "backgroundColor": "#2D1B69",
+        "sections": [
+          {
+            "title": "LEADPOSTER",
+            "items": [
+              {
+                "icon": "inbox",
+                "label": "Leads Inbox",
+                "active": true,
+                "badge": "8"
+              },
+              {
+                "icon": "chat",
+                "label": "Live Chat"
+              },
+              {
+                "icon": "bot",
+                "label": "Chatbot"
+              },
+              {
+                "icon": "form",
+                "label": "Web Forms"
+              }
+            ]
+          },
+          {
+            "title": "ADD-ONS",
+            "items": [
+              {
+                "icon": "users",
+                "label": "Web Visitors"
+              }
+            ]
+          },
+          {
+            "title": "INTEGRATIONS",
+            "items": [
+              {
+                "icon": "message",
+                "label": "Messaging",
+                "badge": "New",
+                "badgeColor": "orange"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "height": "60px",
+        "backgroundColor": "#FFFFFF",
+        "elements": [
+          {
+            "type": "breadcrumb",
+            "items": ["Leads", "Leads Inbox"]
+          },
+          {
+            "type": "search",
+            "placeholder": "Search here...",
+            "position": "center"
+          },
+          {
+            "type": "actions",
+            "position": "right",
+            "items": [
+              {
+                "type": "icon-button",
+                "icon": "sun"
+              },
+              {
+                "type": "icon-button",
+                "icon": "moon"
+              },
+              {
+                "type": "user-profile",
+                "name": "Jawad Rahman",
+                "subtitle": "Filllo Agency",
+                "avatar": "url"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "main-content",
+        "backgroundColor": "#F5F5F7",
+        "padding": "24px",
+        "sections": [
+          {
+            "type": "page-header",
+            "title": "Leads Inbox",
+            "actions": [
+              {
+                "type": "tab-group",
+                "tabs": [
+                  {
+                    "label": "Inbox",
+                    "badge": "8",
+                    "active": true
+                  },
+                  {
+                    "label": "Archive",
+                    "icon": "archive"
+                  }
+                ]
+              },
+              {
+                "type": "dropdown",
+                "icon": "label",
+                "label": "All labels"
+              },
+              {
+                "type": "dropdown",
+                "label": "Everyone"
+              },
+              {
+                "type": "button",
+                "variant": "primary",
+                "label": "Add Lead",
+                "icon": "plus",
+                "backgroundColor": "#2D1B69"
+              },
+              {
+                "type": "icon-button",
+                "icon": "more"
+              }
+            ]
+          },
+          {
+            "type": "data-table",
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": "8px",
+            "columns": [
+              {
+                "key": "checkbox",
+                "type": "checkbox",
+                "width": "40px"
+              },
+              {
+                "key": "title",
+                "label": "Title",
+                "sortable": false,
+                "width": "150px"
+              },
+              {
+                "key": "owner",
+                "label": "Owner",
+                "sortable": true,
+                "width": "180px",
+                "renderer": "user-avatar"
+              },
+              {
+                "key": "labels",
+                "label": "Labels",
+                "width": "120px",
+                "renderer": "badge"
+              },
+              {
+                "key": "source",
+                "label": "Source",
+                "width": "120px",
+                "renderer": "icon-text"
+              },
+              {
+                "key": "leadCreated",
+                "label": "Lead created",
+                "width": "180px",
+                "renderer": "date-time"
+              },
+              {
+                "key": "nextActivity",
+                "label": "Next activity",
+                "width": "120px",
+                "renderer": "status-text"
+              },
+              {
+                "key": "actions",
+                "type": "menu",
+                "width": "40px"
+              }
+            ],
+            "rows": [
+              {
+                "title": "olux Lead",
+                "owner": {
+                  "name": "Kristin Watson",
+                  "avatar": "url"
+                },
+                "labels": {
+                  "text": "Warm",
+                  "color": "yellow"
+                },
+                "source": {
+                  "icon": "target",
+                  "text": "Manually"
+                },
+                "leadCreated": "Dec 27, 2023, 3:12",
+                "nextActivity": {
+                  "text": "No activity",
+                  "color": "red"
+                }
+              },
+              {
+                "title": "Initech",
+                "owner": {
+                  "name": "Albert Flores",
+                  "avatar": "url"
+                },
+                "labels": {
+                  "text": "Cold",
+                  "color": "blue"
+                },
+                "source": {
+                  "icon": "automatic",
+                  "text": "Automatic"
+                },
+                "leadCreated": "Dec 27, 2023, 3:12",
+                "nextActivity": {
+                  "text": "Close",
+                  "color": "gray"
+                }
+              }
+            ],
+            "rowHeight": "56px",
+            "hoverEffect": true
+          }
+        ]
+      }
+    ],
+    "colorScheme": {
+      "primary": "#2D1B69",
+      "background": "#F5F5F7",
+      "surface": "#FFFFFF",
+      "text": {
+        "primary": "#000000",
+        "secondary": "#666666"
+      },
+      "status": {
+        "warm": "#FB8C00",
+        "cold": "#1E88E5",
+        "active": "#00897B",
+        "noActivity": "#E8232C",
+        "push": "#FB8C00"
+      }
+    }
+  }
+}

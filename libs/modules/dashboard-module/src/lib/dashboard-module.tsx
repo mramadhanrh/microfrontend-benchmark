@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import TaskSection from './components/organisms/task-section/task-section';
-import Sidebar from './components/organisms/sidebar/sidebar';
-import DashboardHeader from './components/organisms/dashboard-header/dashboard-header';
+import Sidebar from './components/organisms/sidebar';
+import DashboardHeader from './components/organisms/dashboard-header';
+import DashboardContent from './components/organisms/dashboard-content';
+import { TabContentType } from './types/tabs.type';
 
 /* eslint-disable-next-line */
 export interface DashboardModuleProps {}
@@ -39,53 +40,6 @@ export function DashboardModule(props: DashboardModuleProps) {
   const [activeNav, setActiveNav] = useState('home');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const [taskGroups, setTaskGroups] = useState<TaskGroup[]>([
-    {
-      status: 'IN PROGRESS',
-      count: '3 tasks',
-      expanded: true,
-      tasks: [
-        {
-          name: 'One-on-One Meeting',
-          priority: 'High',
-          dueDate: 'Today',
-          checkbox: true,
-          completed: false,
-        },
-        {
-          name: 'Send a summary email to stakeholders',
-          priority: 'Low',
-          dueDate: '3 days left',
-          checkbox: true,
-          completed: false,
-        },
-        {
-          name: 'Identify any blockers and plan solutions',
-          priority: 'Low',
-          dueDate: '5 days left',
-          checkbox: true,
-          completed: false,
-        },
-      ],
-      action: 'Add task',
-    },
-    {
-      status: 'TO DO',
-      count: '1 task',
-      expanded: true,
-      tasks: [
-        {
-          name: 'Communication with a team',
-          priority: 'Normal',
-          dueDate: '4 days left',
-          checkbox: true,
-          completed: false,
-        },
-      ],
-      action: 'Add task',
-    },
-  ]);
-
   const navItems: NavItem[] = [
     { id: 'home', icon: 'house', label: 'Home' },
     { id: 'pin', icon: 'pushpin', label: 'Pinned' },
@@ -111,40 +65,6 @@ export function DashboardModule(props: DashboardModuleProps) {
       gray: { bg: 'bg-[#858585]', text: 'text-[#858585]' },
     };
     return colorMap[color]?.[type] || colorMap.purple[type];
-  };
-
-  const getPriorityColor = (priority: string) => {
-    const priorityMap: { [key: string]: string } = {
-      High: 'red',
-      Normal: 'orange',
-      Low: 'gray',
-    };
-    return priorityMap[priority] || 'gray';
-  };
-
-  const toggleTaskGroup = (groupIndex: number) => {
-    setTaskGroups(
-      taskGroups.map((group, idx) =>
-        idx === groupIndex ? { ...group, expanded: !group.expanded } : group
-      )
-    );
-  };
-
-  const toggleTaskCompletion = (groupIndex: number, taskIndex: number) => {
-    setTaskGroups(
-      taskGroups.map((group, gIdx) =>
-        gIdx === groupIndex
-          ? {
-              ...group,
-              tasks: group.tasks.map((task, tIdx) =>
-                tIdx === taskIndex
-                  ? { ...task, completed: !task.completed }
-                  : task
-              ),
-            }
-          : group
-      )
-    );
   };
 
   const handleNavSelect = (navId: string) => {
@@ -185,13 +105,7 @@ export function DashboardModule(props: DashboardModuleProps) {
             onToggleMobileSidebar={handleMobileToggle}
           />
 
-          <TaskSection
-            taskGroups={taskGroups}
-            onToggleGroup={toggleTaskGroup}
-            onToggleTaskCompletion={toggleTaskCompletion}
-            getColorClass={getColorClass}
-            getPriorityColor={getPriorityColor}
-          />
+          <DashboardContent activeTab={TabContentType.Inbox} />
         </div>
       </main>
 
