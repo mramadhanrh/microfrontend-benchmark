@@ -4,17 +4,43 @@ import { useState, useEffect, useRef } from 'react';
 /* eslint-disable-next-line */
 export interface HomeModuleProps {}
 
-const mockImage =
-  'https://images.unsplash.com/photo-1761429528505-e153940c62a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987';
+// ============================================
+// HERO SLIDER CONFIGURATION
+// ============================================
+const SLIDER_CONFIG = {
+  // Carousel images
+  carouselMockImage:
+    'https://images.unsplash.com/photo-1761429528505-e153940c62a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
+  carouselImageCount: 3,
 
-const heroImages = [
-  'https://images.unsplash.com/photo-1761429528505-e153940c62a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
-  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=987',
-  'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=987',
-];
+  // Hero slider images
+  heroImages: [
+    'https://images.unsplash.com/photo-1761429528505-e153940c62a1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
+    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=987',
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=987',
+  ],
+
+  // Timing settings
+  autoPlayInterval: 3000, // 10 seconds in milliseconds
+  transitionDuration: 500, // milliseconds
+
+  // Indicator settings
+  indicatorColor: '#E8232C',
+  indicatorBackgroundColor: 'rgba(255, 255, 255, 0.3)',
+  indicatorHoverColor: 'rgba(255, 255, 255, 0.5)',
+
+  // Responsive heights
+  heights: {
+    mobile: 'h-[300px]',
+    tablet: 'sm:h-[400px] md:h-[400px]',
+    desktop: 'lg:h-[500px]',
+  },
+} as const;
 
 export const HomeModule = (props: HomeModuleProps) => {
-  const images = new Array(3).fill(mockImage);
+  const images = new Array(SLIDER_CONFIG.carouselImageCount).fill(
+    SLIDER_CONFIG.carouselMockImage
+  );
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [statsAnimated, setStatsAnimated] = useState(false);
@@ -30,8 +56,8 @@ export const HomeModule = (props: HomeModuleProps) => {
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      handleSlideChange((currentSlide + 1) % heroImages.length);
-    }, 10000);
+      handleSlideChange((currentSlide + 1) % SLIDER_CONFIG.heroImages.length);
+    }, SLIDER_CONFIG.autoPlayInterval);
 
     return () => clearInterval(interval);
   }, [currentSlide, isPaused]);
@@ -163,22 +189,25 @@ export const HomeModule = (props: HomeModuleProps) => {
 
           {/* Right Side - Hero Image Slider */}
           <div
-            className="col-span-1 lg:col-span-3 relative overflow-hidden rounded-xl h-[300px] sm:h-[400px] md:h-[400px] lg:h-[500px] order-1 lg:order-2"
+            className={`col-span-1 lg:col-span-3 relative overflow-hidden rounded-xl ${SLIDER_CONFIG.heights.mobile} ${SLIDER_CONFIG.heights.tablet} ${SLIDER_CONFIG.heights.desktop} order-1 lg:order-2`}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
             {/* Slider Images */}
             <div className="relative w-full h-full">
-              {heroImages.map((img, index) => (
+              {SLIDER_CONFIG.heroImages.map((img, index) => (
                 <div
                   key={index}
-                  className={`absolute inset-0 transition-all duration-500 ease-in-out ${
+                  className={`absolute inset-0 transition-all ease-in-out ${
                     index === currentSlide
                       ? 'opacity-100 translate-y-0'
                       : index < currentSlide
                       ? 'opacity-0 -translate-y-full'
                       : 'opacity-0 translate-y-full'
                   }`}
+                  style={{
+                    transitionDuration: `${SLIDER_CONFIG.transitionDuration}ms`,
+                  }}
                 >
                   <img
                     className="h-full w-full object-cover"
@@ -191,22 +220,34 @@ export const HomeModule = (props: HomeModuleProps) => {
 
             {/* Indicators */}
             <div className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 sm:gap-4">
-              {heroImages.map((_, index) => (
+              {SLIDER_CONFIG.heroImages.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleSlideChange(index)}
-                  className="relative w-1.5 sm:w-2 h-8 sm:h-10 rounded-full overflow-hidden bg-white/30 hover:bg-white/50 transition-all duration-200"
+                  className="relative w-1.5 sm:w-2 h-8 sm:h-10 rounded-full overflow-hidden transition-all duration-200"
+                  style={{
+                    backgroundColor: SLIDER_CONFIG.indicatorBackgroundColor,
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor =
+                      SLIDER_CONFIG.indicatorHoverColor)
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor =
+                      SLIDER_CONFIG.indicatorBackgroundColor)
+                  }
                   aria-label={`Go to slide ${index + 1}`}
                 >
                   {/* Fill animation for active slide */}
                   <div
-                    className={`absolute top-0 left-0 right-0 rounded-full bg-[#E8232C] transition-all ${
+                    className={`absolute top-0 left-0 right-0 rounded-full transition-all ${
                       index === currentSlide ? 'animate-fill-indicator' : 'h-0'
                     }`}
                     style={{
+                      backgroundColor: SLIDER_CONFIG.indicatorColor,
                       animation:
                         index === currentSlide && !isPaused
-                          ? 'fillIndicator 10s linear forwards'
+                          ? `fillIndicator ${SLIDER_CONFIG.autoPlayInterval}ms linear forwards`
                           : 'none',
                       animationPlayState: isPaused ? 'paused' : 'running',
                     }}
