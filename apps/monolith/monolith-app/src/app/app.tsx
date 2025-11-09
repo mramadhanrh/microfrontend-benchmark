@@ -16,9 +16,16 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      {/* <HomeModule /> */}
-      {/* <LoginModule /> */}
-      <DashboardModule />
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/dashboard">Dashboard</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<HomeModule />} />
+        <Route path="/login" element={<LoginModule />} />
+        <Route path="/dashboard" element={<DashboardModule />} />
+      </Routes>
     </StyledApp>
   );
 }
