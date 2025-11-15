@@ -1,7 +1,7 @@
 {
   "chatWidget": {
     "theme": {
-      "primaryColor": "#2D7A6E",
+      "primaryColor": "#E8232C",
       "backgroundColor": "#FFFFFF",
       "textPrimary": "#1A1A1A",
       "textSecondary": "#666666",
@@ -39,10 +39,10 @@
               "label": "Start a conversation",
               "icon": "chat",
               "style": {
-                "backgroundColor": "#2D7A6E",
+                "backgroundColor": "#E8232C",
                 "color": "#FFFFFF",
                 "hover": {
-                  "backgroundColor": "#256456",
+                  "backgroundColor": "#C41E26",
                   "transform": "translateY(-1px)",
                   "shadow": "0 4px 12px rgba(45, 122, 110, 0.3)"
                 },
@@ -55,7 +55,7 @@
               "icon": "arrow-right",
               "style": {
                 "color": "#666666",
-                "hover": { "color": "#2D7A6E" }
+                "hover": { "color": "#E8232C" }
               }
             }
           ],
@@ -184,7 +184,7 @@
               "text": "Hi there! I have an issue with connecting my app to Attic. Could you please take a look at my case?",
               "timestamp": "Seen by a human 2 mins ago",
               "style": {
-                "backgroundColor": "#2D7A6E",
+                "backgroundColor": "#E8232C",
                 "color": "#FFFFFF",
                 "alignSelf": "flex-end"
               }
@@ -202,7 +202,7 @@
               "backgroundColor": "#F5F5F5",
               "borderRadius": "8px",
               "focus": {
-                "borderColor": "#2D7A6E",
+                "borderColor": "#E8232C",
                 "shadow": "0 0 0 3px rgba(45, 122, 110, 0.1)"
               }
             }
@@ -210,7 +210,7 @@
           "quickAction": {
             "label": "Have another question",
             "style": {
-              "backgroundColor": "#2D7A6E",
+              "backgroundColor": "#E8232C",
               "color": "#FFFFFF",
               "position": "floating",
               "shadow": "0 2px 8px rgba(45, 122, 110, 0.3)"

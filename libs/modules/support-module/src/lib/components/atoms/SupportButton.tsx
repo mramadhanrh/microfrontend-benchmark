@@ -22,10 +22,10 @@ const SupportButton: React.FC<SupportButtonProps> = ({
 
   const variantClasses = {
     primary:
-      'bg-[#2D7A6E] text-white px-4 py-3 hover:bg-[#256456] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-98',
+      'bg-[#E8232C] text-white px-4 py-3 hover:bg-[#C41E26] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-98',
     secondary:
       'bg-[#1A1A1A] text-white px-4 py-3 hover:bg-[#333333] hover:shadow-md active:scale-98',
-    link: 'text-[#666666] hover:text-[#2D7A6E] px-0 py-2 text-sm',
+    link: 'text-[#666666] hover:text-[#E8232C] px-0 py-2 text-sm',
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

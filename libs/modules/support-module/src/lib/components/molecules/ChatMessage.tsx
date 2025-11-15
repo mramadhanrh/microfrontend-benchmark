@@ -43,7 +43,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         animationFillMode: 'backwards',
       }}
     >
-      <div className="bg-[#2D7A6E] text-white rounded-lg rounded-tr-none px-4 py-3 max-w-[80%]">
+      <div className="bg-[#E8232C] text-white rounded-lg rounded-tr-none px-4 py-3 max-w-[80%]">
         <p className="text-sm leading-relaxed">{text}</p>
       </div>
       {timestamp && (

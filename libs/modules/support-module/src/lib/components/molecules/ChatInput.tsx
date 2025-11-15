@@ -26,11 +26,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-3 pr-12 bg-[#F5F5F5] rounded-lg text-[#1A1A1A] placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#2D7A6E] focus:ring-opacity-20 transition-all duration-150"
+        className="w-full px-4 py-3 pr-12 bg-[#F5F5F5] rounded-lg text-[#1A1A1A] placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#E8232C] focus:ring-opacity-20 transition-all duration-150"
       />
       <button
         type="button"
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666666] hover:text-[#2D7A6E] transition-colors duration-200"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666666] hover:text-[#E8232C] transition-colors duration-200"
         aria-label="Attach file"
       >
         <svg

@@ -22,7 +22,7 @@ const defaultConfig: SupportConfig = {
   welcomeMessage:
     "Hope your day is going great.\nI'm Paul, Attic Bot.\nAsk me anything or share your feedback.",
   theme: {
-    primaryColor: '#2D7A6E',
+    primaryColor: '#E8232C',
     backgroundColor: '#FFFFFF',
     textPrimary: '#1A1A1A',
     textSecondary: '#666666',
@@ -159,9 +159,26 @@ const SupportWidget: React.FC<SupportWidgetProps> = ({ config = {} }) => {
       {/* Backdrop */}
       {currentView !== 'hidden' && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 animate-in fade-in duration-300"
+          className="fixed inset-0 bg-black/0 z-40 animate-in fade-in duration-500"
+          style={{
+            animation: 'backdropFadeIn 0.15s ease-out forwards',
+            backdropFilter: 'blur(0px)',
+          }}
           onClick={handleClose}
-        />
+        >
+          <style>{`
+            @keyframes backdropFadeIn {
+              from {
+                background-color: rgba(0, 0, 0, 0);
+                backdrop-filter: blur(0px);
+              }
+              to {
+                background-color: rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(4px);
+              }
+            }
+          `}</style>
+        </div>
       )}
     </>
   );

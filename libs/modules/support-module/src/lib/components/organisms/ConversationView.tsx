@@ -77,7 +77,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         )}
 
         {/* Input Area */}
-        <div className="p-5 pt-0 space-y-3 border-t border-[#E0E0E0]">
+        <div className="p-5 space-y-3 border-t border-[#E0E0E0]">
           <ChatInput onSend={onSendMessage} />
           <SupportButton
             variant="primary"

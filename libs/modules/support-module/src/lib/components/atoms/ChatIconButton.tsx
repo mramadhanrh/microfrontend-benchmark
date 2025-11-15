@@ -9,7 +9,7 @@ const ChatIconButton: React.FC<ChatIconButtonProps> = ({ onClick, isOpen }) => {
   return (
     <button
       onClick={onClick}
-      className={`fixed bottom-6 right-6 w-14 h-14 bg-[#2D7A6E] rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 ease-out hover:scale-110 active:scale-95 z-50 ${
+      className={`fixed bottom-6 right-6 w-14 h-14 bg-[#E8232C] rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 ease-out hover:scale-110 active:scale-95 z-50 ${
         isOpen ? 'rotate-90 scale-90' : 'rotate-0 scale-100'
       }`}
       aria-label="Open support chat"
