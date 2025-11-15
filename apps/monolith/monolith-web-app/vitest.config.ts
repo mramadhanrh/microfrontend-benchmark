@@ -9,11 +9,6 @@ export default defineConfig({
 
   plugins: [react(), nxViteTsPaths()],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
   test: {
     setupFiles: ['test-setup.ts'],
     globals: true,
@@ -22,11 +17,25 @@ export default defineConfig({
     },
     environment: 'jsdom',
     include: ['./tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../../coverage/monolith/monolith-web-app',
       provider: 'v8',
+    },
+
+    // Mock Module Federation in tests
+    alias: {
+      'homeRemote/Module': './tests/__mocks__/homeRemote.tsx',
+      '@module-federation/enhanced/runtime':
+        './tests/__mocks__/moduleFederation.ts',
+    },
+
+    // Handle dynamic imports
+    deps: {
+      inline: [
+        '@module-federation/enhanced',
+        '@originjs/vite-plugin-federation',
+      ],
     },
   },
 });

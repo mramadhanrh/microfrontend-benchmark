@@ -6,10 +6,20 @@
     "dev:monolith-app": "nx serve monolith-app"
   },
   "private": true,
+  "resolutions": {
+    "@nrwl/devkit": "npm:@nx/devkit@19.0.0",
+    "@nrwl/js": "npm:@nx/js@19.0.0",
+    "@nrwl/react": "npm:@nx/react@19.0.0",
+    "@nrwl/remix": "npm:@nx/remix@19.0.0",
+    "@nrwl/web": "npm:@nx/web@19.0.0",
+    "@nrwl/workspace": "npm:@nx/workspace@19.0.0",
+    "@nrwl/tao": "npm:@nx/devkit@19.0.0"
+  },
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@heroicons/react": "^2.2.0",
+    "@module-federation/enhanced": "^0.21.3",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
@@ -47,6 +57,7 @@
     "@nx/web": "19.0.0",
     "@nx/webpack": "19.0.0",
     "@nx/workspace": "19.0.0",
+    "@originjs/vite-plugin-federation": "^1.4.1",
     "@playwright/test": "^1.36.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@remix-run/dev": "^2.8.1",
