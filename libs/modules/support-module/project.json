@@ -1,0 +1,9 @@
+{
+  "name": "support-module",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/modules/support-module/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project support-module --web",
+  "targets": {}
+}
