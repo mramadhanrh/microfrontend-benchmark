@@ -1,0 +1,14 @@
+{
+  "name": "login_remote",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microfrontend/remotes/login_remote/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "options": {
+        "port": 4301
+      }
+    }
+  }
+}

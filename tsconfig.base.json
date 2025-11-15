@@ -38,6 +38,9 @@
       "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"],
       "home_remote/Module": [
         "apps/microfrontend/remotes/home_remote/src/remote-entry.ts"
+      ],
+      "login_remote/Module": [
+        "apps/microfrontend/remotes/login_remote/src/remote-entry.ts"
       ]
     }
   },
