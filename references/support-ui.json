@@ -1,0 +1,270 @@
+{
+  "chatWidget": {
+    "theme": {
+      "primaryColor": "#2D7A6E",
+      "backgroundColor": "#FFFFFF",
+      "textPrimary": "#1A1A1A",
+      "textSecondary": "#666666",
+      "borderColor": "#E0E0E0",
+      "borderRadius": "12px",
+      "shadow": "0 4px 20px rgba(0, 0, 0, 0.15)"
+    },
+    "variants": [
+      {
+        "id": "initial",
+        "type": "welcome",
+        "position": { "x": 30, "y": 75 },
+        "size": { "width": "240px", "maxWidth": "320px" },
+        "header": {
+          "brand": "Attic",
+          "subtitle": "Support",
+          "closeButton": true,
+          "minimizeButton": true
+        },
+        "content": {
+          "bot": {
+            "avatar": {
+              "type": "icon",
+              "backgroundColor": "#F4A261",
+              "icon": "robot"
+            },
+            "message": {
+              "greeting": "Hi Dina 👋",
+              "text": "Hope your day is going great.\nI'm Paul, Attic Bot.\nAsk me anything or share your feedback."
+            }
+          },
+          "actions": [
+            {
+              "type": "primary",
+              "label": "Start a conversation",
+              "icon": "chat",
+              "style": {
+                "backgroundColor": "#2D7A6E",
+                "color": "#FFFFFF",
+                "hover": {
+                  "backgroundColor": "#256456",
+                  "transform": "translateY(-1px)",
+                  "shadow": "0 4px 12px rgba(45, 122, 110, 0.3)"
+                },
+                "transition": "all 0.2s ease"
+              }
+            },
+            {
+              "type": "link",
+              "label": "See all your conversations",
+              "icon": "arrow-right",
+              "style": {
+                "color": "#666666",
+                "hover": { "color": "#2D7A6E" }
+              }
+            }
+          ],
+          "footer": {
+            "section": "Book a demo",
+            "description": "Get a look inside Attic to discover everything it can do for you.",
+            "action": {
+              "type": "secondary",
+              "label": "Send a request",
+              "style": {
+                "backgroundColor": "#1A1A1A",
+                "color": "#FFFFFF",
+                "hover": {
+                  "backgroundColor": "#333333"
+                }
+              }
+            }
+          }
+        },
+        "animation": {
+          "enter": {
+            "from": { "opacity": 0, "scale": 0.9, "y": 20 },
+            "to": { "opacity": 1, "scale": 1, "y": 0 },
+            "duration": "300ms",
+            "easing": "ease-out"
+          }
+        }
+      },
+      {
+        "id": "menu",
+        "type": "options-menu",
+        "position": { "x": 270, "y": 125 },
+        "size": { "width": "220px" },
+        "header": {
+          "backButton": true,
+          "title": "Paul bot",
+          "badge": {
+            "text": "•",
+            "color": "#00C853"
+          },
+          "closeButton": true,
+          "minimizeButton": true
+        },
+        "content": {
+          "bot": {
+            "avatar": {
+              "type": "icon",
+              "backgroundColor": "#F4A261",
+              "icon": "robot"
+            },
+            "message": {
+              "greeting": "Hi Dina 👋",
+              "text": "Hope your day is going great.\nI'm Paul, Attic Bot.\nAsk me anything or share your feedback."
+            }
+          },
+          "menuItems": [
+            {
+              "label": "Need a help using product",
+              "action": "help",
+              "style": {
+                "backgroundColor": "#F5F5F5",
+                "hover": {
+                  "backgroundColor": "#E8E8E8",
+                  "transform": "translateX(4px)"
+                },
+                "transition": "all 0.2s ease"
+              }
+            },
+            {
+              "label": "Want to submit a bug",
+              "action": "bug"
+            },
+            {
+              "label": "Want to talk to sales",
+              "action": "sales"
+            },
+            {
+              "label": "Have another question",
+              "action": "question"
+            }
+          ]
+        },
+        "animation": {
+          "enter": {
+            "from": { "opacity": 0, "x": 20 },
+            "to": { "opacity": 1, "x": 0 },
+            "duration": "250ms",
+            "easing": "ease-out"
+          },
+          "menuItems": {
+            "stagger": "50ms",
+            "from": { "opacity": 0, "x": -10 },
+            "to": { "opacity": 1, "x": 0 }
+          }
+        }
+      },
+      {
+        "id": "conversation",
+        "type": "chat",
+        "position": { "x": 510, "y": 180 },
+        "size": { "width": "240px", "maxWidth": "320px" },
+        "header": {
+          "backButton": true,
+          "title": "Paul bot",
+          "badge": {
+            "text": "•",
+            "color": "#00C853"
+          },
+          "closeButton": true,
+          "minimizeButton": true
+        },
+        "content": {
+          "messages": [
+            {
+              "type": "bot",
+              "avatar": {
+                "type": "icon",
+                "backgroundColor": "#F4A261",
+                "icon": "robot"
+              },
+              "text": "Sure! Please try to describe your problem so our support will be able to answer in more relevant way.",
+              "timestamp": null
+            },
+            {
+              "type": "user",
+              "text": "Hi there! I have an issue with connecting my app to Attic. Could you please take a look at my case?",
+              "timestamp": "Seen by a human 2 mins ago",
+              "style": {
+                "backgroundColor": "#2D7A6E",
+                "color": "#FFFFFF",
+                "alignSelf": "flex-end"
+              }
+            }
+          ],
+          "status": {
+            "text": "Please wait until consultant review your issue...",
+            "icon": "loading",
+            "color": "#666666"
+          },
+          "input": {
+            "placeholder": "Write a reply...",
+            "attachButton": true,
+            "style": {
+              "backgroundColor": "#F5F5F5",
+              "borderRadius": "8px",
+              "focus": {
+                "borderColor": "#2D7A6E",
+                "shadow": "0 0 0 3px rgba(45, 122, 110, 0.1)"
+              }
+            }
+          },
+          "quickAction": {
+            "label": "Have another question",
+            "style": {
+              "backgroundColor": "#2D7A6E",
+              "color": "#FFFFFF",
+              "position": "floating",
+              "shadow": "0 2px 8px rgba(45, 122, 110, 0.3)"
+            }
+          }
+        },
+        "animation": {
+          "enter": {
+            "from": { "opacity": 0, "scale": 0.95, "y": 10 },
+            "to": { "opacity": 1, "scale": 1, "y": 0 },
+            "duration": "300ms",
+            "easing": "ease-out"
+          },
+          "messages": {
+            "stagger": "150ms",
+            "from": { "opacity": 0, "y": 10 },
+            "to": { "opacity": 1, "y": 0 }
+          }
+        }
+      }
+    ],
+    "transitions": {
+      "betweenVariants": {
+        "duration": "300ms",
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+      },
+      "stateChanges": {
+        "hover": {
+          "duration": "200ms",
+          "easing": "ease-out"
+        },
+        "focus": {
+          "duration": "150ms",
+          "easing": "ease-in-out"
+        }
+      }
+    },
+    "interactions": {
+      "buttons": {
+        "hover": {
+          "transform": "translateY(-1px)",
+          "shadow": "enhanced"
+        },
+        "active": {
+          "transform": "translateY(0)",
+          "scale": 0.98
+        }
+      },
+      "cards": {
+        "hover": {
+          "borderColor": "lighter",
+          "shadow": "elevated"
+        }
+      }
+    }
+  }
+}

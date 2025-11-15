@@ -134,13 +134,13 @@
     },
   },
   "overrides": {
-    "@nrwl/devkit": "npm:@nx/devkit@19.0.0",
-    "@nrwl/js": "npm:@nx/js@19.0.0",
+    "@nrwl/workspace": "npm:@nx/workspace@19.0.0",
     "@nrwl/react": "npm:@nx/react@19.0.0",
+    "@nrwl/devkit": "npm:@nx/devkit@19.0.0",
+    "@nrwl/web": "npm:@nx/web@19.0.0",
+    "@nrwl/js": "npm:@nx/js@19.0.0",
     "@nrwl/remix": "npm:@nx/remix@19.0.0",
     "@nrwl/tao": "npm:@nx/devkit@19.0.0",
-    "@nrwl/web": "npm:@nx/web@19.0.0",
-    "@nrwl/workspace": "npm:@nx/workspace@19.0.0",
   },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.4.4", "", {}, "sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg=="],
