@@ -59,3 +59,5 @@ docs
 test-results
 *.nyc_output
 **/coverage/
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

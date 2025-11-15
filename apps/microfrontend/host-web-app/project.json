@@ -1,0 +1,40 @@
+{
+  "name": "host-web-app",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microfrontend/host-web-app",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/remix:build",
+      "outputs": ["{projectRoot}/build", "{projectRoot}/public/build"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/monolith/monolith-web-app"
+      },
+      "configurations": {
+        "development": {
+          "sourceMap": true
+        },
+        "production": {
+          "sourceMap": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/remix:serve",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "monolith-web-app:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "monolith-web-app:build:development"
+        },
+        "production": {
+          "buildTarget": "monolith-web-app:build:production"
+        }
+      }
+    }
+  }
+}

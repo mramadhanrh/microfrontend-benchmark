@@ -109,8 +109,13 @@
         "^production",
         {
           "env": "NX_MF_DEV_SERVER_STATIC_REMOTES"
+        },
+        {
+          "env": "NX_MF_DEV_REMOTES"
         }
-      ]
+      ],
+      "dependsOn": ["^build"],
+      "cache": true
     },
     "@nx/js:tsc": {
       "cache": true,
@@ -139,6 +144,10 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"]
     }
   },
   "release": {
