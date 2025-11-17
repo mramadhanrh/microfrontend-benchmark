@@ -1,0 +1,85 @@
+{
+  "name": "loginremote",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "loginremote/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/loginremote",
+        "index": "loginremote/src/index.html",
+        "baseHref": "/",
+        "main": "loginremote/src/main.ts",
+        "tsConfig": "loginremote/tsconfig.app.json",
+        "assets": ["loginremote/src/favicon.ico", "loginremote/src/assets"],
+        "styles": ["loginremote/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "loginremote/webpack.config.ts",
+        "postcssConfig": "loginremote/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "loginremote/src/environments/environment.ts",
+              "with": "loginremote/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "loginremote/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "loginremote:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "loginremote:build:development"
+        },
+        "production": {
+          "buildTarget": "loginremote:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "loginremote:build",
+        "watch": false,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "loginremote:build:development"
+        },
+        "production": {
+          "buildTarget": "loginremote:build:production"
+        }
+      }
+    }
+  }
+}

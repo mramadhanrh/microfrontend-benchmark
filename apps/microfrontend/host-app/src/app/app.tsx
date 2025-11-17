@@ -4,8 +4,6 @@ import NxWelcome from './nx-welcome';
 
 import { Link, Route, Routes } from 'react-router-dom';
 
-import HomeRemote from 'home-remote/Module';
-
 export function App() {
   return (
     <React.Suspense fallback={null}>
@@ -16,7 +14,6 @@ export function App() {
       </ul>
       <Routes>
         <Route path="/" element={<NxWelcome title="host-app" />} />
-        <Route path="/home" element={<HomeRemote />} />
       </Routes>
     </React.Suspense>
   );

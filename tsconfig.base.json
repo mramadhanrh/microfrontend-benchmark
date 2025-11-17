@@ -35,7 +35,8 @@
         "libs/modules/support-module/src/index.ts"
       ],
       "@modules/home-module/*": ["libs/modules/home-module/src/*"],
-      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"]
+      "home-remote/Module": ["apps/home-remote/src/remote-entry.ts"],
+      "loginremote/Module": ["loginremote/src/remote-entry.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -29,8 +29,8 @@ function RemoteModuleLoader() {
           name: 'monolithWebApp',
           remotes: [
             {
-              name: 'homeremote',
-              entry: 'http://localhost:4201/remoteEntry.js',
+              name: 'loginremote',
+              entry: 'http://localhost:4300/remoteEntry.js',
             },
           ],
         });
@@ -40,7 +40,7 @@ function RemoteModuleLoader() {
         // Load the remote module
         const module = await instance.loadRemote<{
           default: React.ComponentType;
-        }>('homeremote/Module');
+        }>('loginremote/Module');
 
         console.log('Remote module loaded:', module);
 
