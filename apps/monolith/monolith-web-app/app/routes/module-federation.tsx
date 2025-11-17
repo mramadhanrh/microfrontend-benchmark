@@ -1,6 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { MetaFunction } from '@remix-run/node';
+export async function getSharedDependencies() {
+  // Dynamically import React and React-DOM to make them available for sharing
 
+  return {
+    react: {
+      version: '18.2.0',
+      scope: 'default',
+      lib: () => React,
+      shareConfig: {
+        singleton: true,
+        requiredVersion: '18.2.0',
+        eager: true,
+      },
+    },
+  };
+}
 export const meta: MetaFunction = () => {
   return [
     { title: 'Module Federation Demo' },
@@ -29,10 +44,11 @@ function RemoteModuleLoader() {
           name: 'monolithWebApp',
           remotes: [
             {
-              name: 'homeremote',
-              entry: 'http://localhost:4201/remoteEntry.js',
+              name: 'loginremote',
+              entry: 'http://localhost:4300/remoteEntry.js',
             },
           ],
+          shared: await getSharedDependencies(),
         });
 
         console.log('Module Federation instance created', instance);
@@ -40,7 +56,7 @@ function RemoteModuleLoader() {
         // Load the remote module
         const module = await instance.loadRemote<{
           default: React.ComponentType;
-        }>('homeremote/Module');
+        }>('loginremote/Module');
 
         console.log('Remote module loaded:', module);
 

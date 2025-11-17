@@ -6,6 +6,7 @@
  */
 
 import { ModuleFederation } from '@module-federation/enhanced/runtime';
+import React from 'react';
 
 /**
  * Get the shared dependencies configuration for Module Federation Enhanced Runtime
@@ -14,10 +15,7 @@ import { ModuleFederation } from '@module-federation/enhanced/runtime';
  */
 export async function getSharedDependencies() {
   // Dynamically import React and React-DOM to make them available for sharing
-  const React = await import('react');
-  const ReactDOM = await import('react-dom');
 
-  console.log('Shared dependencies loaded:', { React, ReactDOM });
   return {
     react: {
       version: '18.2.0',
@@ -26,15 +24,7 @@ export async function getSharedDependencies() {
       shareConfig: {
         singleton: true,
         requiredVersion: '18.2.0',
-      },
-    },
-    'react-dom': {
-      version: '18.2.0',
-      scope: 'default',
-      lib: () => ReactDOM,
-      shareConfig: {
-        singleton: true,
-        requiredVersion: '18.2.0',
+        eager: true,
       },
     },
   };

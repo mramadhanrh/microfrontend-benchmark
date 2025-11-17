@@ -16,11 +16,11 @@ const RemoteModuleLoader: FC = () => {
     {
       hostName: 'hostWebApp',
       remotes: {
-        name: 'login_remote',
+        name: 'loginremote',
         entry: 'http://localhost:4300/remoteEntry.js',
       },
     },
-    'login_remote/Module'
+    'loginremote/Module'
   );
 
   return (

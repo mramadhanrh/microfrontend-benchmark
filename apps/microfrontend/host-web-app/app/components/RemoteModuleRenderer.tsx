@@ -53,6 +53,7 @@ export function RemoteModuleRenderer({
   successMessage = '✓ Loaded via Module Federation Runtime API',
   moduleName,
 }: RemoteModuleRendererProps) {
+  if(RemoteComponent) return <RemoteComponent />
   // Loading state
   if (loading) {
     if (loadingComponent) {
