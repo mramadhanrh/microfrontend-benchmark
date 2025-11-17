@@ -59,3 +59,7 @@ docs
 test-results
 *.nyc_output
 **/coverage/
+
+# Next.js
+.next
+out
