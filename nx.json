@@ -84,14 +84,12 @@
       }
     },
     {
-      "plugin": "@nx/rspack/plugin",
+      "plugin": "@nx/next/plugin",
       "options": {
+        "startTargetName": "start",
         "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "serveStaticTargetName": "serve-static",
-        "previewTargetName": "preview",
-        "buildDepsTargetName": "build-deps",
-        "watchDepsTargetName": "watch-deps"
+        "devTargetName": "dev",
+        "serveStaticTargetName": "serve-static"
       }
     }
   ],
@@ -111,6 +109,12 @@
         "linter": "eslint",
         "unitTestRunner": "jest"
       }
+    },
+    "@nx/next": {
+      "application": {
+        "style": "tailwind",
+        "linter": "eslint"
+      }
     }
   },
   "targetDefaults": {
@@ -120,13 +124,8 @@
         "^production",
         {
           "env": "NX_MF_DEV_SERVER_STATIC_REMOTES"
-        },
-        {
-          "env": "NX_MF_DEV_REMOTES"
         }
-      ],
-      "dependsOn": ["^build"],
-      "cache": true
+      ]
     },
     "@nx/js:tsc": {
       "cache": true,
@@ -155,21 +154,6 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
-    },
-    "build": {
-      "cache": true,
-      "dependsOn": ["^build"]
-    },
-    "@nx/rspack:rspack": {
-      "inputs": [
-        "production",
-        "^production",
-        {
-          "env": "NX_MF_DEV_REMOTES"
-        }
-      ],
-      "dependsOn": ["^build"],
-      "cache": true
     }
   },
   "release": {

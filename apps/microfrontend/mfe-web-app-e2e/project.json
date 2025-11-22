@@ -1,0 +1,9 @@
+{
+  "name": "mfe-web-app-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microfrontend/mfe-web-app-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["mfe-web-app"],
+  "// targets": "to see all targets run: nx show project mfe-web-app-e2e --web",
+  "targets": {}
+}
