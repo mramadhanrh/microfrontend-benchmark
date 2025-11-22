@@ -1,0 +1,88 @@
+{
+  "name": "homeremote",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/microfrontend/remotes/homeremote/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/microfrontend/remotes/homeremote",
+        "index": "apps/microfrontend/remotes/homeremote/src/index.html",
+        "baseHref": "/",
+        "main": "apps/microfrontend/remotes/homeremote/src/main.ts",
+        "tsConfig": "apps/microfrontend/remotes/homeremote/tsconfig.app.json",
+        "assets": [
+          "apps/microfrontend/remotes/homeremote/src/favicon.ico",
+          "apps/microfrontend/remotes/homeremote/src/assets"
+        ],
+        "styles": ["apps/microfrontend/remotes/homeremote/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/microfrontend/remotes/homeremote/webpack.config.ts",
+        "postcssConfig": "apps/microfrontend/remotes/homeremote/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/microfrontend/remotes/homeremote/src/environments/environment.ts",
+              "with": "apps/microfrontend/remotes/homeremote/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/microfrontend/remotes/homeremote/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "homeremote:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "homeremote:build:development"
+        },
+        "production": {
+          "buildTarget": "homeremote:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "homeremote:build",
+        "watch": false,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "homeremote:build:development"
+        },
+        "production": {
+          "buildTarget": "homeremote:build:production"
+        }
+      }
+    }
+  }
+}
