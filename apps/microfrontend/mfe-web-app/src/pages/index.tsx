@@ -7,12 +7,14 @@ export function Index() {
     remotes: [
       {
         name: 'homeremote',
-        entry: 'http://localhost:4300/remoteEntry.js',
+        entry:
+          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/homeremote/remoteEntry.js',
         moduleName: 'homeremote/Module',
       },
       {
         name: 'supportremote',
-        entry: 'http://localhost:4301/remoteEntry.js',
+        entry:
+          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/supportremote/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],

@@ -7,12 +7,14 @@ export function Dashboard() {
     remotes: [
       {
         name: 'dashboardremote',
-        entry: 'http://localhost:4303/remoteEntry.js',
+        entry:
+          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/dashboardremote/remoteEntry.js',
         moduleName: 'dashboardremote/Module',
       },
       {
         name: 'supportremote',
-        entry: 'http://localhost:4301/remoteEntry.js',
+        entry:
+          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/supportremote/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],
