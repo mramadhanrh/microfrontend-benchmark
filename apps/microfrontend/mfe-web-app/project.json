@@ -21,6 +21,7 @@
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
+        "buildTarget": "build",
         "dev": true,
         "port": 3000
       }
@@ -28,6 +29,7 @@
     "start": {
       "executor": "@nx/next:server",
       "options": {
+        "buildTarget": "build",
         "dev": false,
         "port": 3000
       }
