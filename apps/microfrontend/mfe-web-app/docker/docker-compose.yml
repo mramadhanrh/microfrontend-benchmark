@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  # Next.js application using a public demo image
+  nextjs-app:
+    image: netfloex/nextjs:latest
+    container_name: nextjs-demo
+    ports:
+      - "3000:3000"
+    networks:
+      - demo-network
+    environment:
+      - NODE_ENV=production
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:1.23.3-alpine
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/demo-nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nextjs-app
+    networks:
+      - demo-network
+
+networks:
+  demo-network:
+    driver: bridge
