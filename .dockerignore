@@ -1,0 +1,7 @@
+node_modules
+.next
+.nx
+*.log
+.env*.local
+coverage
+.cache

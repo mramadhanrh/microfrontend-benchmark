@@ -1,13 +1,14 @@
-FROM docker.io/node:lts-alpine as deps
+FROM docker.io/node:lts-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 RUN npm install -g bun
 WORKDIR /usr/src/app
 COPY package.json ./
+COPY bun.lock ./
 RUN bun install
 
 # Production image, copy all the files and run next
-FROM docker.io/node:lts-alpine as runner
+FROM docker.io/node:lts-alpine AS runner
 RUN apk add --no-cache dumb-init
 RUN npm install -g bun
 
@@ -25,11 +26,6 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY ./ ./
 
 RUN bunx nx build mfe-web-app
-
-# Run the application under "node" user by default
-# RUN chown -R node:node .
-# USER node
-# EXPOSE 3000
 
 # If you are using the custom server implementation:
 CMD ["dumb-init", "bunx", "nx", "start", "mfe-web-app"]
