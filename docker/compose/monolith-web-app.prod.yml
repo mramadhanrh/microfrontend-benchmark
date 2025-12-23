@@ -4,11 +4,11 @@ services:
     container_name: web-app
     build:
       context: ../.. # Go up 2 levels to project root
-      dockerfile: docker/apps/mfe-web-app/Dockerfile
+      dockerfile: docker/apps/monolith/Dockerfile
     ports:
       - "3000:3000"
     networks:
-      - mfe-network
+      - monolith-network
     environment:
       - NODE_ENV=production
 
@@ -25,8 +25,8 @@ services:
     depends_on:
       - web-app
     networks:
-      - mfe-network
+      - monolith-network
 
 networks:
-  mfe-network:
+  monolith-network:
     driver: bridge

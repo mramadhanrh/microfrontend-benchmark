@@ -20,7 +20,7 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 # Copy built application files
 COPY ./ ./
 
-RUN bun run mfe:build
+RUN bun run monolith:build
 
 # If you are using the custom server implementation:
-CMD ["bun", "run", "mfe:start"]
+CMD ["bun", "run", "monolith:start"]

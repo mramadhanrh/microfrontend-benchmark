@@ -10,7 +10,11 @@
     "mfe:build": "nx build mfe-web-app",
     "mfe:start": "nx start mfe-web-app",
     "mfe:dev": "nx dev mfe-web-app",
-    "monolith:dev": "nx dev monolith-app"
+    "monolith:up": "docker compose -f docker/compose/monolith-web-app.prod.yml up",
+    "monolith:down": "docker compose -f docker/compose/monolith-web-app.prod.yml down",
+    "monolith:start": "nx start monolith-web-app",
+    "monolith:dev": "nx dev monolith-web-app",
+    "monolith:build": "nx build monolith-web-app"
   },
   "private": true,
   "resolutions": {
