@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "dev:monolith-app": "nx serve monolith-app"
+    "build:mfe-web-app": "nx build mfe-web-app",
+    "start:mfe-web-app": "nx start mfe-web-app",
+    "dev:mfe-web-app": "nx dev mfe-web-app",
+    "dev:monolith-app": "nx dev monolith-app"
   },
   "private": true,
   "resolutions": {

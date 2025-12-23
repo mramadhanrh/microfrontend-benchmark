@@ -1,10 +1,10 @@
-version: "3.8"
-
 services:
-  # Next.js application using a public demo image
+  # Next.js application
   nextjs-app:
-    image: netfloex/nextjs:latest
-    container_name: nextjs-demo
+    container_name: mfe-web-app
+    build:
+      context: ../../../.. # Go up 3 levels to project root
+      dockerfile: apps/microfrontend/mfe-web-app/docker/next/Dockerfile
     ports:
       - "3000:3000"
     networks:
