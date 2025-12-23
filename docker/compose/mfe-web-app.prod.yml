@@ -1,14 +1,14 @@
 services:
   # Next.js application
-  nextjs-app:
+  mfe-web-app:
     container_name: mfe-web-app
     build:
-      context: ../../../.. # Go up 3 levels to project root
-      dockerfile: apps/microfrontend/mfe-web-app/docker/next/Dockerfile
+      context: ../.. # Go up 2 levels to project root
+      dockerfile: docker/apps/mfe-web-app/Dockerfile
     ports:
       - "3000:3000"
     networks:
-      - demo-network
+      - mfe-network
     environment:
       - NODE_ENV=production
 
@@ -21,10 +21,10 @@ services:
     volumes:
       - ./nginx/demo-nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - nextjs-app
+      - mfe-web-app
     networks:
-      - demo-network
+      - mfe-network
 
 networks:
-  demo-network:
+  mfe-network:
     driver: bridge

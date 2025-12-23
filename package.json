@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "build:mfe-web-app": "nx build mfe-web-app",
-    "start:mfe-web-app": "nx start mfe-web-app",
-    "dev:mfe-web-app": "nx dev mfe-web-app",
-    "dev:monolith-app": "nx dev monolith-app"
+    "mfe:up": "docker compose -f docker/compose/mfe-web-app.prod.yml up -d --build",
+    "mfe:down": "docker compose -f docker/compose/mfe-web-app.prod.yml down",
+    "mfe:build": "nx build mfe-web-app",
+    "mfe:start": "nx start mfe-web-app",
+    "mfe:dev": "nx dev mfe-web-app",
+    "monolith:dev": "nx dev monolith-app"
   },
   "private": true,
   "resolutions": {

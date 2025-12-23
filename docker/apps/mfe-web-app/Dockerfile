@@ -21,7 +21,7 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 # Copy built application files
 COPY ./ ./
 
-RUN bun run build:mfe-web-app
+RUN bun run mfe:build
 
 # If you are using the custom server implementation:
-CMD ["bun", "run", "start:mfe-web-app"]
+CMD ["bun", "run", "mfe:start"]
