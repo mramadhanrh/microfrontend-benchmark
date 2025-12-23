@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "mfe:up": "docker compose -f docker/compose/mfe-web-app.prod.yml up -d --build",
+    "mfe:up": "docker compose -f docker/compose/mfe-web-app.prod.yml up",
     "mfe:down": "docker compose -f docker/compose/mfe-web-app.prod.yml down",
     "mfe:build": "nx build mfe-web-app",
     "mfe:start": "nx start mfe-web-app",

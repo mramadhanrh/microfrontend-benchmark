@@ -1,0 +1,21 @@
+services:
+  # Next.js application
+  mfe-web-app:
+    container_name: mfe-web-app
+    build:
+      context: ../.. # Go up 2 levels to project root
+      dockerfile: docker/apps/mfe-web-app/Dockerfile.dev
+    volumes:
+      # Mount the ENTIRE workspace to avoid project graph issues
+      - ../..:/usr/src/app:delegated
+      # Protect these from being overwritten by host
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+      - /usr/src/app/dist
+      - /usr/src/app/.nx
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NX_DAEMON=false
+      - CHOKIDAR_USEPOLLING=true
