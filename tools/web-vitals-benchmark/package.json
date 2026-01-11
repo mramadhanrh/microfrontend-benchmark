@@ -1,0 +1,17 @@
+{
+  "name": "web-vitals-benchmark",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "lighthouse": "bun run index.ts",
+    "lighthouse:ci": "lhci autorun",
+    "lighthouse:local": "lhci autorun --config=lighthouserc.local.json"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@lhci/cli": "^0.13.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
