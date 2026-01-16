@@ -8,7 +8,7 @@
     "lighthouse:local": "lhci autorun --config=lighthouserc.local.json"
   },
   "devDependencies": {
-    "@types/bun": "latest",
+    "@types/bun": "^1.3.6",
     "@lhci/cli": "^0.13.0"
   },
   "peerDependencies": {
