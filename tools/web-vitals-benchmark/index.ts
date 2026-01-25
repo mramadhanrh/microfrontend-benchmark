@@ -21,4 +21,5 @@ const readFiles = async (dir: string, prefix = 'lhr-') => {
 const lighthouseResults = await readFiles('./.lighthouseci-mfe');
 const benchmarkSummary = getBenchmarkSummary(lighthouseResults);
 
-console.log({ lighthouseResults, benchmarkSummary });
+// Use JSON.stringify for clean, parseable output without color codes
+console.log(JSON.stringify({ lighthouseResults, benchmarkSummary }, null, 2));

@@ -78,6 +78,8 @@ jobs:
           echo "Merged results:"
           ls -la merged-results/
 
+          bun run dev >> merged-results/summary.json
+
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
       - name: Upload merged results
