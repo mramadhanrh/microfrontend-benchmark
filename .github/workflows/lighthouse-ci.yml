@@ -57,12 +57,24 @@ jobs:
           echo -e "\nLooking for any lighthouse files:"
           find . -name "*lighthouse*" -o -name "*.json" 2>/dev/null || echo "Not found"
 
+      - name: Debug - List from root
+        if: always()
+        run: |
+          echo "Repository root:"
+          pwd
+          echo -e "\nChecking path from root:"
+          ls -la tools/web-vitals-benchmark/.lighthouseci/ || echo "Path not accessible from root"
+          echo -e "\nFull find from root:"
+          find tools/web-vitals-benchmark -name ".lighthouseci" -type d
+
       - name: Upload Lighthouse results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: lighthouse-results-${{ matrix.instance }}
-          path: tools/web-vitals-benchmark/.lighthouseci/
+          path: |
+            tools/web-vitals-benchmark/.lighthouseci/
+            tools/web-vitals-benchmark/.lighthouseci-*/
           retention-days: 1
 
   # aggregate-results:
