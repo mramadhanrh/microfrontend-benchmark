@@ -72,9 +72,8 @@ jobs:
         if: always()
         with:
           name: lighthouse-results-${{ matrix.instance }}
-          path: |
-            tools/web-vitals-benchmark/.lighthouseci/
-            tools/web-vitals-benchmark/.lighthouseci-*/
+          path: tools/web-vitals-benchmark/.lighthouseci/
+          include-hidden-files: true
           retention-days: 1
 
   # aggregate-results:
