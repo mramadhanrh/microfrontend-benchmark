@@ -104,5 +104,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-merged-results
-          path: merged-results/
+          path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
