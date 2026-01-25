@@ -81,6 +81,9 @@ jobs:
           mkdir -p merged-results
           echo "Merging all lighthouse results..."
 
+          echo "Generating summary.json..."
+          bun run dev >> merged-results/summary.json
+
           # Copy all JSON files from all artifacts into merged-results
           find lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -88,17 +91,6 @@ jobs:
           ls -la merged-results/
 
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
-
-      - name: Generate benchmark summary
-        working-directory: tools/web-vitals-benchmark
-        run: |
-          # Copy merged results to .lighthouseci-mfe directory so index.ts can read them
-          rm -rf .lighthouseci-mfe
-          mkdir -p .lighthouseci-mfe
-          cp ../../merged-results/*.json .lighthouseci-mfe/
-
-          # Generate summary
-          bun run dev >> merged-results/summary.json
 
       - name: Upload merged results
         uses: actions/upload-artifact@v4
