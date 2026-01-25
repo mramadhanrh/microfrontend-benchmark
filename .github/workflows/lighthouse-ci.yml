@@ -62,6 +62,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: tools/web-vitals-benchmark
+        run: bun install
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
@@ -78,9 +87,18 @@ jobs:
           echo "Merged results:"
           ls -la merged-results/
 
-          bun run dev >> merged-results/summary.json
-
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
+
+      - name: Generate benchmark summary
+        working-directory: tools/web-vitals-benchmark
+        run: |
+          # Copy merged results to .lighthouseci-mfe directory so index.ts can read them
+          rm -rf .lighthouseci-mfe
+          mkdir -p .lighthouseci-mfe
+          cp ../../merged-results/*.json .lighthouseci-mfe/
+
+          # Generate summary
+          bun run dev >> merged-results/summary.json
 
       - name: Upload merged results
         uses: actions/upload-artifact@v4
