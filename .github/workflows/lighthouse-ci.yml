@@ -82,16 +82,23 @@ jobs:
           mkdir -p merged-results
           echo "Merging all lighthouse results..."
 
-          echo "Generating summary.json..."
-          bun run dev >> merged-results/summary.json
-
           # Copy all JSON files from all artifacts into merged-results
-          find lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
+          # lighthouse-artifacts is in the repo root, so we need to go up two directories
+          find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
           echo "Merged results:"
           ls -la merged-results/
 
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
+
+          echo "Generating summary.json..."
+          # Copy merged results to .lighthouseci-mfe so index.ts can process them
+          rm -rf .lighthouseci
+          mkdir -p .lighthouseci
+          cp merged-results/lhr-*.json .lighthouseci/
+
+          # Generate summary
+          bun run dev > merged-results/summary.json
 
       - name: Upload merged results
         uses: actions/upload-artifact@v4
