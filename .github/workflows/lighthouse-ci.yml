@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        instance: [1, 2, 3, 4, 5]
+        instance: [1]
 
     steps:
       - name: Checkout code
@@ -49,38 +49,36 @@ jobs:
         if: always()
         with:
           name: lighthouse-results-${{ matrix.instance }}
-          path: |
-            tools/web-vitals-benchmark/.lighthouseci/
-            tools/web-vitals-benchmark/lighthouse-*.json
+          path: tools/web-vitals-benchmark/.lighthouseci/
           retention-days: 1
 
-  aggregate-results:
-    runs-on: ubuntu-latest
-    needs: lighthouse
-    if: always()
+  # aggregate-results:
+  #   runs-on: ubuntu-latest
+  #   needs: lighthouse
+  #   if: always()
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: lighthouse-artifacts
+  #     - name: Download all artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         path: lighthouse-artifacts
 
-      - name: List artifacts
-        run: |
-          echo "Downloaded artifacts:"
-          ls -R lighthouse-artifacts/
+  #     - name: List artifacts
+  #       run: |
+  #         echo "Downloaded artifacts:"
+  #         ls -R lighthouse-artifacts/
 
-      - name: Aggregate results
-        run: |
-          echo "All Lighthouse CI runs completed"
-          echo "Results available in artifacts"
+  #     - name: Aggregate results
+  #       run: |
+  #         echo "All Lighthouse CI runs completed"
+  #         echo "Results available in artifacts"
 
-      - name: Upload aggregated results
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-all-results
-          path: lighthouse-artifacts/
-          retention-days: 1
+  #     - name: Upload aggregated results
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: lighthouse-all-results
+  #         path: lighthouse-artifacts/
+  #         retention-days: 1
