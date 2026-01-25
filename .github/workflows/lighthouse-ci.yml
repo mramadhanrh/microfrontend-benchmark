@@ -67,19 +67,22 @@ jobs:
         with:
           path: lighthouse-artifacts
 
-      - name: List artifacts
+      - name: Merge all results into single directory
         run: |
-          echo "Downloaded artifacts:"
-          ls -R lighthouse-artifacts/
+          mkdir -p merged-results
+          echo "Merging all lighthouse results..."
 
-      - name: Aggregate results
-        run: |
-          echo "All Lighthouse CI runs completed"
-          echo "Results available in artifacts"
+          # Copy all JSON files from all artifacts into merged-results
+          find lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
-      - name: Upload aggregated results
+          echo "Merged results:"
+          ls -la merged-results/
+
+          echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
+
+      - name: Upload merged results
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-all-results
-          path: lighthouse-artifacts/
+          name: lighthouse-merged-results
+          path: merged-results/
           retention-days: 1
