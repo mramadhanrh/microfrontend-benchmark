@@ -3,6 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
+    "dev": "bun run index.ts",
     "lighthouse": "bun run index.ts",
     "lighthouse:ci": "lhci autorun",
     "lighthouse:local": "lhci autorun --config=lighthouserc.local.json"

@@ -1,3 +1,5 @@
+import type { BenchmarkResult } from './types/benchmarks';
+
 export const getSpeedIndex = (lighthouseResult: any): number => {
   return lighthouseResult.audits['speed-index'].numericValue as number;
 };
@@ -24,7 +26,7 @@ export const getTotalBlockingTime = (lighthouseResult: any): number => {
   return lighthouseResult.audits['total-blocking-time'].numericValue as number;
 };
 
-export const getCoreData = (lighthouseResult: any) => {
+export const getCoreData = (lighthouseResult: object): BenchmarkResult => {
   return {
     speedIndex: getSpeedIndex(lighthouseResult),
     firstContentfulPaint: getFirstContentfulPaint(lighthouseResult),
