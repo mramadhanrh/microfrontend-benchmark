@@ -1,0 +1,86 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Custom URL to benchmark"
+        required: false
+        type: string
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        instance: [1, 2, 3, 4, 5]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: tools/web-vitals-benchmark
+        run: bun install
+
+      - name: Run Lighthouse CI (Instance ${{ matrix.instance }})
+        working-directory: tools/web-vitals-benchmark
+        run: |
+          if [ -n "${{ inputs.url }}" ]; then
+            bun run lighthouse:ci --collect.url="${{ inputs.url }}"
+          else
+            bun run lighthouse:ci
+          fi
+        continue-on-error: true
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results-${{ matrix.instance }}
+          path: |
+            tools/web-vitals-benchmark/.lighthouseci/
+            tools/web-vitals-benchmark/lighthouse-*.json
+          retention-days: 1
+
+  aggregate-results:
+    runs-on: ubuntu-latest
+    needs: lighthouse
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: lighthouse-artifacts
+
+      - name: List artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          ls -R lighthouse-artifacts/
+
+      - name: Aggregate results
+        run: |
+          echo "All Lighthouse CI runs completed"
+          echo "Results available in artifacts"
+
+      - name: Upload aggregated results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-all-results
+          path: lighthouse-artifacts/
+          retention-days: 1
