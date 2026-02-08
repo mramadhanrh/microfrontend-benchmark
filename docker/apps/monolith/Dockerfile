@@ -20,6 +20,7 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 # Copy built application files
 COPY ./ ./
 
+ENV NODE_ENV=production
 RUN bun run monolith:build
 
 # If you are using the custom server implementation:

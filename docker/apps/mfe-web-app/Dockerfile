@@ -1,5 +1,9 @@
 # Using oven/bun image doesn't work due to permission issues and different process on the base image
-# Run command: docker build -f apps/microfrontend/mfe-web-app/docker/next/Dockerfile -t mfe-web-app:latest .
+# Run command: docker build -f docker/apps/mfe-web-app/Dockerfile -t mfe-web-app:latest .
+
+# Build command: docker build -f docker/apps/mfe-web-app/Dockerfile -t mfe-web-app:latest .
+# Tag command: docker tag mfe-web-app:latest <registry>/mfe-web-app:latest
+# Push command: docker push <registry>/mfe-web-app:latest
 
 FROM docker.io/node:lts-alpine AS deps
 
@@ -20,6 +24,7 @@ COPY --from=deps /usr/src/app/node_modules ./node_modules
 # Copy built application files
 COPY ./ ./
 
+ENV NODE_ENV=production
 RUN bun run mfe:build
 
 # If you are using the custom server implementation:
