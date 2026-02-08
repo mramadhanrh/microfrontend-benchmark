@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "url": ["http://3.0.90.83/"],
+      "url": ["http://54.254.7.103/"],
       "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",
