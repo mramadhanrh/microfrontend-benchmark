@@ -1,7 +1,7 @@
 # Using oven/bun image doesn't work due to permission issues and different process on the base image
 # Run command: docker build -f docker/apps/mfe-web-app/Dockerfile -t mfe-web-app:latest .
 
-# Build command: docker build -f docker/apps/mfe-web-app/Dockerfile -t mfe-web-app:latest .
+# Build command: docker buildx build --platform linux/amd64,linux/arm64 -f docker/apps/mfe-web-app/Dockerfile -t mfe-web-app:latest .
 # Tag command: docker tag mfe-web-app:latest <registry>/mfe-web-app:latest
 # Push command: docker push <registry>/mfe-web-app:latest
 
