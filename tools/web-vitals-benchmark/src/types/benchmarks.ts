@@ -25,3 +25,7 @@ export interface BenchmarkSummary {
   timeToInteractive: MetricSummary;
   totalBlockingTime: MetricSummary;
 }
+
+export type TTestTable = {
+  [K in keyof BenchmarkResult]: number[];
+};

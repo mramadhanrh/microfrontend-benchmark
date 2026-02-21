@@ -2,6 +2,7 @@ import type {
   BenchmarkResult,
   BenchmarkSummary,
   MetricSummary,
+  TTestTable,
 } from './types/benchmarks';
 
 const calculateMean = (values: number[]): number => {
@@ -95,6 +96,15 @@ const defaultEmptySummary: BenchmarkSummary = {
   totalBlockingTime: defaultEmptyMetric,
 };
 
+const BENCHMARK_METRICS: (keyof BenchmarkResult)[] = [
+  'speedIndex',
+  'firstContentfulPaint',
+  'largestContentfulPaint',
+  'cumulativeLayoutShift',
+  'timeToInteractive',
+  'totalBlockingTime',
+];
+
 export const getBenchmarkSummary = (
   benchmarkResults: BenchmarkResult[]
 ): BenchmarkSummary => {
@@ -102,18 +112,9 @@ export const getBenchmarkSummary = (
     return defaultEmptySummary;
   }
 
-  const metrics: (keyof BenchmarkResult)[] = [
-    'speedIndex',
-    'firstContentfulPaint',
-    'largestContentfulPaint',
-    'cumulativeLayoutShift',
-    'timeToInteractive',
-    'totalBlockingTime',
-  ];
-
   const summary: BenchmarkSummary = { ...defaultEmptySummary };
 
-  for (const metric of metrics) {
+  for (const metric of BENCHMARK_METRICS) {
     const values = benchmarkResults.map((result) => result[metric]);
     summary[metric] = {
       mean: calculateMean(values),
@@ -127,4 +128,16 @@ export const getBenchmarkSummary = (
   }
 
   return summary;
+};
+
+export const getBenchmarkTTestTable = (
+  benchmarkResults: BenchmarkResult[]
+): TTestTable => {
+  const table = {} as TTestTable;
+
+  for (const metric of BENCHMARK_METRICS) {
+    table[metric] = benchmarkResults.map((result) => result[metric]);
+  }
+
+  return table;
 };

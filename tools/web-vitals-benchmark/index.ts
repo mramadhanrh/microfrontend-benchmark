@@ -1,7 +1,10 @@
 import { Glob } from 'bun';
 import getCoreData from './src/getCoreData';
 import type { BenchmarkResult } from './src/types/benchmarks';
-import { getBenchmarkSummary } from './src/getBenchmarkSummaries';
+import {
+  getBenchmarkSummary,
+  getBenchmarkTTestTable,
+} from './src/getBenchmarkSummaries';
 
 const readFiles = async (dir: string, prefix = 'lhr-') => {
   const glob = new Glob('*.{json}');
@@ -20,6 +23,13 @@ const readFiles = async (dir: string, prefix = 'lhr-') => {
 
 const lighthouseResults = await readFiles('./.lighthouseci-mfe');
 const benchmarkSummary = getBenchmarkSummary(lighthouseResults);
+const benchmarkTTestTable = getBenchmarkTTestTable(lighthouseResults);
 
 // Use JSON.stringify for clean, parseable output without color codes
-console.log(JSON.stringify({ lighthouseResults, benchmarkSummary }, null, 2));
+console.log(
+  JSON.stringify(
+    { lighthouseResults, benchmarkSummary, benchmarkTTestTable },
+    null,
+    2
+  )
+);
