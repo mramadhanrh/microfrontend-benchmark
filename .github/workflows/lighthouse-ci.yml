@@ -1,25 +1,31 @@
 name: Lighthouse CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       url:
-        description: "Custom URL to benchmark"
+        description: "Custom URL to benchmark (leave empty to use default)"
         required: false
         type: string
+      mode:
+        description: "Benchmark mode"
+        required: false
+        type: choice
+        default: "cold"
+        options:
+          - cold
+          - warm
+          - both
+
+env:
+  DEFAULT_BENCHMARK_URL: "http://13.229.66.196"
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        instance: [1, 2, 3]
+        instance: [1, 2, 3, 4, 5, 6]
 
     steps:
       - name: Checkout code
@@ -34,13 +40,33 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Run Lighthouse CI (Instance ${{ matrix.instance }})
-        working-directory: tools/web-vitals-benchmark
+      - name: Set benchmark URL
+        id: set-url
         run: |
           if [ -n "${{ inputs.url }}" ]; then
-            bun run lighthouse:ci --collect.url="${{ inputs.url }}"
+            echo "url=${{ inputs.url }}" >> "$GITHUB_OUTPUT"
           else
-            bun run lighthouse:ci
+            echo "url=${{ env.DEFAULT_BENCHMARK_URL }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Lighthouse CI (Instance ${{ matrix.instance }})
+        working-directory: tools/web-vitals-benchmark
+        env:
+          NX_BENCHMARK_URL: ${{ steps.set-url.outputs.url }}
+        run: |
+          echo "Benchmark URL: $NX_BENCHMARK_URL"
+          MODE="${{ inputs.mode || 'cold' }}"
+          echo "Mode: $MODE"
+
+          if [ "$MODE" = "both" ]; then
+            echo "--- Running cold start ---"
+            bun run lighthouse:cold
+            echo "--- Running warm start ---"
+            bun run lighthouse:warm
+          elif [ "$MODE" = "warm" ]; then
+            bun run lighthouse:warm
+          else
+            bun run lighthouse:cold
           fi
         continue-on-error: true
 
