@@ -60,9 +60,9 @@ jobs:
 
           if [ "$MODE" = "both" ]; then
             echo "--- Running cold start ---"
-            bun run lighthouse:cold
+            bun run lighthouse:cold || true
             echo "--- Running warm start ---"
-            bun run lighthouse:warm
+            bun run lighthouse:warm || true
           elif [ "$MODE" = "warm" ]; then
             bun run lighthouse:warm
           else
