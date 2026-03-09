@@ -28,7 +28,12 @@ const benchmarkTTestTable = getBenchmarkTTestTable(lighthouseResults);
 // Use JSON.stringify for clean, parseable output without color codes
 console.log(
   JSON.stringify(
-    { lighthouseResults, benchmarkSummary, benchmarkTTestTable },
+    {
+      reportVersion: '2.0',
+      lighthouseResults,
+      benchmarkSummary,
+      benchmarkTTestTable,
+    },
     null,
     2
   )
