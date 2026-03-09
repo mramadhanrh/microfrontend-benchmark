@@ -21,7 +21,7 @@ const readFiles = async (dir: string, prefix = 'lhr-') => {
   return results;
 };
 
-const lighthouseResults = await readFiles('./.lighthouseci-mfe');
+const lighthouseResults = await readFiles('./.lighthouseci');
 const benchmarkSummary = getBenchmarkSummary(lighthouseResults);
 const benchmarkTTestTable = getBenchmarkTTestTable(lighthouseResults);
 

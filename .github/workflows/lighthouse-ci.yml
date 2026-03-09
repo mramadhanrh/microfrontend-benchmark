@@ -61,8 +61,15 @@ jobs:
           if [ "$MODE" = "both" ]; then
             echo "--- Running cold start ---"
             bun run lighthouse:cold || true
+            mkdir -p .lighthouseci-cold
+            cp .lighthouseci/* .lighthouseci-cold/ 2>/dev/null || true
+            rm -rf .lighthouseci
+
             echo "--- Running warm start ---"
             bun run lighthouse:warm || true
+            mkdir -p .lighthouseci-warm
+            cp .lighthouseci/* .lighthouseci-warm/ 2>/dev/null || true
+            rm -rf .lighthouseci
           elif [ "$MODE" = "warm" ]; then
             bun run lighthouse:warm
           else
@@ -70,19 +77,37 @@ jobs:
           fi
         continue-on-error: true
 
-      - name: Upload Lighthouse results
+      - name: Upload Lighthouse results (single mode)
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && inputs.mode != 'both'
         with:
           name: lighthouse-results-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci/
           include-hidden-files: true
           retention-days: 1
 
+      - name: Upload cold results
+        uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'both'
+        with:
+          name: lighthouse-cold-results-${{ matrix.instance }}
+          path: tools/web-vitals-benchmark/.lighthouseci-cold/
+          include-hidden-files: true
+          retention-days: 1
+
+      - name: Upload warm results
+        uses: actions/upload-artifact@v4
+        if: always() && inputs.mode == 'both'
+        with:
+          name: lighthouse-warm-results-${{ matrix.instance }}
+          path: tools/web-vitals-benchmark/.lighthouseci-warm/
+          include-hidden-files: true
+          retention-days: 1
+
   aggregate-results:
     runs-on: ubuntu-latest
     needs: lighthouse
-    if: always()
+    if: always() && inputs.mode != 'both'
 
     steps:
       - name: Checkout code
@@ -108,27 +133,122 @@ jobs:
           mkdir -p merged-results
           echo "Merging all lighthouse results..."
 
-          # Copy all JSON files from all artifacts into merged-results
-          # lighthouse-artifacts is in the repo root, so we need to go up two directories
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
           echo "Merged results:"
           ls -la merged-results/
-
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
           echo "Generating summary.json..."
-          # Copy merged results to .lighthouseci-mfe so index.ts can process them
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
-          # Generate summary
           bun run dev > merged-results/summary.json
 
       - name: Upload merged results
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-merged-results
+          path: tools/web-vitals-benchmark/merged-results/
+          retention-days: 1
+
+  aggregate-cold-results:
+    runs-on: ubuntu-latest
+    needs: lighthouse
+    if: always() && inputs.mode == 'both'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: tools/web-vitals-benchmark
+        run: bun install
+
+      - name: Download cold artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-cold-results-*
+          path: lighthouse-artifacts
+
+      - name: Merge cold results
+        working-directory: tools/web-vitals-benchmark
+        run: |
+          mkdir -p merged-results
+          echo "Merging cold lighthouse results..."
+
+          find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
+
+          echo "Merged cold results:"
+          ls -la merged-results/
+          echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
+
+          echo "Generating cold summary.json..."
+          rm -rf .lighthouseci
+          mkdir -p .lighthouseci
+          cp merged-results/lhr-*.json .lighthouseci/
+
+          bun run dev > merged-results/summary.json
+
+      - name: Upload cold merged results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-merged-results-cold
+          path: tools/web-vitals-benchmark/merged-results/
+          retention-days: 1
+
+  aggregate-warm-results:
+    runs-on: ubuntu-latest
+    needs: lighthouse
+    if: always() && inputs.mode == 'both'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: tools/web-vitals-benchmark
+        run: bun install
+
+      - name: Download warm artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-warm-results-*
+          path: lighthouse-artifacts
+
+      - name: Merge warm results
+        working-directory: tools/web-vitals-benchmark
+        run: |
+          mkdir -p merged-results
+          echo "Merging warm lighthouse results..."
+
+          find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
+
+          echo "Merged warm results:"
+          ls -la merged-results/
+          echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
+
+          echo "Generating warm summary.json..."
+          rm -rf .lighthouseci
+          mkdir -p .lighthouseci
+          cp merged-results/lhr-*.json .lighthouseci/
+
+          bun run dev > merged-results/summary.json
+
+      - name: Upload warm merged results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-merged-results-warm
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
