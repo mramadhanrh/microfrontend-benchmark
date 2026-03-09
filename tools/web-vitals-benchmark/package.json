@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "bun run index.ts",
     "lighthouse": "bun run index.ts",
-    "lighthouse:ci": "lhci autorun",
+    "lighthouse:ci": "lhci autorun --config=lighthouserc.cjs",
+    "lighthouse:cold": "lhci autorun --config=lighthouserc.cold.cjs",
+    "lighthouse:warm": "lhci autorun --config=lighthouserc.warm.cjs",
     "lighthouse:local": "lhci autorun --config=lighthouserc.local.json"
   },
   "devDependencies": {
