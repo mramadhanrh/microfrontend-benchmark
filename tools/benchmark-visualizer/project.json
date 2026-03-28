@@ -1,0 +1,8 @@
+{
+  "name": "benchmark-visualizer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/benchmark-visualizer/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {}
+}

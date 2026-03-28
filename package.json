@@ -14,7 +14,10 @@
     "monolith:down": "docker compose -f docker/compose/monolith-web-app.prod.yml down",
     "monolith:start": "nx start monolith-web-app",
     "monolith:dev": "nx dev monolith-web-app",
-    "monolith:build": "nx build monolith-web-app"
+    "monolith:build": "nx build monolith-web-app",
+    "visualizer:dev": "nx serve benchmark-visualizer",
+    "visualizer:build": "nx build benchmark-visualizer",
+    "visualizer:preview": "nx preview benchmark-visualizer"
   },
   "private": true,
   "resolutions": {
@@ -44,6 +47,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "6.11.2",
+    "recharts": "^3.8.1",
     "styled-components": "5.3.6",
     "tslib": "^2.3.0",
     "zod": "3.25.13",

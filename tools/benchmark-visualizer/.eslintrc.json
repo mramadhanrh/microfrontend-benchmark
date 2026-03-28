@@ -1,0 +1,10 @@
+{
+  "extends": ["../../.eslintrc.base.json"],
+  "ignorePatterns": ["!**/*", "public", "dist"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    }
+  ]
+}
