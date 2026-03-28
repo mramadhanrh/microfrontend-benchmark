@@ -39,8 +39,7 @@ export default function CrossPageComparison({
             Cross-Page Comparison
           </h2>
           <p className="text-neutral-500 text-sm mt-1">
-            Compare performance metrics across all pages for both
-            architectures.
+            Compare performance metrics across all pages for both architectures.
           </p>
         </div>
         <div className="flex gap-1 bg-surface-1 rounded-lg p-1">

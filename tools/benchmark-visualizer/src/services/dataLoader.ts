@@ -37,9 +37,7 @@ export async function loadBenchmarkData(
   }
 }
 
-export async function loadPageData(
-  pageId: string
-): Promise<PageBenchmarkData> {
+export async function loadPageData(pageId: string): Promise<PageBenchmarkData> {
   const [mfeWarm, mfeCold, monolithWarm, monolithCold] = await Promise.all([
     loadBenchmarkData('mfe', pageId, 'warm'),
     loadBenchmarkData('mfe', pageId, 'cold'),
