@@ -48,6 +48,23 @@ export interface DataSet {
   data: SummaryJson | null;
 }
 
+export interface PageInfo {
+  id: string;
+  label: string;
+  path: string;
+}
+
+export interface PageManifest {
+  pages: PageInfo[];
+}
+
+export interface PageBenchmarkData {
+  mfeWarm: SummaryJson | null;
+  mfeCold: SummaryJson | null;
+  monolithWarm: SummaryJson | null;
+  monolithCold: SummaryJson | null;
+}
+
 export const METRIC_KEYS: MetricKey[] = [
   'speedIndex',
   'firstContentfulPaint',

@@ -1,19 +1,23 @@
+import type { PageInfo } from '../types/benchmark';
+import PageSelector from './PageSelector';
+
 interface HeaderProps {
-  mfeWarmRuns: number;
-  mfeColdRuns: number;
-  monolithWarmRuns: number;
-  monolithColdRuns: number;
+  mfeRuns: number;
+  monolithRuns: number;
+  totalRuns: number;
+  pages: PageInfo[];
+  activePage: string;
+  onPageChange: (pageId: string) => void;
 }
 
 export default function Header({
-  mfeWarmRuns,
-  mfeColdRuns,
-  monolithWarmRuns,
-  monolithColdRuns,
+  mfeRuns,
+  monolithRuns,
+  totalRuns,
+  pages,
+  activePage,
+  onPageChange,
 }: HeaderProps) {
-  const totalRuns =
-    mfeWarmRuns + mfeColdRuns + monolithWarmRuns + monolithColdRuns;
-
   return (
     <header className="border-b border-neutral-800 bg-surface-1/80 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-5">
@@ -29,16 +33,25 @@ export default function Header({
           <div className="flex items-center gap-4 text-xs text-neutral-500">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-blue-500" />
-              MFE: {mfeWarmRuns + mfeColdRuns} runs
+              MFE: {mfeRuns} runs
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-purple-500" />
-              Monolith: {monolithWarmRuns + monolithColdRuns} runs
+              Monolith: {monolithRuns} runs
             </div>
             <div className="text-neutral-600">|</div>
             <div>Total: {totalRuns} runs</div>
           </div>
         </div>
+        {pages.length > 1 && (
+          <div className="mt-4 pt-3 border-t border-neutral-800/50">
+            <PageSelector
+              pages={pages}
+              activePage={activePage}
+              onPageChange={onPageChange}
+            />
+          </div>
+        )}
       </div>
     </header>
   );

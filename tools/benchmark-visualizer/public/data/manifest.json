@@ -1,0 +1,7 @@
+{
+  "pages": [
+    { "id": "home", "label": "Home", "path": "/" },
+    { "id": "dashboard", "label": "Dashboard", "path": "/dashboard" },
+    { "id": "login", "label": "Login", "path": "/login" }
+  ]
+}

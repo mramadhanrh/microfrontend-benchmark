@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import type { SummaryJson } from '../types/benchmark';
-import { loadAllBenchmarkData } from '../services/dataLoader';
+import { useState, useEffect, useMemo } from 'react';
+import type { PageInfo, PageBenchmarkData } from '../types/benchmark';
+import { loadManifest, loadAllPagesData } from '../services/dataLoader';
 import Header from '../components/Header';
 import ScenarioSection from '../components/ScenarioSection';
 import CombinedOverview from '../components/CombinedOverview';
+import CrossPageComparison from '../components/CrossPageComparison';
 import Methodology from '../components/Methodology';
 
 type Tab = 'warm' | 'cold' | 'combined';
@@ -16,25 +17,45 @@ const TABS: { key: Tab; label: string }[] = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('warm');
+  const [activePage, setActivePage] = useState('');
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<{
-    mfeWarm: SummaryJson | null;
-    mfeCold: SummaryJson | null;
-    monolithWarm: SummaryJson | null;
-    monolithCold: SummaryJson | null;
-  }>({
+  const [pages, setPages] = useState<PageInfo[]>([]);
+  const [allPagesData, setAllPagesData] = useState<
+    Record<string, PageBenchmarkData>
+  >({});
+
+  useEffect(() => {
+    loadManifest().then(async (manifest) => {
+      setPages(manifest.pages);
+      if (manifest.pages.length > 0) {
+        setActivePage(manifest.pages[0].id);
+        const data = await loadAllPagesData(manifest.pages);
+        setAllPagesData(data);
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  const pageData = allPagesData[activePage] ?? {
     mfeWarm: null,
     mfeCold: null,
     monolithWarm: null,
     monolithCold: null,
-  });
+  };
 
-  useEffect(() => {
-    loadAllBenchmarkData().then((result) => {
-      setData(result);
-      setLoading(false);
-    });
-  }, []);
+  const { mfeRuns, monolithRuns, totalRuns } = useMemo(() => {
+    let mfe = 0;
+    let mono = 0;
+    for (const d of Object.values(allPagesData)) {
+      mfe +=
+        (d.mfeWarm?.lighthouseResults.length ?? 0) +
+        (d.mfeCold?.lighthouseResults.length ?? 0);
+      mono +=
+        (d.monolithWarm?.lighthouseResults.length ?? 0) +
+        (d.monolithCold?.lighthouseResults.length ?? 0);
+    }
+    return { mfeRuns: mfe, monolithRuns: mono, totalRuns: mfe + mono };
+  }, [allPagesData]);
 
   if (loading) {
     return (
@@ -47,57 +68,72 @@ export default function App() {
     );
   }
 
+  const isAllPages = activePage === 'all';
+
   return (
     <div className="min-h-screen bg-surface-0">
       <Header
-        mfeWarmRuns={data.mfeWarm?.lighthouseResults.length ?? 0}
-        mfeColdRuns={data.mfeCold?.lighthouseResults.length ?? 0}
-        monolithWarmRuns={data.monolithWarm?.lighthouseResults.length ?? 0}
-        monolithColdRuns={data.monolithCold?.lighthouseResults.length ?? 0}
+        mfeRuns={mfeRuns}
+        monolithRuns={monolithRuns}
+        totalRuns={totalRuns}
+        pages={pages}
+        activePage={activePage}
+        onPageChange={setActivePage}
       />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Tab navigation */}
-        <nav className="flex gap-1 mb-8 bg-surface-1 rounded-lg p-1 w-fit">
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === tab.key
-                  ? 'bg-surface-3 text-white shadow-sm'
-                  : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+        {isAllPages ? (
+          <>
+            <CrossPageComparison
+              pages={pages}
+              allPagesData={allPagesData}
+            />
+          </>
+        ) : (
+          <>
+            {/* Tab navigation */}
+            <nav className="flex gap-1 mb-8 bg-surface-1 rounded-lg p-1 w-fit">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    activeTab === tab.key
+                      ? 'bg-surface-3 text-white shadow-sm'
+                      : 'text-neutral-400 hover:text-neutral-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
 
-        {/* Active tab content */}
-        {activeTab === 'warm' && (
-          <ScenarioSection
-            scenario="warm"
-            mfeData={data.mfeWarm}
-            monolithData={data.monolithWarm}
-          />
-        )}
+            {/* Active tab content */}
+            {activeTab === 'warm' && (
+              <ScenarioSection
+                scenario="warm"
+                mfeData={pageData.mfeWarm}
+                monolithData={pageData.monolithWarm}
+              />
+            )}
 
-        {activeTab === 'cold' && (
-          <ScenarioSection
-            scenario="cold"
-            mfeData={data.mfeCold}
-            monolithData={data.monolithCold}
-          />
-        )}
+            {activeTab === 'cold' && (
+              <ScenarioSection
+                scenario="cold"
+                mfeData={pageData.mfeCold}
+                monolithData={pageData.monolithCold}
+              />
+            )}
 
-        {activeTab === 'combined' && (
-          <CombinedOverview
-            mfeWarm={data.mfeWarm}
-            mfeCold={data.mfeCold}
-            monolithWarm={data.monolithWarm}
-            monolithCold={data.monolithCold}
-          />
+            {activeTab === 'combined' && (
+              <CombinedOverview
+                mfeWarm={pageData.mfeWarm}
+                mfeCold={pageData.mfeCold}
+                monolithWarm={pageData.monolithWarm}
+                monolithCold={pageData.monolithCold}
+              />
+            )}
+          </>
         )}
 
         {/* Methodology section */}
