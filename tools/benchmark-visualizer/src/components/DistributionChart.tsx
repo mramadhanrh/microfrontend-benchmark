@@ -1,15 +1,15 @@
 import {
-  ComposedChart,
-  Bar,
+  ScatterChart,
+  Scatter,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Scatter,
-  Cell,
   ZAxis,
+  ReferenceArea,
+  ReferenceLine,
 } from 'recharts';
 import type { SummaryJson, MetricKey } from '../types/benchmark';
 import {
@@ -24,100 +24,51 @@ interface DistributionChartProps {
   monolithData: SummaryJson | null;
 }
 
-interface BoxPlotData {
-  name: string;
-  min: number;
-  q1: number;
-  median: number;
-  q3: number;
-  max: number;
-  // For the bar rendering (q1 to q3 range)
-  boxLow: number;
-  boxHeight: number;
-  // Whisker rendering
-  whiskerLow: [number, number];
-  whiskerHigh: [number, number];
-}
-
-function getBoxPlotData(
-  data: SummaryJson | null,
-  label: string,
-  metricKey: MetricKey
-): BoxPlotData | null {
-  if (!data?.benchmarkSummary) return null;
-  const summary = data.benchmarkSummary[metricKey];
-
-  return {
-    name: label,
-    min: summary.min,
-    q1: summary.q1,
-    median: summary.median,
-    q3: summary.q3,
-    max: summary.max,
-    boxLow: summary.q1,
-    boxHeight: summary.q3 - summary.q1,
-    whiskerLow: [summary.q1 - summary.min, 0],
-    whiskerHigh: [0, summary.max - summary.q3],
-  };
-}
-
-interface ScatterPoint {
-  name: string;
-  value: number;
+interface JitteredPoint {
   x: number;
+  y: number;
+  label: string;
 }
 
-function getScatterPoints(
+/** Deterministic seeded hash for consistent jitter across renders */
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function buildJitteredPoints(
   data: SummaryJson | null,
-  label: string,
   metricKey: MetricKey,
-  xIndex: number
-): ScatterPoint[] {
+  centerX: number,
+  label: string
+): JitteredPoint[] {
   if (!data?.benchmarkTTestTable) return [];
   const values = data.benchmarkTTestTable[metricKey];
-  return values.map((v) => ({ name: label, value: v, x: xIndex }));
+  const jitterWidth = 0.25;
+  return values.map((v, i) => ({
+    x: centerX + (seededRandom(i * 31 + centerX * 97) - 0.5) * jitterWidth,
+    y: v,
+    label,
+  }));
 }
 
-function CustomBoxPlotTooltip({
+const MFE_CENTER = 0;
+const MONOLITH_CENTER = 1;
+
+function CustomScatterTooltip({
   active,
   payload,
 }: {
   active?: boolean;
-  payload?: Array<{ payload: BoxPlotData }>;
+  payload?: Array<{ payload: JitteredPoint }>;
 }) {
   if (!active || !payload?.length) return null;
-  const d = payload[0].payload;
-  if (!d.min && d.min !== 0) return null;
+  const p = payload[0].payload;
 
   return (
-    <div className="bg-surface-3 border border-neutral-700 rounded-lg p-3 shadow-xl text-xs">
-      <p className="text-sm font-semibold text-white mb-2">{d.name}</p>
-      <div className="space-y-1">
-        <div className="flex justify-between gap-4">
-          <span className="text-neutral-400">Max:</span>
-          <span className="text-white font-mono">{formatMs(d.max)}</span>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-neutral-400">Q3:</span>
-          <span className="text-white font-mono">{formatMs(d.q3)}</span>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-neutral-400">Median:</span>
-          <span className="text-white font-mono">{formatMs(d.median)}</span>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-neutral-400">Q1:</span>
-          <span className="text-white font-mono">{formatMs(d.q1)}</span>
-        </div>
-        <div className="flex justify-between gap-4">
-          <span className="text-neutral-400">Min:</span>
-          <span className="text-white font-mono">{formatMs(d.min)}</span>
-        </div>
-        <div className="flex justify-between gap-4 border-t border-neutral-700 pt-1">
-          <span className="text-neutral-400">IQR:</span>
-          <span className="text-white font-mono">{formatMs(d.q3 - d.q1)}</span>
-        </div>
-      </div>
+    <div className="bg-surface-3 border border-neutral-700 rounded-lg px-3 py-2 shadow-xl text-xs">
+      <span className="text-neutral-400">{p.label}:</span>{' '}
+      <span className="text-white font-mono">{formatMs(p.y)}</span>
     </div>
   );
 }
@@ -127,24 +78,36 @@ export default function DistributionChart({
   mfeData,
   monolithData,
 }: DistributionChartProps) {
-  const mfeBox = getBoxPlotData(mfeData, 'Microfrontend', metricKey);
-  const monolithBox = getBoxPlotData(monolithData, 'Monolith', metricKey);
-
-  const mfeScatter = getScatterPoints(mfeData, 'MFE', metricKey, 0);
-  const monolithScatter = getScatterPoints(
-    monolithData,
-    'Monolith',
+  const mfePoints = buildJitteredPoints(
+    mfeData,
     metricKey,
-    1
+    MFE_CENTER,
+    'Microfrontend'
+  );
+  const monolithPoints = buildJitteredPoints(
+    monolithData,
+    metricKey,
+    MONOLITH_CENTER,
+    'Monolith'
   );
 
-  const allValues = [...mfeScatter, ...monolithScatter].map((p) => p.value);
-  const items = [mfeBox, monolithBox].filter(Boolean) as BoxPlotData[];
+  if (mfePoints.length === 0 && monolithPoints.length === 0) return null;
 
-  if (items.length === 0) return null;
+  const allY = [...mfePoints, ...monolithPoints].map((p) => p.y);
+  const yMin = Math.min(...allY) * 0.95;
+  const yMax = Math.max(...allY) * 1.05;
 
-  const yMin = allValues.length > 0 ? Math.min(...allValues) * 0.95 : 0;
-  const yMax = allValues.length > 0 ? Math.max(...allValues) * 1.05 : 100;
+  const mfeSummary = mfeData?.benchmarkSummary?.[metricKey];
+  const monolithSummary = monolithData?.benchmarkSummary?.[metricKey];
+
+  const hasMonolith = monolithPoints.length > 0;
+  const xDomain: [number, number] = hasMonolith ? [-0.5, 1.5] : [-0.5, 0.5];
+
+  const ticks = hasMonolith ? [MFE_CENTER, MONOLITH_CENTER] : [MFE_CENTER];
+  const tickLabels: Record<number, string> = {
+    [MFE_CENTER]: 'Microfrontend',
+    [MONOLITH_CENTER]: 'Monolith',
+  };
 
   return (
     <div className="bg-surface-2 rounded-xl border border-neutral-800 p-6">
@@ -155,94 +118,119 @@ export default function DistributionChart({
         </span>
       </h3>
       <p className="text-xs text-neutral-500 mb-4">
-        Distribution of individual measurements
+        Distribution of individual measurements (jittered strip plot)
       </p>
 
-      <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart
-          data={items}
-          margin={{ top: 10, right: 20, left: 10, bottom: 5 }}
-        >
+      <ResponsiveContainer width="100%" height={250}>
+        <ScatterChart margin={{ top: 10, right: 20, left: 10, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
           <XAxis
-            dataKey="name"
+            type="number"
+            dataKey="x"
+            domain={xDomain}
+            ticks={ticks}
+            tickFormatter={(v: number) => tickLabels[v] ?? ''}
             tick={{ fill: '#a3a3a3', fontSize: 12 }}
             axisLine={{ stroke: '#404040' }}
             tickLine={false}
           />
           <YAxis
+            type="number"
+            dataKey="y"
             domain={[yMin, yMax]}
             tick={{ fill: '#a3a3a3', fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v: number) => formatMs(v)}
           />
-          <Tooltip content={<CustomBoxPlotTooltip />} />
+          <ZAxis range={[20, 20]} />
+          <Tooltip content={<CustomScatterTooltip />} />
           <Legend
             wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
             iconType="circle"
           />
 
-          {/* IQR box: stacked bar from Q1 to Q3 */}
-          <Bar
-            dataKey="boxLow"
-            stackId="box"
-            fill="transparent"
-            name=" "
-            legendType="none"
-          />
-          <Bar
-            dataKey="boxHeight"
-            stackId="box"
-            name="IQR (Q1–Q3)"
-            radius={[4, 4, 4, 4]}
-            maxBarSize={60}
-          >
-            {items.map((entry, index) => (
-              <Cell
-                key={entry.name}
-                fill={index === 0 ? '#3b82f640' : '#a855f740'}
-                stroke={index === 0 ? '#3b82f6' : '#a855f7'}
-                strokeWidth={1.5}
-              />
-            ))}
-          </Bar>
+          {/* IQR box regions */}
+          {mfeSummary && (
+            <ReferenceArea
+              x1={MFE_CENTER - 0.2}
+              x2={MFE_CENTER + 0.2}
+              y1={mfeSummary.q1}
+              y2={mfeSummary.q3}
+              fill="#3b82f6"
+              fillOpacity={0.1}
+              stroke="#3b82f6"
+              strokeOpacity={0.3}
+            />
+          )}
+          {monolithSummary && (
+            <ReferenceArea
+              x1={MONOLITH_CENTER - 0.2}
+              x2={MONOLITH_CENTER + 0.2}
+              y1={monolithSummary.q1}
+              y2={monolithSummary.q3}
+              fill="#a855f7"
+              fillOpacity={0.1}
+              stroke="#a855f7"
+              strokeOpacity={0.3}
+            />
+          )}
 
-          {/* Scatter: individual data points for MFE */}
-          {mfeScatter.length > 0 && (
+          {/* Median lines */}
+          {mfeSummary && (
+            <ReferenceLine
+              segment={[
+                { x: MFE_CENTER - 0.2, y: mfeSummary.median },
+                { x: MFE_CENTER + 0.2, y: mfeSummary.median },
+              ]}
+              stroke="#3b82f6"
+              strokeWidth={2}
+              strokeDasharray="4 2"
+            />
+          )}
+          {monolithSummary && (
+            <ReferenceLine
+              segment={[
+                { x: MONOLITH_CENTER - 0.2, y: monolithSummary.median },
+                { x: MONOLITH_CENTER + 0.2, y: monolithSummary.median },
+              ]}
+              stroke="#a855f7"
+              strokeWidth={2}
+              strokeDasharray="4 2"
+            />
+          )}
+
+          {/* Scatter points */}
+          {mfePoints.length > 0 && (
             <Scatter
-              data={mfeScatter.map((p) => ({
-                name: 'Microfrontend',
-                boxLow: 0,
-                boxHeight: 0,
-                value: p.value,
-              }))}
-              dataKey="value"
+              data={mfePoints}
               name="MFE runs"
               fill="#3b82f6"
-              opacity={0.5}
-            >
-              <ZAxis range={[15, 15]} />
-            </Scatter>
+              opacity={0.6}
+            />
           )}
-          {monolithScatter.length > 0 && (
+          {monolithPoints.length > 0 && (
             <Scatter
-              data={monolithScatter.map((p) => ({
-                name: 'Monolith',
-                boxLow: 0,
-                boxHeight: 0,
-                value: p.value,
-              }))}
-              dataKey="value"
+              data={monolithPoints}
               name="Monolith runs"
               fill="#a855f7"
-              opacity={0.5}
-            >
-              <ZAxis range={[15, 15]} />
-            </Scatter>
+              opacity={0.6}
+            />
           )}
-        </ComposedChart>
+        </ScatterChart>
       </ResponsiveContainer>
+
+      {/* Legend for box elements */}
+      <div className="flex items-center justify-center gap-6 mt-2 text-xs text-neutral-500">
+        <div className="flex items-center gap-1.5">
+          <span className="w-4 h-2 bg-blue-500/10 border border-blue-500/30 rounded-sm" />
+          <span>IQR (Q1–Q3)</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-4 border-t-2 border-dashed border-neutral-400" />
+          <span>Median</span>
+        </div>
+      </div>
     </div>
   );
 }

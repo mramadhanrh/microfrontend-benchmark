@@ -38,7 +38,7 @@ export default function MetricCard({
           </h3>
         </div>
         <span
-          className={`text-xs px-2 py-0.5 rounded-full border font-medium ${ratingClasses}`}
+          className={`text-xs px-2 py-0.5 rounded-full border font-medium text-center ${ratingClasses}`}
         >
           {rating === 'needs-improvement'
             ? 'Needs Work'
