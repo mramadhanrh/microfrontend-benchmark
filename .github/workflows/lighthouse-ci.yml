@@ -299,3 +299,76 @@ jobs:
           name: lighthouse-merged-results-warm-${{ matrix.page.name }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
+
+  combine-results:
+    runs-on: ubuntu-latest
+    needs: [setup, aggregate-results]
+    if: always() && inputs.mode != 'both'
+
+    steps:
+      - name: Download all merged results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-merged-results-*
+          path: merged-artifacts
+
+      - name: Organize results by page
+        run: |
+          mkdir -p combined-results
+          for dir in merged-artifacts/lighthouse-merged-results-*/; do
+            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-//')
+            mkdir -p "combined-results/${PAGE_NAME}"
+            cp "$dir"* "combined-results/${PAGE_NAME}/" 2>/dev/null || true
+          done
+
+          echo "Combined results structure:"
+          find combined-results -type f
+
+      - name: Upload combined results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-combined-results
+          path: combined-results/
+          retention-days: 1
+
+  combine-all-results:
+    runs-on: ubuntu-latest
+    needs: [setup, aggregate-cold-results, aggregate-warm-results]
+    if: always() && inputs.mode == 'both'
+
+    steps:
+      - name: Download all cold merged results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-merged-results-cold-*
+          path: merged-artifacts-cold
+
+      - name: Download all warm merged results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lighthouse-merged-results-warm-*
+          path: merged-artifacts-warm
+
+      - name: Organize results by page and mode
+        run: |
+          mkdir -p combined-results
+          for dir in merged-artifacts-cold/lighthouse-merged-results-cold-*/; do
+            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-cold-//')
+            mkdir -p "combined-results/${PAGE_NAME}/cold"
+            cp "$dir"* "combined-results/${PAGE_NAME}/cold/" 2>/dev/null || true
+          done
+          for dir in merged-artifacts-warm/lighthouse-merged-results-warm-*/; do
+            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-warm-//')
+            mkdir -p "combined-results/${PAGE_NAME}/warm"
+            cp "$dir"* "combined-results/${PAGE_NAME}/warm/" 2>/dev/null || true
+          done
+
+          echo "Combined results structure:"
+          find combined-results -type f
+
+      - name: Upload combined results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-combined-results
+          path: combined-results/
+          retention-days: 1
