@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       url:
-        description: "Custom URL to benchmark (leave empty to use default)"
+        description: "Custom base URL to benchmark (leave empty to use default)"
         required: false
         type: string
       mode:
@@ -16,16 +16,47 @@ on:
           - cold
           - warm
           - both
+      page:
+        description: "Page to benchmark"
+        required: false
+        type: choice
+        default: "all"
+        options:
+          - all
+          - home
+          - login
+          - dashboard
 
 env:
   DEFAULT_BENCHMARK_URL: "http://13.229.66.196"
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      page-matrix: ${{ steps.set-pages.outputs.matrix }}
+    steps:
+      - name: Determine page matrix
+        id: set-pages
+        run: |
+          PAGE="${{ inputs.page || 'all' }}"
+          if [ "$PAGE" = "all" ]; then
+            echo 'matrix=[{"name":"home","path":"/"},{"name":"login","path":"/login"},{"name":"dashboard","path":"/dashboard"}]' >> "$GITHUB_OUTPUT"
+          elif [ "$PAGE" = "home" ]; then
+            echo 'matrix=[{"name":"home","path":"/"}]' >> "$GITHUB_OUTPUT"
+          elif [ "$PAGE" = "login" ]; then
+            echo 'matrix=[{"name":"login","path":"/login"}]' >> "$GITHUB_OUTPUT"
+          elif [ "$PAGE" = "dashboard" ]; then
+            echo 'matrix=[{"name":"dashboard","path":"/dashboard"}]' >> "$GITHUB_OUTPUT"
+          fi
+
   lighthouse:
     runs-on: ubuntu-latest
+    needs: setup
     strategy:
       matrix:
         instance: [1, 2, 3, 4, 5, 6]
+        page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
 
     steps:
       - name: Checkout code
@@ -44,17 +75,23 @@ jobs:
         id: set-url
         run: |
           if [ -n "${{ inputs.url }}" ]; then
-            echo "url=${{ inputs.url }}" >> "$GITHUB_OUTPUT"
+            BASE_URL="${{ inputs.url }}"
           else
-            echo "url=${{ env.DEFAULT_BENCHMARK_URL }}" >> "$GITHUB_OUTPUT"
+            BASE_URL="${{ env.DEFAULT_BENCHMARK_URL }}"
           fi
+          PAGE_PATH="${{ matrix.page.path }}"
+          # Remove trailing slash from base URL to avoid double slashes
+          BASE_URL="${BASE_URL%/}"
+          FULL_URL="${BASE_URL}${PAGE_PATH}"
+          echo "url=${FULL_URL}" >> "$GITHUB_OUTPUT"
 
-      - name: Run Lighthouse CI (Instance ${{ matrix.instance }})
+      - name: Run Lighthouse CI (${{ matrix.page.name }} - Instance ${{ matrix.instance }})
         working-directory: tools/web-vitals-benchmark
         env:
           NX_BENCHMARK_URL: ${{ steps.set-url.outputs.url }}
         run: |
           echo "Benchmark URL: $NX_BENCHMARK_URL"
+          echo "Page: ${{ matrix.page.name }}"
           MODE="${{ inputs.mode || 'cold' }}"
           echo "Mode: $MODE"
 
@@ -81,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode != 'both'
         with:
-          name: lighthouse-results-${{ matrix.instance }}
+          name: lighthouse-results-${{ matrix.page.name }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci/
           include-hidden-files: true
           retention-days: 1
@@ -90,7 +127,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode == 'both'
         with:
-          name: lighthouse-cold-results-${{ matrix.instance }}
+          name: lighthouse-cold-results-${{ matrix.page.name }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci-cold/
           include-hidden-files: true
           retention-days: 1
@@ -99,15 +136,18 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode == 'both'
         with:
-          name: lighthouse-warm-results-${{ matrix.instance }}
+          name: lighthouse-warm-results-${{ matrix.page.name }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci-warm/
           include-hidden-files: true
           retention-days: 1
 
   aggregate-results:
     runs-on: ubuntu-latest
-    needs: lighthouse
+    needs: [setup, lighthouse]
     if: always() && inputs.mode != 'both'
+    strategy:
+      matrix:
+        page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
 
     steps:
       - name: Checkout code
@@ -122,16 +162,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download all artifacts
+      - name: Download artifacts for ${{ matrix.page.name }}
         uses: actions/download-artifact@v4
         with:
+          pattern: lighthouse-results-${{ matrix.page.name }}-*
           path: lighthouse-artifacts
 
-      - name: Merge all results into single directory
+      - name: Merge results for ${{ matrix.page.name }}
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging all lighthouse results..."
+          echo "Merging lighthouse results for ${{ matrix.page.name }}..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -139,24 +180,27 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating summary.json..."
+          echo "Generating summary.json for ${{ matrix.page.name }}..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload merged results
+      - name: Upload merged results for ${{ matrix.page.name }}
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results
+          name: lighthouse-merged-results-${{ matrix.page.name }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
 
   aggregate-cold-results:
     runs-on: ubuntu-latest
-    needs: lighthouse
+    needs: [setup, lighthouse]
     if: always() && inputs.mode == 'both'
+    strategy:
+      matrix:
+        page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
 
     steps:
       - name: Checkout code
@@ -171,17 +215,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download cold artifacts
+      - name: Download cold artifacts for ${{ matrix.page.name }}
         uses: actions/download-artifact@v4
         with:
-          pattern: lighthouse-cold-results-*
+          pattern: lighthouse-cold-results-${{ matrix.page.name }}-*
           path: lighthouse-artifacts
 
-      - name: Merge cold results
+      - name: Merge cold results for ${{ matrix.page.name }}
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging cold lighthouse results..."
+          echo "Merging cold lighthouse results for ${{ matrix.page.name }}..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -189,24 +233,27 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating cold summary.json..."
+          echo "Generating cold summary.json for ${{ matrix.page.name }}..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload cold merged results
+      - name: Upload cold merged results for ${{ matrix.page.name }}
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results-cold
+          name: lighthouse-merged-results-cold-${{ matrix.page.name }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
 
   aggregate-warm-results:
     runs-on: ubuntu-latest
-    needs: lighthouse
+    needs: [setup, lighthouse]
     if: always() && inputs.mode == 'both'
+    strategy:
+      matrix:
+        page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
 
     steps:
       - name: Checkout code
@@ -221,17 +268,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download warm artifacts
+      - name: Download warm artifacts for ${{ matrix.page.name }}
         uses: actions/download-artifact@v4
         with:
-          pattern: lighthouse-warm-results-*
+          pattern: lighthouse-warm-results-${{ matrix.page.name }}-*
           path: lighthouse-artifacts
 
-      - name: Merge warm results
+      - name: Merge warm results for ${{ matrix.page.name }}
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging warm lighthouse results..."
+          echo "Merging warm lighthouse results for ${{ matrix.page.name }}..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -239,16 +286,16 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating warm summary.json..."
+          echo "Generating warm summary.json for ${{ matrix.page.name }}..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload warm merged results
+      - name: Upload warm merged results for ${{ matrix.page.name }}
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results-warm
+          name: lighthouse-merged-results-warm-${{ matrix.page.name }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
