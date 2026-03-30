@@ -7,7 +7,8 @@ module.exports = {
       numberOfRuns: 5,
       settings: {
         preset: 'desktop',
-        chromeFlags: '--no-sandbox --disable-dev-shm-usage',
+        chromeFlags:
+          '--no-sandbox --disable-dev-shm-usage --disable-gpu --headless=new',
         disableStorageReset: false,
       },
     },

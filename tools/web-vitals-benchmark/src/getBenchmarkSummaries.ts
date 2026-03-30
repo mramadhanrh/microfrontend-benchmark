@@ -115,7 +115,9 @@ export const getBenchmarkSummary = (
   const summary: BenchmarkSummary = { ...defaultEmptySummary };
 
   for (const metric of BENCHMARK_METRICS) {
-    const values = benchmarkResults.map((result) => result[metric]);
+    const values = benchmarkResults
+      .map((result) => result[metric])
+      .filter((v): v is number => v != null && !Number.isNaN(v));
     summary[metric] = {
       mean: calculateMean(values),
       median: calculateMedian(values),
