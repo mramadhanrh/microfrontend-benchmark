@@ -7,14 +7,12 @@ export function Index() {
     remotes: [
       {
         name: 'homeremote',
-        entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/homeremote/remoteEntry.js',
+        entry: 'https://mfebucket.mramadhanrh.com/homeremote/remoteEntry.js',
         moduleName: 'homeremote/Module',
       },
       {
         name: 'supportremote',
-        entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/supportremote/remoteEntry.js',
+        entry: 'https://mfebucket.mramadhanrh.com/supportremote/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],

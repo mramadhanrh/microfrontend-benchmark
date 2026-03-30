@@ -1,25 +1,14 @@
 import { ModuleFederationConfig } from '@nx/webpack';
+import { dependencies } from '../../../../package.json';
 
-const dependencies = {
-  '@emotion/react': '11.11.1',
-  '@emotion/styled': '11.11.0',
-  '@heroicons/react': '^2.2.0',
-  '@module-federation/enhanced': '^0.21.3',
-  '@radix-ui/react-dropdown-menu': '^2.1.16',
-  '@remix-run/node': '^2.8.1',
-  '@remix-run/react': '^2.8.1',
-  '@remix-run/serve': '^2.8.1',
-  axios: '^1.6.8',
-  express: '^5.1.0',
-  isbot: '^4.4.0',
-  react: '18.3.1',
-  'react-dom': '18.3.1',
-  'react-router-dom': '6.11.2',
-  'styled-components': '5.3.6',
-  tslib: '^2.3.0',
-  zod: '3.25.13',
-  zustand: '^4.5.2',
-};
+// Packages that must exist as a single instance at runtime to avoid
+// context/state conflicts across microfrontends.
+const singletonLibraries = new Set([
+  'react',
+  'react-dom',
+  'react-router-dom',
+  'zustand',
+]);
 
 const config: ModuleFederationConfig = {
   name: 'loginremote',
@@ -29,18 +18,20 @@ const config: ModuleFederationConfig = {
     './Module': './src/remote-entry.ts',
   },
 
-  // shared: (moduleName: string) => {
-  //   if (dependencies[moduleName as keyof typeof dependencies]) {
-  //     console.log('Shared', {
-  //       moduleName,
-  //       version: dependencies[moduleName as keyof typeof dependencies],
-  //     });
-  //     return {
-  //       singleton: true,
-  //       requiredVersion: dependencies[moduleName as keyof typeof dependencies],
-  //     };
-  //   }
-  // },
+  shared: (libraryName, defaultConfig) => {
+    if (!(libraryName in dependencies)) {
+      // Not a known dependency — do not share
+      return false;
+    }
+
+    return {
+      ...defaultConfig,
+      requiredVersion: dependencies[libraryName as keyof typeof dependencies],
+      singleton: singletonLibraries.has(libraryName),
+      // Warn rather than hard-fail when version mismatches occur
+      strictVersion: false,
+    };
+  },
 };
 
 export default config;

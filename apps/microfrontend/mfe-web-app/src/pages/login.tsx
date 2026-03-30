@@ -7,14 +7,12 @@ export function Login() {
     remotes: [
       {
         name: 'loginremote',
-        entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/loginremote/remoteEntry.js',
+        entry: 'https://mfebucket.mramadhanrh.com/loginremote/remoteEntry.js',
         moduleName: 'loginremote/Module',
       },
       {
         name: 'supportremote',
-        entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/supportremote/remoteEntry.js',
+        entry: 'https://mfebucket.mramadhanrh.com/supportremote/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],

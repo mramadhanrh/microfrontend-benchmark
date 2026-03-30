@@ -8,13 +8,12 @@ export function Dashboard() {
       {
         name: 'dashboardremote',
         entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/dashboardremote/remoteEntry.js',
+          'https://mfebucket.mramadhanrh.com/dashboardremote/remoteEntry.js',
         moduleName: 'dashboardremote/Module',
       },
       {
         name: 'supportremote',
-        entry:
-          'https://microfrontend-benchmark-public-0021ac26.s3.ap-southeast-1.amazonaws.com/supportremote/remoteEntry.js',
+        entry: 'https://mfebucket.mramadhanrh.com/supportremote/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],

@@ -7,6 +7,14 @@ on:
         description: "Custom base URL to benchmark (leave empty to use default)"
         required: false
         type: string
+      project:
+        description: "Project type being benchmarked"
+        required: true
+        type: choice
+        default: "mfe"
+        options:
+          - mfe
+          - monolith
       mode:
         description: "Benchmark mode"
         required: false
@@ -314,11 +322,13 @@ jobs:
 
       - name: Organize results by page
         run: |
+          PROJECT="${{ inputs.project }}"
+          MODE="${{ inputs.mode || 'cold' }}"
           mkdir -p combined-results
           for dir in merged-artifacts/lighthouse-merged-results-*/; do
             PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-//')
-            mkdir -p "combined-results/${PAGE_NAME}"
-            cp "$dir"* "combined-results/${PAGE_NAME}/" 2>/dev/null || true
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}/" 2>/dev/null || true
           done
 
           echo "Combined results structure:"
@@ -351,16 +361,17 @@ jobs:
 
       - name: Organize results by page and mode
         run: |
+          PROJECT="${{ inputs.project }}"
           mkdir -p combined-results
           for dir in merged-artifacts-cold/lighthouse-merged-results-cold-*/; do
             PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-cold-//')
-            mkdir -p "combined-results/${PAGE_NAME}/cold"
-            cp "$dir"* "combined-results/${PAGE_NAME}/cold/" 2>/dev/null || true
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/cold"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/cold/" 2>/dev/null || true
           done
           for dir in merged-artifacts-warm/lighthouse-merged-results-warm-*/; do
             PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-warm-//')
-            mkdir -p "combined-results/${PAGE_NAME}/warm"
-            cp "$dir"* "combined-results/${PAGE_NAME}/warm/" 2>/dev/null || true
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/warm"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/warm/" 2>/dev/null || true
           done
 
           echo "Combined results structure:"
@@ -372,3 +383,41 @@ jobs:
           name: lighthouse-combined-results
           path: combined-results/
           retention-days: 1
+
+  publish-to-visualizer:
+    runs-on: ubuntu-latest
+    needs: [combine-results, combine-all-results]
+    if: always() && !cancelled() && (needs.combine-results.result == 'success' || needs.combine-all-results.result == 'success')
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download combined results
+        uses: actions/download-artifact@v4
+        with:
+          name: lighthouse-combined-results
+          path: lighthouse-combined-results
+
+      - name: Copy results to benchmark-visualizer data directory
+        run: |
+          DATA_DIR="tools/benchmark-visualizer/public/data"
+          echo "Copying combined results to ${DATA_DIR}..."
+          cp -r lighthouse-combined-results/. "${DATA_DIR}/"
+
+          echo "Updated data directory structure:"
+          find "${DATA_DIR}" -type f
+
+      - name: Commit and push benchmark data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tools/benchmark-visualizer/public/data/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update benchmark data for ${{ inputs.project }} [${{ inputs.mode || 'cold' }} mode] [skip ci]"
+            git push
+          fi
