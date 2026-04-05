@@ -22,7 +22,9 @@ const NETWORK_PROFILES = {
 
 if (networkProfile && !NETWORK_PROFILES[networkProfile]) {
   throw new Error(
-    `Unknown NX_NETWORK_PROFILE "${networkProfile}". Valid values: ${Object.keys(NETWORK_PROFILES).join(', ')}`
+    `Unknown NX_NETWORK_PROFILE "${networkProfile}". Valid values: ${Object.keys(
+      NETWORK_PROFILES
+    ).join(', ')}`
   );
 }
 
@@ -36,7 +38,10 @@ module.exports = {
         chromeFlags:
           '--no-sandbox --disable-dev-shm-usage --disable-gpu --headless=new',
         disableStorageReset: false,
-        ...(networkProfile && { throttling: NETWORK_PROFILES[networkProfile], throttlingMethod: 'simulate' }),
+        ...(networkProfile && {
+          throttling: NETWORK_PROFILES[networkProfile],
+          throttlingMethod: 'simulate',
+        }),
       },
     },
     assert: {
