@@ -1,4 +1,30 @@
-const benchmarkUrl = process.env.NX_BENCHMARK_URL || 'http://13.229.66.196';
+const benchmarkUrl = process.env.NX_BENCHMARK_URL;
+const networkProfile = process.env.NX_NETWORK_PROFILE;
+
+const NETWORK_PROFILES = {
+  '4g': {
+    rttMs: 150,
+    throughputKbps: 1638.4,
+    uploadThroughputKbps: 675,
+    downloadThroughputKbps: 1638.4,
+    cpuSlowdownMultiplier: 4,
+    requestLatencyMs: 0,
+  },
+  '3g': {
+    rttMs: 300,
+    throughputKbps: 700,
+    uploadThroughputKbps: 700,
+    downloadThroughputKbps: 700,
+    cpuSlowdownMultiplier: 4,
+    requestLatencyMs: 0,
+  },
+};
+
+if (networkProfile && !NETWORK_PROFILES[networkProfile]) {
+  throw new Error(
+    `Unknown NX_NETWORK_PROFILE "${networkProfile}". Valid values: ${Object.keys(NETWORK_PROFILES).join(', ')}`
+  );
+}
 
 module.exports = {
   ci: {
@@ -12,6 +38,7 @@ module.exports = {
           '--no-sandbox --disable-dev-shm-usage --disable-gpu --headless=new',
         // Keep cache/storage between navigations for warm start measurement
         disableStorageReset: true,
+        ...(networkProfile && { throttling: NETWORK_PROFILES[networkProfile], throttlingMethod: 'simulate' }),
       },
     },
     assert: {

@@ -41,10 +41,18 @@ export type MetricKey = keyof BenchmarkResult;
 
 export type ProjectType = 'mfe' | 'monolith';
 export type ScenarioType = 'warm' | 'cold';
+export type NetworkProfile = 'none' | '4g' | '3g';
+
+export const NETWORK_PROFILES: { key: NetworkProfile; label: string }[] = [
+  { key: 'none', label: 'No Throttling' },
+  { key: '4g', label: '4G LTE' },
+  { key: '3g', label: '3G' },
+];
 
 export interface DataSet {
   project: ProjectType;
   scenario: ScenarioType;
+  network: NetworkProfile;
   data: SummaryJson | null;
 }
 

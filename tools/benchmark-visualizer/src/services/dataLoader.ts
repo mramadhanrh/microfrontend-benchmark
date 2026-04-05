@@ -2,6 +2,7 @@ import type {
   SummaryJson,
   ProjectType,
   ScenarioType,
+  NetworkProfile,
   PageManifest,
   PageBenchmarkData,
   PageInfo,
@@ -20,11 +21,12 @@ export async function loadManifest(): Promise<PageManifest> {
 export async function loadBenchmarkData(
   project: ProjectType,
   page: string,
-  scenario: ScenarioType
+  scenario: ScenarioType,
+  network: NetworkProfile = 'none'
 ): Promise<SummaryJson | null> {
   try {
     const response = await fetch(
-      `/data/${project}/${page}/${scenario}/summary.json`
+      `/data/${project}/${page}/${scenario}/${network}/summary.json`
     );
     if (!response.ok) return null;
     const data: SummaryJson = await response.json();
@@ -37,23 +39,27 @@ export async function loadBenchmarkData(
   }
 }
 
-export async function loadPageData(pageId: string): Promise<PageBenchmarkData> {
+export async function loadPageData(
+  pageId: string,
+  network: NetworkProfile = 'none'
+): Promise<PageBenchmarkData> {
   const [mfeWarm, mfeCold, monolithWarm, monolithCold] = await Promise.all([
-    loadBenchmarkData('mfe', pageId, 'warm'),
-    loadBenchmarkData('mfe', pageId, 'cold'),
-    loadBenchmarkData('monolith', pageId, 'warm'),
-    loadBenchmarkData('monolith', pageId, 'cold'),
+    loadBenchmarkData('mfe', pageId, 'warm', network),
+    loadBenchmarkData('mfe', pageId, 'cold', network),
+    loadBenchmarkData('monolith', pageId, 'warm', network),
+    loadBenchmarkData('monolith', pageId, 'cold', network),
   ]);
 
   return { mfeWarm, mfeCold, monolithWarm, monolithCold };
 }
 
 export async function loadAllPagesData(
-  pages: PageInfo[]
+  pages: PageInfo[],
+  network: NetworkProfile = 'none'
 ): Promise<Record<string, PageBenchmarkData>> {
   const entries = await Promise.all(
     pages.map(async (p) => {
-      const data = await loadPageData(p.id);
+      const data = await loadPageData(p.id, network);
       return [p.id, data] as const;
     })
   );

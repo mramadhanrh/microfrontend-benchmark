@@ -1,5 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
-import type { PageInfo, PageBenchmarkData } from '../types/benchmark';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import type {
+  PageInfo,
+  PageBenchmarkData,
+  NetworkProfile,
+} from '../types/benchmark';
+import { NETWORK_PROFILES } from '../types/benchmark';
 import { loadManifest, loadAllPagesData } from '../services/dataLoader';
 import Header from '../components/Header';
 import ScenarioSection from '../components/ScenarioSection';
@@ -18,23 +23,44 @@ const TABS: { key: Tab; label: string }[] = [
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('warm');
   const [activePage, setActivePage] = useState('');
+  const [activeNetwork, setActiveNetwork] = useState<NetworkProfile>('none');
   const [loading, setLoading] = useState(true);
   const [pages, setPages] = useState<PageInfo[]>([]);
   const [allPagesData, setAllPagesData] = useState<
     Record<string, PageBenchmarkData>
   >({});
 
+  const loadData = useCallback(
+    async (pageList: PageInfo[], network: NetworkProfile) => {
+      setLoading(true);
+      const data = await loadAllPagesData(pageList, network);
+      setAllPagesData(data);
+      setLoading(false);
+    },
+    []
+  );
+
   useEffect(() => {
     loadManifest().then(async (manifest) => {
       setPages(manifest.pages);
       if (manifest.pages.length > 0) {
         setActivePage(manifest.pages[0].id);
-        const data = await loadAllPagesData(manifest.pages);
-        setAllPagesData(data);
+        await loadData(manifest.pages, activeNetwork);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
   }, []);
+
+  const handleNetworkChange = useCallback(
+    (network: NetworkProfile) => {
+      setActiveNetwork(network);
+      if (pages.length > 0) {
+        loadData(pages, network);
+      }
+    },
+    [pages, loadData]
+  );
 
   const pageData = allPagesData[activePage] ?? {
     mfeWarm: null,
@@ -82,6 +108,28 @@ export default function App() {
       />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Network profile selector */}
+        <div className="flex items-center gap-2 mb-6">
+          <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">
+            Network:
+          </span>
+          <nav className="flex gap-1 bg-surface-1 rounded-lg p-1">
+            {NETWORK_PROFILES.map((profile) => (
+              <button
+                key={profile.key}
+                onClick={() => handleNetworkChange(profile.key)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                  activeNetwork === profile.key
+                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                    : 'text-neutral-500 hover:text-neutral-300 border border-transparent'
+                }`}
+              >
+                {profile.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
         {isAllPages ? (
           <>
             <CrossPageComparison pages={pages} allPagesData={allPagesData} />

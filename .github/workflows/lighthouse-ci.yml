@@ -24,6 +24,16 @@ on:
           - cold
           - warm
           - both
+      network:
+        description: "Network throttling profile"
+        required: false
+        type: choice
+        default: "none"
+        options:
+          - none
+          - 4g
+          - 3g
+          - all
       page:
         description: "Page to benchmark"
         required: false
@@ -43,6 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       page-matrix: ${{ steps.set-pages.outputs.matrix }}
+      network-matrix: ${{ steps.set-networks.outputs.matrix }}
     steps:
       - name: Determine page matrix
         id: set-pages
@@ -58,6 +69,16 @@ jobs:
             echo 'matrix=[{"name":"dashboard","path":"/dashboard"}]' >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Determine network matrix
+        id: set-networks
+        run: |
+          NETWORK="${{ inputs.network || 'none' }}"
+          if [ "$NETWORK" = "all" ]; then
+            echo 'matrix=["none","4g","3g"]' >> "$GITHUB_OUTPUT"
+          else
+            echo "matrix=[\"${NETWORK}\"]" >> "$GITHUB_OUTPUT"
+          fi
+
   lighthouse:
     runs-on: ubuntu-latest
     needs: setup
@@ -65,6 +86,7 @@ jobs:
       matrix:
         instance: [1, 2, 3, 4, 5, 6]
         page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
+        network: ${{ fromJSON(needs.setup.outputs.network-matrix) }}
 
     steps:
       - name: Checkout code
@@ -93,15 +115,22 @@ jobs:
           FULL_URL="${BASE_URL}${PAGE_PATH}"
           echo "url=${FULL_URL}" >> "$GITHUB_OUTPUT"
 
-      - name: Run Lighthouse CI (${{ matrix.page.name }} - Instance ${{ matrix.instance }})
+      - name: Run Lighthouse CI (${{ matrix.page.name }} - ${{ matrix.network }} - Instance ${{ matrix.instance }})
         working-directory: tools/web-vitals-benchmark
         env:
           NX_BENCHMARK_URL: ${{ steps.set-url.outputs.url }}
         run: |
           echo "Benchmark URL: $NX_BENCHMARK_URL"
           echo "Page: ${{ matrix.page.name }}"
+          echo "Network: ${{ matrix.network }}"
           MODE="${{ inputs.mode || 'cold' }}"
           echo "Mode: $MODE"
+
+          # Set network throttling profile if not "none"
+          if [ "${{ matrix.network }}" != "none" ]; then
+            export NX_NETWORK_PROFILE="${{ matrix.network }}"
+            echo "NX_NETWORK_PROFILE: $NX_NETWORK_PROFILE"
+          fi
 
           if [ "$MODE" = "both" ]; then
             echo "--- Running cold start ---"
@@ -126,7 +155,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode != 'both'
         with:
-          name: lighthouse-results-${{ matrix.page.name }}-${{ matrix.instance }}
+          name: lighthouse-results-${{ matrix.page.name }}-${{ matrix.network }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci/
           include-hidden-files: true
           retention-days: 1
@@ -135,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode == 'both'
         with:
-          name: lighthouse-cold-results-${{ matrix.page.name }}-${{ matrix.instance }}
+          name: lighthouse-cold-results-${{ matrix.page.name }}-${{ matrix.network }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci-cold/
           include-hidden-files: true
           retention-days: 1
@@ -144,7 +173,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && inputs.mode == 'both'
         with:
-          name: lighthouse-warm-results-${{ matrix.page.name }}-${{ matrix.instance }}
+          name: lighthouse-warm-results-${{ matrix.page.name }}-${{ matrix.network }}-${{ matrix.instance }}
           path: tools/web-vitals-benchmark/.lighthouseci-warm/
           include-hidden-files: true
           retention-days: 1
@@ -156,6 +185,7 @@ jobs:
     strategy:
       matrix:
         page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
+        network: ${{ fromJSON(needs.setup.outputs.network-matrix) }}
 
     steps:
       - name: Checkout code
@@ -170,17 +200,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download artifacts for ${{ matrix.page.name }}
+      - name: Download artifacts for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/download-artifact@v4
         with:
-          pattern: lighthouse-results-${{ matrix.page.name }}-*
+          pattern: lighthouse-results-${{ matrix.page.name }}-${{ matrix.network }}-*
           path: lighthouse-artifacts
 
-      - name: Merge results for ${{ matrix.page.name }}
+      - name: Merge results for ${{ matrix.page.name }} (${{ matrix.network }})
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging lighthouse results for ${{ matrix.page.name }}..."
+          echo "Merging lighthouse results for ${{ matrix.page.name }} (${{ matrix.network }})..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -188,17 +218,17 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating summary.json for ${{ matrix.page.name }}..."
+          echo "Generating summary.json for ${{ matrix.page.name }} (${{ matrix.network }})..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload merged results for ${{ matrix.page.name }}
+      - name: Upload merged results for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results-${{ matrix.page.name }}
+          name: lighthouse-merged-results-${{ matrix.page.name }}-${{ matrix.network }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
 
@@ -209,6 +239,7 @@ jobs:
     strategy:
       matrix:
         page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
+        network: ${{ fromJSON(needs.setup.outputs.network-matrix) }}
 
     steps:
       - name: Checkout code
@@ -223,17 +254,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download cold artifacts for ${{ matrix.page.name }}
+      - name: Download cold artifacts for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/download-artifact@v4
         with:
-          pattern: lighthouse-cold-results-${{ matrix.page.name }}-*
+          pattern: lighthouse-cold-results-${{ matrix.page.name }}-${{ matrix.network }}-*
           path: lighthouse-artifacts
 
-      - name: Merge cold results for ${{ matrix.page.name }}
+      - name: Merge cold results for ${{ matrix.page.name }} (${{ matrix.network }})
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging cold lighthouse results for ${{ matrix.page.name }}..."
+          echo "Merging cold lighthouse results for ${{ matrix.page.name }} (${{ matrix.network }})..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -241,17 +272,17 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating cold summary.json for ${{ matrix.page.name }}..."
+          echo "Generating cold summary.json for ${{ matrix.page.name }} (${{ matrix.network }})..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload cold merged results for ${{ matrix.page.name }}
+      - name: Upload cold merged results for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results-cold-${{ matrix.page.name }}
+          name: lighthouse-merged-results-cold-${{ matrix.page.name }}-${{ matrix.network }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
 
@@ -262,6 +293,7 @@ jobs:
     strategy:
       matrix:
         page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
+        network: ${{ fromJSON(needs.setup.outputs.network-matrix) }}
 
     steps:
       - name: Checkout code
@@ -276,17 +308,17 @@ jobs:
         working-directory: tools/web-vitals-benchmark
         run: bun install
 
-      - name: Download warm artifacts for ${{ matrix.page.name }}
+      - name: Download warm artifacts for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/download-artifact@v4
         with:
-          pattern: lighthouse-warm-results-${{ matrix.page.name }}-*
+          pattern: lighthouse-warm-results-${{ matrix.page.name }}-${{ matrix.network }}-*
           path: lighthouse-artifacts
 
-      - name: Merge warm results for ${{ matrix.page.name }}
+      - name: Merge warm results for ${{ matrix.page.name }} (${{ matrix.network }})
         working-directory: tools/web-vitals-benchmark
         run: |
           mkdir -p merged-results
-          echo "Merging warm lighthouse results for ${{ matrix.page.name }}..."
+          echo "Merging warm lighthouse results for ${{ matrix.page.name }} (${{ matrix.network }})..."
 
           find ../../lighthouse-artifacts -name "*.json" -exec cp {} merged-results/ \;
 
@@ -294,17 +326,17 @@ jobs:
           ls -la merged-results/
           echo -e "\nTotal files merged: $(ls -1 merged-results/*.json 2>/dev/null | wc -l)"
 
-          echo "Generating warm summary.json for ${{ matrix.page.name }}..."
+          echo "Generating warm summary.json for ${{ matrix.page.name }} (${{ matrix.network }})..."
           rm -rf .lighthouseci
           mkdir -p .lighthouseci
           cp merged-results/lhr-*.json .lighthouseci/
 
           bun run dev > merged-results/summary.json
 
-      - name: Upload warm merged results for ${{ matrix.page.name }}
+      - name: Upload warm merged results for ${{ matrix.page.name }} (${{ matrix.network }})
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-merged-results-warm-${{ matrix.page.name }}
+          name: lighthouse-merged-results-warm-${{ matrix.page.name }}-${{ matrix.network }}
           path: tools/web-vitals-benchmark/merged-results/
           retention-days: 1
 
@@ -320,15 +352,18 @@ jobs:
           pattern: lighthouse-merged-results-*
           path: merged-artifacts
 
-      - name: Organize results by page
+      - name: Organize results by page and network
         run: |
           PROJECT="${{ inputs.project }}"
           MODE="${{ inputs.mode || 'cold' }}"
           mkdir -p combined-results
           for dir in merged-artifacts/lighthouse-merged-results-*/; do
-            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-//')
-            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}"
-            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}/" 2>/dev/null || true
+            BASENAME=$(basename "$dir" | sed 's/lighthouse-merged-results-//')
+            # Format: {page}-{network}
+            NETWORK=$(echo "$BASENAME" | rev | cut -d- -f1 | rev)
+            PAGE_NAME=$(echo "$BASENAME" | rev | cut -d- -f2- | rev)
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}/${NETWORK}"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/${MODE}/${NETWORK}/" 2>/dev/null || true
           done
 
           echo "Combined results structure:"
@@ -359,19 +394,25 @@ jobs:
           pattern: lighthouse-merged-results-warm-*
           path: merged-artifacts-warm
 
-      - name: Organize results by page and mode
+      - name: Organize results by page, mode, and network
         run: |
           PROJECT="${{ inputs.project }}"
           mkdir -p combined-results
           for dir in merged-artifacts-cold/lighthouse-merged-results-cold-*/; do
-            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-cold-//')
-            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/cold"
-            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/cold/" 2>/dev/null || true
+            BASENAME=$(basename "$dir" | sed 's/lighthouse-merged-results-cold-//')
+            # Format: {page}-{network}
+            NETWORK=$(echo "$BASENAME" | rev | cut -d- -f1 | rev)
+            PAGE_NAME=$(echo "$BASENAME" | rev | cut -d- -f2- | rev)
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/cold/${NETWORK}"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/cold/${NETWORK}/" 2>/dev/null || true
           done
           for dir in merged-artifacts-warm/lighthouse-merged-results-warm-*/; do
-            PAGE_NAME=$(basename "$dir" | sed 's/lighthouse-merged-results-warm-//')
-            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/warm"
-            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/warm/" 2>/dev/null || true
+            BASENAME=$(basename "$dir" | sed 's/lighthouse-merged-results-warm-//')
+            # Format: {page}-{network}
+            NETWORK=$(echo "$BASENAME" | rev | cut -d- -f1 | rev)
+            PAGE_NAME=$(echo "$BASENAME" | rev | cut -d- -f2- | rev)
+            mkdir -p "combined-results/${PROJECT}/${PAGE_NAME}/warm/${NETWORK}"
+            cp "$dir"summary.json "combined-results/${PROJECT}/${PAGE_NAME}/warm/${NETWORK}/" 2>/dev/null || true
           done
 
           echo "Combined results structure:"
@@ -418,6 +459,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "chore: update benchmark data for ${{ inputs.project }} [${{ inputs.mode || 'cold' }} mode] [skip ci]"
+            git commit -m "chore: update benchmark data for ${{ inputs.project }} [${{ inputs.mode || 'cold' }} mode] [${{ inputs.network || 'none' }} network] [skip ci]"
             git push
           fi

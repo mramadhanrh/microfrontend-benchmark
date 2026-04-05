@@ -1,4 +1,4 @@
-const benchmarkUrl = process.env.NX_BENCHMARK_URL || 'http://13.229.66.196';
+const benchmarkUrl = process.env.NX_BENCHMARK_URL;
 
 module.exports = {
   ci: {
