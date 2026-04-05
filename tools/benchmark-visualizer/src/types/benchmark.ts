@@ -42,6 +42,7 @@ export type MetricKey = keyof BenchmarkResult;
 export type ProjectType = 'mfe' | 'monolith';
 export type ScenarioType = 'warm' | 'cold';
 export type NetworkProfile = 'none' | '4g' | '3g';
+export type OptimizationType = 'optimized' | 'non-optimized' | 'default';
 
 export const NETWORK_PROFILES: { key: NetworkProfile; label: string }[] = [
   { key: 'none', label: 'No Throttling' },
@@ -49,10 +50,28 @@ export const NETWORK_PROFILES: { key: NetworkProfile; label: string }[] = [
   { key: '3g', label: '3G' },
 ];
 
+export const OPTIMIZATION_PROFILES: {
+  key: OptimizationType;
+  label: string;
+  description: string;
+}[] = [
+  {
+    key: 'optimized',
+    label: 'Optimized',
+    description: 'Lazy loading & shared dependencies',
+  },
+  {
+    key: 'non-optimized',
+    label: 'Non-Optimized',
+    description: 'No lazy loading or shared dependencies',
+  },
+];
+
 export interface DataSet {
   project: ProjectType;
   scenario: ScenarioType;
   network: NetworkProfile;
+  optimization: OptimizationType;
   data: SummaryJson | null;
 }
 

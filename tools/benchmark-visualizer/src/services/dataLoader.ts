@@ -3,6 +3,7 @@ import type {
   ProjectType,
   ScenarioType,
   NetworkProfile,
+  OptimizationType,
   PageManifest,
   PageBenchmarkData,
   PageInfo,
@@ -22,11 +23,13 @@ export async function loadBenchmarkData(
   project: ProjectType,
   page: string,
   scenario: ScenarioType,
-  network: NetworkProfile = 'none'
+  network: NetworkProfile = 'none',
+  optimization: OptimizationType = 'optimized'
 ): Promise<SummaryJson | null> {
   try {
+    const opt = project === 'monolith' ? 'default' : optimization;
     const response = await fetch(
-      `/data/${project}/${page}/${scenario}/${network}/summary.json`
+      `/data/${project}/${page}/${scenario}/${network}/${opt}/summary.json`
     );
     if (!response.ok) return null;
     const data: SummaryJson = await response.json();
@@ -41,11 +44,12 @@ export async function loadBenchmarkData(
 
 export async function loadPageData(
   pageId: string,
-  network: NetworkProfile = 'none'
+  network: NetworkProfile = 'none',
+  optimization: OptimizationType = 'optimized'
 ): Promise<PageBenchmarkData> {
   const [mfeWarm, mfeCold, monolithWarm, monolithCold] = await Promise.all([
-    loadBenchmarkData('mfe', pageId, 'warm', network),
-    loadBenchmarkData('mfe', pageId, 'cold', network),
+    loadBenchmarkData('mfe', pageId, 'warm', network, optimization),
+    loadBenchmarkData('mfe', pageId, 'cold', network, optimization),
     loadBenchmarkData('monolith', pageId, 'warm', network),
     loadBenchmarkData('monolith', pageId, 'cold', network),
   ]);
@@ -55,11 +59,12 @@ export async function loadPageData(
 
 export async function loadAllPagesData(
   pages: PageInfo[],
-  network: NetworkProfile = 'none'
+  network: NetworkProfile = 'none',
+  optimization: OptimizationType = 'optimized'
 ): Promise<Record<string, PageBenchmarkData>> {
   const entries = await Promise.all(
     pages.map(async (p) => {
-      const data = await loadPageData(p.id, network);
+      const data = await loadPageData(p.id, network, optimization);
       return [p.id, data] as const;
     })
   );
