@@ -12,6 +12,12 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  env: {
+    NX_PUBLIC_HOME_REMOTE: process.env.NX_PUBLIC_HOME_REMOTE ?? '',
+    NX_PUBLIC_SUPPORT_REMOTE: process.env.NX_PUBLIC_SUPPORT_REMOTE ?? '',
+    NX_PUBLIC_DASHBOARD_REMOTE: process.env.NX_PUBLIC_DASHBOARD_REMOTE ?? '',
+    NX_PUBLIC_LOGIN_REMOTE: process.env.NX_PUBLIC_LOGIN_REMOTE ?? '',
+  },
 };
 
 const plugins = [

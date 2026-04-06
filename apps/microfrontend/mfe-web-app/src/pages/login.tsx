@@ -7,12 +7,16 @@ export function Login() {
     remotes: [
       {
         name: 'loginremote',
-        entry: 'https://mfebucket.mramadhanrh.com/loginremote/remoteEntry.js',
+        entry:
+          process.env.NX_PUBLIC_LOGIN_REMOTE ||
+          'http://localhost:4200/remoteEntry.js',
         moduleName: 'loginremote/Module',
       },
       {
         name: 'supportremote',
-        entry: 'https://mfebucket.mramadhanrh.com/supportremote/remoteEntry.js',
+        entry:
+          process.env.NX_PUBLIC_SUPPORT_REMOTE ||
+          'http://localhost:4201/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],

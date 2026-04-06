@@ -8,12 +8,15 @@ export function Dashboard() {
       {
         name: 'dashboardremote',
         entry:
-          'https://mfebucket.mramadhanrh.com/dashboardremote/remoteEntry.js',
+          process.env.NX_PUBLIC_DASHBOARD_REMOTE ||
+          'http://localhost:4203/remoteEntry.js',
         moduleName: 'dashboardremote/Module',
       },
       {
         name: 'supportremote',
-        entry: 'https://mfebucket.mramadhanrh.com/supportremote/remoteEntry.js',
+        entry:
+          process.env.NX_PUBLIC_SUPPORT_REMOTE ||
+          'http://localhost:4201/remoteEntry.js',
         moduleName: 'supportremote/Module',
       },
     ],
