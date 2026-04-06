@@ -33,7 +33,7 @@ module.exports = {
     collect: {
       // Visit the URL twice: first primes the cache, second measures warm performance
       url: [benchmarkUrl, benchmarkUrl],
-      numberOfRuns: 5,
+      numberOfRuns: 30,
       settings: {
         preset: 'desktop',
         chromeFlags:

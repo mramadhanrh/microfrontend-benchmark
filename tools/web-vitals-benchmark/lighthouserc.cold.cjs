@@ -32,7 +32,7 @@ module.exports = {
   ci: {
     collect: {
       url: [benchmarkUrl],
-      numberOfRuns: 5,
+      numberOfRuns: 30,
       settings: {
         preset: 'desktop',
         chromeFlags:

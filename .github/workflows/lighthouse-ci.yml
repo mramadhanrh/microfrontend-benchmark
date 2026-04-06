@@ -115,7 +115,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        instance: [1, 2, 3, 4, 5, 6]
+        instance: [1]
         page: ${{ fromJSON(needs.setup.outputs.page-matrix) }}
         network: ${{ fromJSON(needs.setup.outputs.network-matrix) }}
         optimization: ${{ fromJSON(needs.setup.outputs.optimization-matrix) }}
