@@ -1,0 +1,19 @@
+{
+  "name": "benchmark-screenshots",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "capture": "tsx src/capture.ts",
+    "capture:pages": "tsx src/capture-pages.ts",
+    "capture:all": "tsx src/capture.ts && tsx src/capture-pages.ts",
+    "capture:install": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.44.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
