@@ -1,0 +1,5 @@
+# Python dependencies for the benchmark statistical-analysis & figure scripts.
+# Install with:  python3 -m pip install -r requirements.txt
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7   # only required by generate_academic_figures.py
